@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\SpeciesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('species-search');
-});
+Route::get('/', [SpeciesController::class, 'index']);
+
+Route::post('/', [SpeciesController::class, 'index']);
+Route::get('/species/{speciesName}/type/{speciesNameType}', [SpeciesController::class, 'listForCounty']);

@@ -10,7 +10,7 @@
 	<!-- Bootstrap CSS -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 	<!-- Custom styles for this template -->
-	<link href="/css/app.css" rel="stylesheet">
+	<link href="/css/NOapp.css" rel="stylesheet">
 	<link href="/css/enhancements.css" rel="stylesheet">
 	<!-- A2HS -->
 	<link rel="manifest" href="/manifest.webmanifest">
@@ -34,55 +34,54 @@
 </head>
 
 <body>
-	<div class="container-fluid p-2 pt-0 mt-2">
-		<nav class="navbar navbar-expand-sm navbar-light px-3 py-2">
-			<a class="navbar-brand fs-4" href="/">Botanical Records</a>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-main" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="navbar-collapse collapse flex-grow-1 text-right text-white" id="navbar-main">
-				<ul class="nav navbar-nav me-auto flex-nowrap">
-					<li class="nav-item">
-						<a class="nav-link align-baseline" href="/species">Species</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="/sites">Sites</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="/squares">Squares</a>
-					</li>
-				</ul>
-				<ul class="nav navbar-nav me-0">
-					<li class="nav-item">
-						<a class="nav-link" href="/about">About</a>
-					</li>
-					</li>
-				</ul>
-			</div>
-		</nav>
-		<?php if (isset($error)) : ?>
-			<div class="alert alert-warning alert-dismissible fade show" role="alert">
-				<?= $error ?>
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-		<?php endif ?>
-		<div class="container-fluid content-inner p-3">
-        {{ $slot }}
-		</div>
-		<footer class="page-footer footer-fluid">
-			<div class="mx-auto mt-2 text-center">
-				<span class="small">Shropshire Botanical Society Data supported by
-					<a href="https://registry.nbnatlas.org/public/show/dp120" target="_blank">National Biodiversity Network</a>
-				</span>
-		<?php if (isset($queryUrl)) : ?>
-				<details style="font-size:small;"><summary>NBN API Query</summary><?= $queryUrl ?></details>
-		<?php endif ?>
-			</div>
-		</footer>
-		<!-- Bootstrap 5-beta2 bundle -->
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-	</div>
+<header>
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Botanical Records</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Species</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Sites</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Squares</a>
+          </li>
+          <li class="nav-item">
+		    <a class="nav-link" href="/about">About</a>
+		</li>
+        </ul>
+    </div>
+  </nav>
+</header>
+
+<?php if (isset($error)) : ?>
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <?= $error ?>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<?php endif ?>
+<div class="container-fluid content-inner p-3">
+{{ $slot }}
+</div>
+<footer class="page-footer footer-fluid">
+    <div class="mx-auto mt-2 text-center">
+        <span class="small">Shropshire Botanical Society Data supported by
+            <a href="https://registry.nbnatlas.org/public/show/dp120" target="_blank">National Biodiversity Network</a>
+        </span>
+<?php if (isset($queryUrl)) { ?>
+        <details style="font-size:small;"><summary>NBN API Query</summary><?= $queryUrl ?></details>
+<?php } ?>
+    </div>
+</footer>
+<!-- Bootstrap 5-beta2 bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 </body>
 </html>

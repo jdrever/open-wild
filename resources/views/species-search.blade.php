@@ -3,12 +3,13 @@
 <h2 class="text-start text-md-center">Search for a Species in Shropshire</h2>
 
 {{-- form_open('species') --}}
-
+<form method="post" action="/" accept-charset="UTF-8">
+@csrf
 <div class="row mb-2">
 	<div class="col-lg-8 mx-auto">
 		<label for="search" class="form-label visually-hidden">Species name</label>
 		<div class="input-group">
-			<input type="text" id="search" class="form-control" name="search" aria-describedby="search-help" placeholder="Species name" value="{{-- set_value('search', $nameSearchString); --}}" />
+			<input type="text" id="speciesName" class="form-control" name="speciesName" aria-describedby="search-help" placeholder="Species name" value="{{ $speciesName }}" />
 			<button type="submit" class="btn btn-primary">List Species</button>
 		</div>
 		<small id="search-help" class="form-text text-start text-md-center d-block">Enter all or part of a species name. Try something like "Hedera".</small>
@@ -17,13 +18,13 @@
 <div class="row justify-content-center gy-3">
 	<div class="form-group col-sm-4 col-lg-3">
 		<div class="form-check">
-			<input class="form-check-input" type="radio" name="name-type" id="scientific-name" value="scientific" onchange="if (this.form.search.value!='') { this.form.submit(); }" {{-- set_radio('name-type', 'scientific', ($nameType === 'scientific')); --}} />
+			<input class="form-check-input" type="radio" name="speciesNameType" id="scientific-name" value="scientific" onchange="if (this.form.search.value!='') { this.form.submit(); }" {{-- set_radio('name-type', 'scientific', ($nameType === 'scientific')); --}} />
 			<label class="form-check-label" for="scientific-name">
 				scientific<span class="d-none d-lg-inline"> name only</span>
 			</label>
 		</div>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" name="name-type" id="common-name" value="common"  onchange="if (this.form.search.value!='') { this.form.submit(); }" {{-- set_radio('name-type', 'common', ($nameType === 'common')); --}} />
+			<input class="form-check-input" type="radio" name="speciesNameType" id="common-name" value="common"  onchange="if (this.form.search.value!='') { this.form.submit(); }" {{-- set_radio('name-type', 'common', ($nameType === 'common')); --}} />
 			<label class="form-check-label" for="common-name">
 				common<span class="d-none d-lg-inline"> name only</span>
 			</label>
@@ -58,7 +59,7 @@
 	</div>
 </div>
 {{-- //form_close() --}}
-
+</form>
 
 <?php if (isset($message)) { ?>
 	<div class="alert alert-danger" role="alert">
