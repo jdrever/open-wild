@@ -73,7 +73,7 @@
 </div>
 <footer class="page-footer footer-fluid">
     <div class="mx-auto mt-2 text-center">
-        <span class="small">Shropshire Botanical Society Data supported by
+        <span class="small">Supported by
             <a href="https://registry.nbnatlas.org/public/show/dp120" target="_blank">National Biodiversity Network</a>
         </span>
 <?php if (isset($queryUrl)) { ?>

@@ -18,19 +18,19 @@
 <div class="row justify-content-center gy-3">
 	<div class="form-group col-sm-4 col-lg-3">
 		<div class="form-check">
-			<input class="form-check-input" type="radio" name="speciesNameType" id="scientific-name" value="scientific" onchange="if (this.form.search.value!='') { this.form.submit(); }" {{-- set_radio('name-type', 'scientific', ($nameType === 'scientific')); --}} />
+			<input class="form-check-input" type="radio" name="speciesNameType" id="scientific-name" value="scientific" onchange="if (this.form.search.value!='') { this.form.submit(); }" {{ ($speciesNameType=="scientific")? "checked" : "" }} />
 			<label class="form-check-label" for="scientific-name">
 				scientific<span class="d-none d-lg-inline"> name only</span>
 			</label>
 		</div>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" name="speciesNameType" id="common-name" value="common"  onchange="if (this.form.search.value!='') { this.form.submit(); }" {{-- set_radio('name-type', 'common', ($nameType === 'common')); --}} />
+			<input class="form-check-input" type="radio" name="speciesNameType" id="common-name" value="common"  onchange="if (this.form.search.value!='') { this.form.submit(); }" {{ ($speciesNameType=="common")? "checked" : "" }} />
 			<label class="form-check-label" for="common-name">
 				common<span class="d-none d-lg-inline"> name only</span>
 			</label>
 		</div>
 		<div class="form-check">
-			<input class="form-check-input" type="checkbox" name="axiophyte-filter" id="axiophyte-filter" value="true"  onchange="if (this.form.search.value!='') { this.form.submit(); }" {{-- set_radio('axiophyte-filter', 'true', ($axiophyteFilter === 'true')); --}} />
+			<input class="form-check-input" type="checkbox" name="axiophyte-filter" id="axiophyte-filter" value="true"  onchange="if (this.form.search.value!='') { this.form.submit(); }" {{ ($axiophyteFilter=="true")? "checked" : "" }} />
 			<label class="form-check-label" for="axiophyte-name">
 				<span class="d-lg-none">axiophytes</span>
 				<span class="d-none d-lg-inline">axiophytes only</span>
@@ -39,19 +39,19 @@
 	</div>
 	<div class="form-group col-sm-4 col-lg-3">
 		<div class="form-check">
-			<input class="form-check-input" type="radio" name="species-group" id="plants" value="plants"  onchange="if (this.form.search.value!='') { this.form.submit(); }" {{-- set_radio('groups', 'plants', $speciesGroup === 'plants'); --}} />
+			<input class="form-check-input" type="radio" name="speciesGroup" id="plants" value="plants"  onchange="if (this.form.search.value!='') { this.form.submit(); }" {{ ($speciesGroup=="plants")? "checked" : "" }} />
 			<label class="form-check-label" for="plants">
 				only plants
 			</label>
 		</div>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" name="species-group" id="bryophytes" value="bryophytes"  onchange="if (this.form.search.value!='') { this.form.submit(); }"{{--  set_radio('groups', 'bryophytes', $speciesGroup === 'bryophytes'); --}} />
+			<input class="form-check-input" type="radio" name="speciesGroup" id="bryophytes" value="bryophytes"  onchange="if (this.form.search.value!='') { this.form.submit(); }" {{ ($speciesGroup=="bryophytes")? "checked" : "" }} />
 			<label class="form-check-label" for="bryophytes">
 				only bryophytes
 			</label>
 		</div>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" name="species-group" id="both" value="both"  onchange="if (this.form.search.value!='') { this.form.submit(); }" {{-- set_radio('groups', 'both', $speciesGroup === 'both'); --}} />
+			<input class="form-check-input" type="radio" name="speciesGroup" id="both" value="both"  onchange="if (this.form.search.value!='') { this.form.submit(); }" {{ ($speciesGroup=="both")? "checked" : "" }} />
 			<label class="form-check-label" for="both">
 				both <span class="d-none d-xl-inline">plants and bryophytes</span>
 			</label>
@@ -76,8 +76,8 @@
 		<thead>
 			<tr>
 				<th class="d-none d-md-table-cell">Family</th>
-				<th <?php if ($nameType === 'common') { ?>class="d-none d-sm-table-cell" <?php } ?>>Scientific Name</th>
-				<th <?php if ($nameType === 'scientific') { ?>class="d-none d-sm-table-cell" <?php } ?>>Common Name</th>
+				<th <?php if ($speciesNameType === 'common') { ?>class="d-none d-sm-table-cell" <?php } ?>>Scientific Name</th>
+				<th <?php if ($speciesNameType === 'scientific') { ?>class="d-none d-sm-table-cell" <?php } ?>>Common Name</th>
 				<th>Records</th>
 			</tr>
 		</thead>
@@ -85,18 +85,18 @@
 			<?php foreach ($records as $species) { ?>
 				<?php $speciesArray = explode('|', (string)$species->label); ?>
 				<tr>
-				<?php if ($nameType === 'scientific') { ?>
+				<?php if ($speciesNameType === 'scientific') { ?>
 					<td class="d-none d-md-table-cell"><?= $speciesArray[4] ?></td>
-					<td><a href="<?= '/species/' . $speciesArray[0] . '?nameSearchString=' . $nameSearchString ?>"><?= $speciesArray[0] ?></a></td>
+					<td><a href="<?= '/species/' . $speciesArray[0] . '?nameSearchString=' . $speciesName ?>"><?= $speciesArray[0] ?></a></td>
 					<td class="d-none d-sm-table-cell">
-						<a href="<?= '/species/' . $speciesArray[0] . '?displayName=' . $speciesArray[2] . '&nameSearchString=' . $nameSearchString ?>"><?= $speciesArray[2] ?></a>
+						<a href="<?= '/species/' . $speciesArray[0] . '?displayName=' . $speciesArray[2] . '&nameSearchString=' . $speciesName ?>"><?= $speciesArray[2] ?></a>
 					</td>
 				<?php } ?>
-				<?php if ($nameType === 'common') { ?>
+				<?php if ($speciesNameType === 'common') { ?>
 					<td class="d-none d-md-table-cell"><?= $speciesArray[5] ?></td>
-					<td class="d-none d-sm-table-cell"><a href="<?= '/species/' . $speciesArray[1] . '?nameSearchString=' . $nameSearchString ?>"><?= $speciesArray[1] ?></a></td>
+					<td class="d-none d-sm-table-cell"><a href="<?= '/species/' . $speciesArray[1] . '?nameSearchString=' . $speciesName ?>"><?= $speciesArray[1] ?></a></td>
 					<td>
-						<a href="<?= urldecode('/species/' . $speciesArray[1] . '?displayName=' . $speciesArray[0] . '&nameSearchString=' . $nameSearchString) ?>"><?= $speciesArray[0] ?></a>
+						<a href="<?= urldecode('/species/' . $speciesArray[1] . '?displayName=' . $speciesArray[0] . '&nameSearchString=' . $speciesName) ?>"><?= $speciesArray[0] ?></a>
 					</td>
 				<?php } ?>
 					<td><?= $species->count ?></td>

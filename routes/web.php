@@ -16,4 +16,4 @@ use App\Http\Controllers\SpeciesController;
 Route::get('/', [SpeciesController::class, 'index']);
 
 Route::post('/', [SpeciesController::class, 'index']);
-Route::get('/species/{speciesName}/type/{speciesNameType}', [SpeciesController::class, 'listForCounty']);
+Route::get('/species/{speciesName}/type/{speciesNameType}/group/{speciesGroup}/axiophytes/{axiophyteFilter}', [SpeciesController::class, 'listForCounty']);

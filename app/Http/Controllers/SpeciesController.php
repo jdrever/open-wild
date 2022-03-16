@@ -38,10 +38,10 @@ class SpeciesController extends Controller
 
     public function index(Request $request)
     {
-        echo(var_dump($request->input));
         $speciesName=$request->input('speciesName', '');
         $speciesNameType=$request->input('speciesNameType', '');
-
+        $speciesGroup=$request->input('speciesGroup', '');
+        $axiophyteFilter=$request->input('axiophyteFilter', 'false');
         if (empty($speciesName))
             return view('species-search',
             [
@@ -49,7 +49,7 @@ class SpeciesController extends Controller
                 'speciesNameType' => $speciesNameType
             ]);
         else
-            return redirect('/species/' . $speciesName . '/type/' . $speciesNameType);
+            return redirect('/species/' . $speciesName . '/type/' . $speciesNameType . '/group/' .$speciesGroup . '/axiophytes/' . $axiophyteFilter);
     }
 
     /**
@@ -61,12 +61,16 @@ class SpeciesController extends Controller
      * @param  string  $axiophyteFilter
      * @return \Illuminate\View\View
      */
-    public function listForCounty($speciesName, $speciesNameType)
+    public function listForCounty($speciesName, $speciesNameType, $speciesGroup,$axiophyteFilter)
 	{
+        $results=$this->queryService->getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter,1);
         return view('species-search',
         [
             'speciesName' => $speciesName,
-            'speciesNameType' => $speciesNameType
+            'speciesNameType' => $speciesNameType,
+            'speciesGroup' => $speciesGroup,
+            'axiophyteFilter' => $axiophyteFilter,
+            'records' =>$results->records
          ]);
     }
 }
