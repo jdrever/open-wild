@@ -9,6 +9,7 @@ class NBNQueryService implements QueryService
     {
 
         $nbnQuery = new NbnQueryBuilder('/occurrences/search');
+        echo(var_dump($nbnQuery));
 
         $speciesNameForSearch=$this->prepareSearchString($speciesName);
         if ($speciesNameType === "scientific")
@@ -57,7 +58,7 @@ class NBNQueryService implements QueryService
 
         // then get paged results
         //TODO: number of records in paged result should be a constant.
-        $nbnQuery->flimit   = '10';
+        $nbnQuery->flimit   = config('RESULTS_PER_PAGE');
         $nbnQueryUrl             = $nbnQuery->getPagingQueryStringWithFacetStart($page);
         $nbnQueryResponse = $this->callNbnApi($nbnQueryUrl);
 
@@ -240,7 +241,7 @@ class NbnQueryBuilder
 	 *
 	 * @var integer $pageSize
 	 */
-	public $pageSize = 10;
+	public $pageSize;
 
 	/**
 	 * TODO: Describe what the $sort member variable is for
@@ -276,6 +277,7 @@ class NbnQueryBuilder
 	public function __construct(string $path = 'occurrences/search')
 	{
 		$this->path = $path;
+        $this->pageSize=env('RESULTS_PER_PAGE', false);
 	}
 
 	/**
@@ -369,12 +371,14 @@ class NbnQueryBuilder
 
 	public function getPagingQueryStringWithStart($start)
 	{
+
 		$pagingQuery = $this->getPagingQueryString();
 		return $pagingQuery .= "&start=" . (($start - 1) * $this->pageSize);
 	}
 
 	public function getPagingQueryStringWithFacetStart($start)
 	{
+        echo("=". $this->pageSize);
 		$pagingQuery = $this->getPagingQueryString();
 		return $pagingQuery .= "&facet.offset=" . (($start - 1) * $this->pageSize);
 	}
