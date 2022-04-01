@@ -46,7 +46,9 @@ class SpeciesController extends Controller
             return view('species-search',
             [
                 'speciesName' => $speciesName,
-                'speciesNameType' => $speciesNameType
+                'speciesNameType' => $speciesNameType,
+                'speciesGroup' => $speciesGroup,
+                'axiophyteFilter' => $axiophyteFilter
             ]);
         else
             return redirect('/species/' . $speciesName . '/type/' . $speciesNameType . '/group/' .$speciesGroup . '/axiophytes/' . $axiophyteFilter);
