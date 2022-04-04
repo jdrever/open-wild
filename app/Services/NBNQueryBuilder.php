@@ -16,6 +16,9 @@ class NbnQueryBuilder
 {
 	const BASE_URL = 'https://records-ws.nbnatlas.org/';
 
+    const OCCURENCES_SEARCH = '/occurrences/search';
+    const OCCURENCE = '/occurrence';
+    const OCCURENCE_DOWNLOAD = 'occurrences/index/download';
 	/**
 	 * The unique data resource id code
 	 *
@@ -41,11 +44,11 @@ class NbnQueryBuilder
 	private $axiophyteFilter='species_list_uid:dr1940';
 
 	/**
-	 * TODO: Describe what the $path member variable is for
+	 * TODO: Describe what the $searchType member variable is for
 	 *
-	 * @var string $path
+	 * @var string $searchType
 	 */
-	private $path = '';
+	public $searchType = '';
 
 	/**
 	 * TODO: Describe what the $facets member variable is for
@@ -92,16 +95,16 @@ class NbnQueryBuilder
 	/**
 	 * Constructor
 	 *
-	 * Accepts a path fragment which indicates the NBN Atlas API search type to
+	 * Accepts a searchType fragment which indicates the NBN Atlas API search type to
 	 * perform. Defaults to Occurrence search: https://api.nbnatlas.org/#ws3
 	 *
 	 * See https://api.nbnatlas.org/ for others.
 	 *
-	 * @param string $path NBN Atlas API search type
+	 * @param string $searchType NBN Atlas API search type
 	 */
-	public function __construct(string $path = 'occurrences/search')
+	public function __construct(string $searchType = self::OCCURENCES_SEARCH)
 	{
-		$this->path = $path;
+		$this->searchType = $searchType;
         $this->pageSize=env('RESULTS_PER_PAGE', false);
 	}
 
@@ -156,7 +159,7 @@ class NbnQueryBuilder
 
 
 	/**
-	 * Return the base url and path (really only used for getting a single
+	 * Return the base url and searchType (really only used for getting a single
 	 * occurence record)
 	 *
 	 * @return string
@@ -164,7 +167,7 @@ class NbnQueryBuilder
 
 	public function url()
 	{
-		return $this::BASE_URL . $this->path;
+		return $this::BASE_URL . $this->searchType;
 	}
 
 	/**
@@ -176,7 +179,7 @@ class NbnQueryBuilder
 	 */
 	public function getUnpagedQueryString()
 	{
-		$queryString  = $this->getQueryString($this::BASE_URL . $this->path);
+		$queryString  = $this->getQueryString($this::BASE_URL . $this->searchType);
 		$queryString .= 'pageSize=0&flimit=-1';
 		return $queryString;
 	}
@@ -189,7 +192,7 @@ class NbnQueryBuilder
 	 */
 	public function getPagingQueryString()
 	{
-		$queryString  = $this->getQueryString($this::BASE_URL . $this->path);
+		$queryString  = $this->getQueryString($this::BASE_URL . $this->searchType);
 		$queryString .= 'pageSize=' . $this->pageSize;
 		return $queryString;
 	}
@@ -203,7 +206,6 @@ class NbnQueryBuilder
 
 	public function getPagingQueryStringWithFacetStart($start)
 	{
-        echo("=". $this->pageSize);
 		$pagingQuery = $this->getPagingQueryString();
 		return $pagingQuery .= "&facet.offset=" . (($start - 1) * $this->pageSize);
 	}

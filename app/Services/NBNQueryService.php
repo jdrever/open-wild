@@ -8,7 +8,7 @@ class NBNQueryService implements QueryService
     public function getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter, $page) : QueryResult
     {
 
-        $nbnQuery = new NbnQueryBuilder('/occurrences/search');
+        $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURENCES_SEARCH);
 
         $speciesNameForSearch=$this->prepareSearchString($speciesName);
         $nbnQuery->addSpeciesNameType($speciesNameType, $speciesNameForSearch);
@@ -20,7 +20,7 @@ class NBNQueryService implements QueryService
         //first get number of records from unpaged query
         $nbnQueryUrl            = $nbnQuery->getUnpagedQueryString();
         $nbnQueryResponse    = $this->callNbnApi($nbnQueryUrl);
-        $totalNumberOfRecords 		 = $nbnQueryResponse->getNumberOfRecords();
+        $totalNumberOfRecords 		 = $nbnQueryResponse->getNumberOfRecords($nbnQuery->searchType);
 
 
         // then get paged results
@@ -49,50 +49,65 @@ class NBNQueryService implements QueryService
 	{
 		// mainly to replace the spaces with %20
 		$speciesName      = rawurlencode($speciesName);
-		$nbnRecords       = new NbnQueryBuilder('occurrences/search');
-		$nbnRecords->sort = "year";
-		$nbnRecords->dir  = "desc";
-		$nbnRecords
+		$nbnQuery       = new NbnQueryBuilder('occurrences/search');
+		$nbnQuery->sort = "year";
+		$nbnQuery->dir  = "desc";
+		$nbnQuery
 			->add('taxon_name:' . '"' . $speciesName . '"');
 
-        $queryUrl           = $nbnRecords->getPagingQueryStringWithStart($page);
-
+        $queryUrl           = $nbnQuery->getPagingQueryStringWithStart($page);
 		$nbnQueryResponse = $this->callNbnApi($queryUrl);
 
-		{
-			$recordList         = $nbnQueryResponse->jsonResponse->occurrences;
-			$totalRecords       = $nbnQueryResponse->jsonResponse->totalRecords;
-			usort($recordList, function ($a, $b) {
-				return $b->year <=> $a->year;
-			});
+        $queryResult  = $this->createQueryResult($nbnQueryResponse, $nbnQuery);
 
-			$sites = [];
-			foreach ($recordList as $record)
-			{
-				$record->locationId = $record->locationId ?? '';
-				$record->collector  = $record->collector ?? 'Unknown';
+        $queryResult->records=$this->prepareSingleSpeciesRecords($queryResult->records);
 
-				// To plot site markers on the map, we must capture the locationId
-				// (site name) and latLong of only the _first_ record for each site.
-				// The latLong returned from the API is a single string, so we
-				// convert into an array of two floats.
-				if (! array_key_exists($record->locationId, $sites)&& isset($record->latLong))
-				{
-					$sites[$record->locationId] = array_map('floatval', explode(",", $record->latLong));
-				}
-			}
-			$speciesQueryResult->records      = $recordList;
-			$speciesQueryResult->sites        = $sites;
-			$speciesQueryResult->downloadLink = $nbnRecords->getDownloadQueryString();
-			$speciesQueryResult->totalRecords = $totalRecords;
-		}
+        $queryResult->sites=$this->prepareSites($queryResult->records);
 
-		$speciesQueryResult->status       = $nbnQueryResponse->status;
-		$speciesQueryResult->queryUrl     = $queryUrl;
-		return $speciesQueryResult;
+		return $queryResult;
 	}
 
-	public function getSingleOccurenceRecord($uuid) { return false; }
+    private function prepareSingleSpeciesRecords($records)
+    {
+        usort($records, function ($a, $b) {
+            return $b->year <=> $a->year;
+        });
+        return $records;
+    }
+
+    private function prepareSites($records)
+    {
+        $sites = [];
+        foreach ($records as $record)
+        {
+            $record->locationId = $record->locationId ?? '';
+            $record->collector  = $record->collector ?? 'Unknown';
+
+            // To plot site markers on the map, we must capture the locationId
+            // (site name) and latLong of only the _first_ record for each site.
+            // The latLong returned from the API is a single string, so we
+            // convert into an array of two floats.
+            if (! array_key_exists($record->locationId, $sites)&& isset($record->latLong))
+            {
+                $sites[$record->locationId] = array_map('floatval', explode(",", $record->latLong));
+            }
+        }
+        return $sites;
+    }
+
+
+	public function getSingleOccurenceRecord($uuid)
+    {
+        $nbnQuery            = new NbnQueryBuilder(NbnQueryBuilder::OCCURENCE);
+		$queryUrl              = $nbnQuery->url() . $uuid;
+		$queryResponse      = $this->callNbnApi($queryUrl);
+        $queryResult  = $this->createQueryResult($queryResponse, $nbnQuery);
+
+		$nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURENCE_DOWNLOAD);
+		$queryResult->downloadLink = $nbnQuery->getSingleRecordDownloadQueryString($queryResult->records->raw->occurrence->occurrenceID);
+		return $queryResult;
+	}
+
 
 	public function getSiteListForDataset($siteName, $page){ return false; }
 	public function getSpeciesListForSite($siteName, $speciesNameType, $speciesGroup, $axiophyteFilter, $page){ return false; }
@@ -111,8 +126,8 @@ class NBNQueryService implements QueryService
 
 		if ($nbnAPIResponse->status === 'OK' )
         {
-            $queryResult->records     = $nbnAPIResponse->getRecords();
-            $queryResult->numberOfRecords     = $nbnAPIResponse->getNumberOfRecords();
+            $queryResult->records     = $nbnAPIResponse->getRecords($nbnQuery->searchType);
+            $queryResult->numberOfRecords     = $nbnAPIResponse->getNumberOfRecords($nbnQuery->searchType);
         }
         return $queryResult;
     }
@@ -193,56 +208,7 @@ class NBNQueryService implements QueryService
 
 
 
-/**
- * The response from the NBN API, including JSON response, status
- * and error message if one is required
- */
-class NBNApiResponse
-{
-	/**
-	 * The json response from the NBN API
-	 *
-	 * @var object
-	 */
-	public object $jsonResponse;
-	/**
-	 * The status of the response from the NBN API
-	 * Either OK or ERROR
-	 *
-	 * @var string
-	 */
-	public $status;
-	/**
-	 * The error message (if one is raised) from calling
-	 * the NBN API
-	 *
-	 * @var string
-	 */
-	public $message;
 
-    public function getRecords()
-    {
-        //either return faceted results or occurences
-        if (isset($this->jsonResponse->facetResults[0]))
-            return $this->jsonResponse->facetResults[0]->fieldResult;
-
-        if (isset($this->jsonResponse->occurrences))
-            return $this->jsonResponse->occurrences;
-
-        return [];
-    }
-
-    public function getNumberOfRecords() : int
-    {
-        //if a faceted query, return number of facet results
-        //otherwise just return number of records
-        if (isset($this->jsonResponse->facetResults[0]))
-            return count($this->jsonResponse->facetResults[0]->fieldResult);
-        if (isset($this->jsonResponse->totalRecord))
-            return count($this->jsonResponse->totalRecord);
-        return 0;
-    }
-}
 //TODO: move to Models namespace
 class QueryResult
 {
