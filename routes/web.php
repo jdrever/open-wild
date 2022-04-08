@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SpeciesController;
+use App\Http\Controllers\RecordsController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,3 +19,4 @@ Route::get('/', [SpeciesController::class, 'index']);
 
 Route::post('/', [SpeciesController::class, 'index']);
 Route::get('/species/{speciesName}/type/{speciesNameType}/group/{speciesGroup}/axiophytes/{axiophyteFilter}', [SpeciesController::class, 'listForCounty']);
+Route::get('/species/{speciesName}/', [RecordsController::class, 'singleSpeciesForCounty']);

@@ -8,9 +8,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta content="Promoting the enjoyment, understanding and conservation of the flora of Shropshire" name="description" />
 	<!-- Bootstrap CSS -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	<!-- Custom styles for this template -->
-	<link href="/css/NOapp.css" rel="stylesheet">
 	<link href="/css/enhancements.css" rel="stylesheet">
 	<!-- A2HS -->
 	<link rel="manifest" href="/manifest.webmanifest">
@@ -44,7 +43,7 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Species</a>
+            <a class="nav-link active" aria-current="page" href="/">Species</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Sites</a>
@@ -76,8 +75,8 @@
         <span class="small">Supported by
             <a href="https://registry.nbnatlas.org/public/show/dp120" target="_blank">National Biodiversity Network</a>
         </span>
-<?php if (isset($queryUrl)) { ?>
-        <details style="font-size:small;"><summary>NBN API Query</summary><?= $queryUrl ?></details>
+<?php if (isset($results->queryUrl)) { ?>
+        <details style="font-size:small;"><summary>NBN API Query</summary>{{ $results->queryUrl }}</details>
 <?php } ?>
     </div>
 </footer>

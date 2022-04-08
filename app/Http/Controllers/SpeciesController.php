@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use App\Interfaces\QueryService;
 
 class SpeciesController extends Controller
@@ -38,11 +39,14 @@ class SpeciesController extends Controller
 
     public function index(Request $request)
     {
-        $speciesName=$request->input('speciesName', '');
-        $speciesNameType=$request->input('speciesNameType', '');
-        $speciesGroup=$request->input('speciesGroup', '');
-        $axiophyteFilter=$request->input('axiophyteFilter', 'false');
-        if (empty($speciesName))
+        echo("here");
+        $speciesName=$request->input('speciesName') ?? $request->cookie('speciesName') ?? "" ;
+        $speciesNameType=$request->input('speciesNameType') ?? $request->cookie('speciesNameType') ?? "scientific" ;
+        $speciesGroup=$request->input('speciesGroup') ?? $request->cookie('speciesGroup') ?? "plants" ;
+        $axiophyteFilter=$request->input('axiophyteFilter')  ?? $request->cookie('axiophyteFilter') ?? "false" ;
+        echo($speciesNameType);
+        if (!$request->has("speciesName"))
+        {
             return view('species-search',
             [
                 'speciesName' => $speciesName,
@@ -50,6 +54,7 @@ class SpeciesController extends Controller
                 'speciesGroup' => $speciesGroup,
                 'axiophyteFilter' => $axiophyteFilter
             ]);
+        }
         else
             return redirect('/species/' . $speciesName . '/type/' . $speciesNameType . '/group/' .$speciesGroup . '/axiophytes/' . $axiophyteFilter);
     }
@@ -65,6 +70,9 @@ class SpeciesController extends Controller
      */
     public function listForCounty($speciesName, $speciesNameType, $speciesGroup,$axiophyteFilter)
 	{
+        Cookie::queue('speciesName', $speciesName);
+
+
         $results=$this->queryService->getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter,1);
         return view('species-search',
         [
@@ -72,7 +80,7 @@ class SpeciesController extends Controller
             'speciesNameType' => $speciesNameType,
             'speciesGroup' => $speciesGroup,
             'axiophyteFilter' => $axiophyteFilter,
-            'records' =>$results->records
+            'results' =>$results
          ]);
     }
 }

@@ -48,8 +48,21 @@ class NBNApiResponse
         //otherwise just return number of records
         if ($searchType==NBNQueryBuilder::OCCURENCES_SEARCH&&isset($this->jsonResponse->facetResults[0]))
             return count($this->jsonResponse->facetResults[0]->fieldResult);
-        if ($searchType==NBNQueryBuilder::OCCURENCES_SEARCH&&isset($this->jsonResponse->totalRecord))
-            return count($this->jsonResponse->totalRecord);
+        if ($searchType==NBNQueryBuilder::OCCURENCES_SEARCH&&isset($this->jsonResponse->totalRecords))
+            return $this->jsonResponse->totalRecords;
         return 0;
+    }
+
+    public function getTotalNumberOfRecords($searchType) : ?int
+    {
+        if ($searchType==NBNQueryBuilder::OCCURENCES_SEARCH&&isset($this->jsonResponse->totalRecord))
+            return $this->jsonResponse->totalRecords;
+        return null;
+    }
+
+    public function getCurrentPage($searchType) : int
+    {
+		$limit = 10; //per page
+		return ceil($this->totalRecords / $limit); //calculate total pages
     }
 }

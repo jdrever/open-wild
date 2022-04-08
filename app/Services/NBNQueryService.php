@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Interfaces\QueryService;
+use App\Models\QueryResult;
 
 class NBNQueryService implements QueryService
 {
@@ -30,7 +31,7 @@ class NBNQueryService implements QueryService
         $nbnQueryResponse = $this->callNbnApi($nbnQueryUrl);
 
 
-        $queryResult  = $this->createQueryResult($nbnQueryResponse, $nbnQuery);
+        $queryResult  = $this->createQueryResult($nbnQueryResponse, $nbnQuery, $nbnQueryUrl);
         $queryResult->totalNumberOfRecords=$totalNumberOfRecords;
 
         return $queryResult;
@@ -45,20 +46,20 @@ class NBNQueryService implements QueryService
 	 *
 	 * The taxon needs to be in double quotes so the complete string is searched for rather than a partial.
 	 */
-	public function getSingleSpeciesRecordsForDataset($speciesName, $page)
+	public function getSingleSpeciesRecordsForDataset($speciesName, $page) : QueryResult
 	{
 		// mainly to replace the spaces with %20
 		$speciesName      = rawurlencode($speciesName);
-		$nbnQuery       = new NbnQueryBuilder('occurrences/search');
+		$nbnQuery       = new NbnQueryBuilder(NbnQueryBuilder::OCCURENCES_SEARCH);
 		$nbnQuery->sort = "year";
 		$nbnQuery->dir  = "desc";
 		$nbnQuery
 			->add('taxon_name:' . '"' . $speciesName . '"');
 
-        $queryUrl           = $nbnQuery->getPagingQueryStringWithStart($page);
-		$nbnQueryResponse = $this->callNbnApi($queryUrl);
+        $nbnQueryUrl           = $nbnQuery->getPagingQueryStringWithStart($page);
+		$nbnQueryResponse = $this->callNbnApi($nbnQueryUrl);
 
-        $queryResult  = $this->createQueryResult($nbnQueryResponse, $nbnQuery);
+        $queryResult  = $this->createQueryResult($nbnQueryResponse, $nbnQuery, $nbnQueryUrl);
 
         $queryResult->records=$this->prepareSingleSpeciesRecords($queryResult->records);
 
@@ -99,9 +100,9 @@ class NBNQueryService implements QueryService
 	public function getSingleOccurenceRecord($uuid)
     {
         $nbnQuery            = new NbnQueryBuilder(NbnQueryBuilder::OCCURENCE);
-		$queryUrl              = $nbnQuery->url() . $uuid;
-		$queryResponse      = $this->callNbnApi($queryUrl);
-        $queryResult  = $this->createQueryResult($queryResponse, $nbnQuery);
+		$nbnQueryUrl              = $nbnQuery->url() . $uuid;
+		$queryResponse      = $this->callNbnApi($nbnQueryUrl);
+        $queryResult  = $this->createQueryResult($queryResponse, $nbnQuery, $nbnQueryUrl);
 
 		$nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURENCE_DOWNLOAD);
 		$queryResult->downloadLink = $nbnQuery->getSingleRecordDownloadQueryString($queryResult->records->raw->occurrence->occurrenceID);
@@ -117,17 +118,19 @@ class NBNQueryService implements QueryService
 	public function getSingleSpeciesRecordsForSquare($gridSquare, $speciesName, $page){ return false; }
 
 
-    private function createQueryResult(NbnAPIResponse $nbnAPIResponse, NbnQueryBuilder $nbnQuery) : QueryResult
+    private function createQueryResult(NbnAPIResponse $nbnAPIResponse, NbnQueryBuilder $nbnQuery, string $queryUrl) : QueryResult
     {
 		$queryResult = new QueryResult();
         $queryResult->status   	  = $nbnAPIResponse->status;
         $queryResult->message  	  = $nbnAPIResponse->message;
-        $queryResult->downloadLink = $nbnQuery->getDownloadQueryString();
+        $queryResult->queryUrl = $queryUrl;
 
 		if ($nbnAPIResponse->status === 'OK' )
         {
             $queryResult->records     = $nbnAPIResponse->getRecords($nbnQuery->searchType);
             $queryResult->numberOfRecords     = $nbnAPIResponse->getNumberOfRecords($nbnQuery->searchType);
+            $queryResult->totalNumberOfRecords = $nbnAPIResponse->getTotalNumberOfRecords($nbnQuery->searchType);
+            $queryResult->downloadLink = $nbnQuery->getDownloadQueryString();
         }
         return $queryResult;
     }
@@ -208,25 +211,6 @@ class NBNQueryService implements QueryService
 
 
 
-
-//TODO: move to Models namespace
-class QueryResult
-{
-	public $records;
-	public $sites;
-	public $downloadLink;
-    public $numberOfRecords;
-	public $totalNumberOfRecords;
-	public $queryUrl;
-	public $status;
-	public $message;
-
-	public function getTotalPages()
-	{
-		$limit = 10; //per page
-		return ceil($this->totalNumberOfRecords / $limit); //calculate total pages
-	}
-}
 ?>
 
 

@@ -2,8 +2,7 @@
 
 <h2 class="text-start text-md-center">Search for a Species in Shropshire</h2>
 
-{{-- form_open('species') --}}
-<form method="post" action="/" accept-charset="UTF-8">
+<form action="/" action="post">
 @csrf
 <div class="row mb-2">
 	<div class="col-lg-8 mx-auto">
@@ -68,9 +67,9 @@
 <?php } ?>
 
 <!-- Show the search results if there are any -->
-<?php if (isset($records)&&count($records)>0) { ?>
-	<?php if (isset($downloadLink)) { ?>
-	<p><a href="<?= $downloadLink ?>">Download this data</a></p>
+<?php if (isset($results->records)&&count($results->records)>0) { ?>
+	<?php if (isset($results->downloadLink)) { ?>
+	<p><a href="{{ $results->downloadLink }}">Download this data</a></p>
 	<?php } ?>
 	<table class="table mt-3">
 		<thead>
@@ -82,7 +81,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach ($records as $species) { ?>
+			<?php foreach ($results->records as $species) { ?>
 				<?php $speciesArray = explode('|', (string)$species->label); ?>
 				<tr>
 				<?php if ($speciesNameType === 'scientific') { ?>
@@ -106,8 +105,8 @@
 	</table>
 {{-- //$this->include('pagination') --}}
 
-	<?php if (isset($downloadLink)) { ?>
-		<p><a href="<?= $downloadLink ?>">Download this data</a></p>
+	<?php if (isset($results->downloadLink)) { ?>
+		<p><a href="{{$results->downloadLink }}">Download this data</a></p>
 	<?php } ?>
 <?php }
 else

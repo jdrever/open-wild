@@ -132,11 +132,6 @@ class NbnQueryBuilder
 		$queryString .= 'fsort=' . $this->fsort . '&';
 		$queryString .= 'dir=' . $this->dir . '&';
 
-		if (isset($this->flimit))
-		{
-			$queryString .= 'flimit=' . $this->flimit . '&';
-		}
-
 		return $queryString;
 	}
 
@@ -170,6 +165,11 @@ class NbnQueryBuilder
 		return $this::BASE_URL . $this->searchType;
 	}
 
+    public function isFacetedSearch()
+    {
+        return (!empty($this->facets));
+    }
+
 	/**
 	 * Return the query string without paging
 	 * Used to determine total number of records for query
@@ -193,7 +193,10 @@ class NbnQueryBuilder
 	public function getPagingQueryString()
 	{
 		$queryString  = $this->getQueryString($this::BASE_URL . $this->searchType);
-		$queryString .= 'pageSize=' . $this->pageSize;
+        if ($this->isFacetedSearch())
+            $queryString .= 'flimit=' . $this->flimit;
+        else
+		    $queryString .= 'pageSize=' . $this->pageSize;
 		return $queryString;
 	}
 
@@ -201,7 +204,10 @@ class NbnQueryBuilder
 	{
 
 		$pagingQuery = $this->getPagingQueryString();
-		return $pagingQuery .= "&start=" . (($start - 1) * $this->pageSize);
+        if ($this->isFacetedSearch())
+            return $pagingQuery .= "&facet.offset=" . (($start - 1) * $this->pageSize);
+        else
+		    return $pagingQuery .= "&start=" . (($start - 1) * $this->pageSize);
 	}
 
 	public function getPagingQueryStringWithFacetStart($start)
