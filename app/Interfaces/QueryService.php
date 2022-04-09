@@ -4,16 +4,16 @@ namespace App\Interfaces;
 
 interface QueryService
 {
-	public function getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter, $page);
-	public function getSingleSpeciesRecordsForDataset($speciesName, $page);
+	public function getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
+	public function getSingleSpeciesRecordsForDataset($speciesName, $currentPage);
 	public function getSingleOccurenceRecord($occurenceId);
 
-	public function getSiteListForDataset($siteName, $page);
-	public function getSpeciesListForSite($siteName, $speciesNameType, $speciesGroup, $axiophyteFilter, $page);
-	public function getSingleSpeciesRecordsForSite($siteName, $speciesName,$page);
+	public function getSiteListForDataset($siteName, $currentPage);
+	public function getSpeciesListForSite($siteName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
+	public function getSingleSpeciesRecordsForSite($siteName, $speciesName,$currentPage);
 
-	public function getSpeciesListForSquare($gridSquare, $speciesGroup, $speciesNameType, $axiophyteFilter, $page);
-	public function getSingleSpeciesRecordsForSquare($gridSquare, $speciesName, $page);
+	public function getSpeciesListForSquare($gridSquare, $speciesGroup, $speciesNameType, $axiophyteFilter, $currentPage);
+	public function getSingleSpeciesRecordsForSquare($gridSquare, $speciesName, $currentPage);
 }
 
 ?>

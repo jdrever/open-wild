@@ -57,20 +57,17 @@
 		</div>
 	</div>
 </div>
+
+
 {{-- //form_close() --}}
 </form>
 
-<?php if (isset($message)) { ?>
-	<div class="alert alert-danger" role="alert">
-		I am very sorry, but an error has occured.</b>:  <?= $message ?>
-	</div>
-<?php } ?>
-
 <!-- Show the search results if there are any -->
 <?php if (isset($results->records)&&count($results->records)>0) { ?>
-	<?php if (isset($results->downloadLink)) { ?>
-	<p><a href="{{ $results->downloadLink }}">Download this data</a></p>
-	<?php } ?>
+
+    @include('partials/download-link')
+
+
 	<table class="table mt-3">
 		<thead>
 			<tr>
@@ -86,16 +83,16 @@
 				<tr>
 				<?php if ($speciesNameType === 'scientific') { ?>
 					<td class="d-none d-md-table-cell"><?= $speciesArray[4] ?></td>
-					<td><a href="<?= '/species/' . $speciesArray[0] . '?nameSearchString=' . $speciesName ?>"><?= $speciesArray[0] ?></a></td>
+					<td><a href="{{ '/species/' . $speciesArray[0] . '?page=1' }}">{{ $speciesArray[0] }}</a></td>
 					<td class="d-none d-sm-table-cell">
-						<a href="<?= '/species/' . $speciesArray[0] . '?displayName=' . $speciesArray[2] . '&nameSearchString=' . $speciesName ?>"><?= $speciesArray[2] ?></a>
+						<a href="{{ '/species/' . $speciesArray[0] . '?page=1&speciesNameToDisplay=' . $speciesArray[2] }}">{{ $speciesArray[2] }}</a>
 					</td>
 				<?php } ?>
 				<?php if ($speciesNameType === 'common') { ?>
 					<td class="d-none d-md-table-cell"><?= $speciesArray[5] ?></td>
-					<td class="d-none d-sm-table-cell"><a href="<?= '/species/' . $speciesArray[1] . '?nameSearchString=' . $speciesName ?>"><?= $speciesArray[1] ?></a></td>
-					<td>
-						<a href="<?= urldecode('/species/' . $speciesArray[1] . '?displayName=' . $speciesArray[0] . '&nameSearchString=' . $speciesName) ?>"><?= $speciesArray[0] ?></a>
+                    <td class="d-none d-sm-table-cell"><a href="{{ '/species/' . $speciesArray[1] . '?page=1' }}">{{ $speciesArray[1] }}</a></td>
+                    <td>
+						<a href="{{ urldecode('/species/' . $speciesArray[1] . '?page=1&speciesNameToDisplay=' . $speciesArray[0]) }}">{{ $speciesArray[0] }}</a>
 					</td>
 				<?php } ?>
 					<td><?= $species->count ?></td>
@@ -104,11 +101,11 @@
 		</tbody>
 	</table>
 {{-- //$this->include('pagination') --}}
+    @include('partials/download-link')
 
-	<?php if (isset($results->downloadLink)) { ?>
-		<p><a href="{{$results->downloadLink }}">Download this data</a></p>
-	<?php } ?>
-<?php }
+    @include('partials/pagination')
+<?php
+}
 else
 { ?>
 	<?php if (! empty($nameSearchString)) { ?>

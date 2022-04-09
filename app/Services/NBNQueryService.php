@@ -6,7 +6,7 @@ use App\Models\QueryResult;
 
 class NBNQueryService implements QueryService
 {
-    public function getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter, $page) : QueryResult
+    public function getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage = 1) : QueryResult
     {
 
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURENCES_SEARCH);
@@ -18,21 +18,8 @@ class NBNQueryService implements QueryService
 
         $nbnQuery->addSpeciesGroup($speciesGroup);
 
-        //first get number of records from unpaged query
-        $nbnQueryUrl            = $nbnQuery->getUnpagedQueryString();
-        $nbnQueryResponse    = $this->callNbnApi($nbnQueryUrl);
-        $totalNumberOfRecords 		 = $nbnQueryResponse->getNumberOfRecords($nbnQuery->searchType);
-
-
-        // then get paged results
-        //TODO: number of records in paged result should be a constant.
-        $nbnQuery->flimit   = config('RESULTS_PER_PAGE');
-        $nbnQueryUrl             = $nbnQuery->getPagingQueryStringWithFacetStart($page);
-        $nbnQueryResponse = $this->callNbnApi($nbnQueryUrl);
-
-
-        $queryResult  = $this->createQueryResult($nbnQueryResponse, $nbnQuery, $nbnQueryUrl);
-        $queryResult->totalNumberOfRecords=$totalNumberOfRecords;
+        $nbnQuery->currentPage=$currentPage;
+        $queryResult=$this->getPagedQueryResult($nbnQuery);
 
         return $queryResult;
 
@@ -46,7 +33,7 @@ class NBNQueryService implements QueryService
 	 *
 	 * The taxon needs to be in double quotes so the complete string is searched for rather than a partial.
 	 */
-	public function getSingleSpeciesRecordsForDataset($speciesName, $page) : QueryResult
+	public function getSingleSpeciesRecordsForDataset($speciesName, $currentPage) : QueryResult
 	{
 		// mainly to replace the spaces with %20
 		$speciesName      = rawurlencode($speciesName);
@@ -55,11 +42,9 @@ class NBNQueryService implements QueryService
 		$nbnQuery->dir  = "desc";
 		$nbnQuery
 			->add('taxon_name:' . '"' . $speciesName . '"');
+        $nbnQuery->currentPage=$currentPage;
 
-        $nbnQueryUrl           = $nbnQuery->getPagingQueryStringWithStart($page);
-		$nbnQueryResponse = $this->callNbnApi($nbnQueryUrl);
-
-        $queryResult  = $this->createQueryResult($nbnQueryResponse, $nbnQuery, $nbnQueryUrl);
+        $queryResult=$this->getPagedQueryResult($nbnQuery);
 
         $queryResult->records=$this->prepareSingleSpeciesRecords($queryResult->records);
 
@@ -117,8 +102,27 @@ class NBNQueryService implements QueryService
 	public function getSpeciesListForSquare($gridSquare, $speciesGroup, $speciesNameType, $axiophyteFilter, $page){ return false; }
 	public function getSingleSpeciesRecordsForSquare($gridSquare, $speciesName, $page){ return false; }
 
+    private function getPagedQueryResult(NBNQueryBuilder $nbnQuery)
+    {
+        if ($nbnQuery->isFacetedSearch())
+        {
+            $nbnQueryUrl            = $nbnQuery->getUnpagedQueryString();
+            $nbnQueryResponse    = $this->callNbnApi($nbnQueryUrl);
+            $nbnQueryResponse->getRecords($nbnQuery->searchType);
+            $totalNumberOfRecords 		 = $nbnQueryResponse->getNumberOfRecords($nbnQuery->searchType);
+        }
+        $nbnQueryUrl           = $nbnQuery->getPagingQueryString();
+		$nbnQueryResponse = $this->callNbnApi($nbnQueryUrl);
+        $queryResult  = $this->createQueryResult($nbnQueryResponse, $nbnQuery, $nbnQueryUrl);
 
-    private function createQueryResult(NbnAPIResponse $nbnAPIResponse, NbnQueryBuilder $nbnQuery, string $queryUrl) : QueryResult
+        if ($nbnQuery->isFacetedSearch())
+            $queryResult->numberOfRecords=$totalNumberOfRecords;
+
+        return $queryResult;
+    }
+
+
+    private function createQueryResult(NbnAPIResponse $nbnAPIResponse, NbnQueryBuilder $nbnQuery, string $queryUrl, ?int $numberOfRecords=null) : QueryResult
     {
 		$queryResult = new QueryResult();
         $queryResult->status   	  = $nbnAPIResponse->status;
@@ -128,8 +132,17 @@ class NBNQueryService implements QueryService
 		if ($nbnAPIResponse->status === 'OK' )
         {
             $queryResult->records     = $nbnAPIResponse->getRecords($nbnQuery->searchType);
-            $queryResult->numberOfRecords     = $nbnAPIResponse->getNumberOfRecords($nbnQuery->searchType);
-            $queryResult->totalNumberOfRecords = $nbnAPIResponse->getTotalNumberOfRecords($nbnQuery->searchType);
+            if (isset($numberOfRecords))
+            {
+                $queryResult->numberOfRecords=$numberOfRecords;
+                $queryResult->numberOfPages=$nbnAPIResponse->getNumberOfPagesWithNumberOfRecords($nbnQuery->pageSize,$numberOfRecords);
+            }
+            else
+            {
+                $queryResult->numberOfRecords     = $nbnAPIResponse->getNumberOfRecords();
+                $queryResult->numberOfPages     = $nbnAPIResponse->getNumberOfPages($nbnQuery->pageSize);
+            }
+            $queryResult->currentPage = $nbnQuery->currentPage;
             $queryResult->downloadLink = $nbnQuery->getDownloadQueryString();
         }
         return $queryResult;

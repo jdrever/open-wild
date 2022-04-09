@@ -18,5 +18,5 @@ use App\Http\Controllers\RecordsController;
 Route::get('/', [SpeciesController::class, 'index']);
 
 Route::post('/', [SpeciesController::class, 'index']);
-Route::get('/species/{speciesName}/type/{speciesNameType}/group/{speciesGroup}/axiophytes/{axiophyteFilter}', [SpeciesController::class, 'listForCounty']);
-Route::get('/species/{speciesName}/', [RecordsController::class, 'singleSpeciesForCounty']);
+Route::get('/species/{speciesName}/type/{speciesNameType}/group/{speciesGroup}/axiophytes/{axiophyteFilter}', [SpeciesController::class, 'listForDataset']);
+Route::get('/species/{speciesName}', [RecordsController::class, 'singleSpeciesForDataset']);

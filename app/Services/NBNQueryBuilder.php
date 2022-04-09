@@ -72,6 +72,13 @@ class NbnQueryBuilder
 	public $pageSize;
 
 	/**
+	 * Sets the number of the current page
+	 *
+	 * @var integer $currentPage
+	 */
+	public $currentPage;
+
+	/**
 	 * TODO: Describe what the $sort member variable is for
 	 *
 	 * @var string $sort
@@ -85,12 +92,6 @@ class NbnQueryBuilder
 	 */
 	public $dir = 'asc';
 
-	/**
-	 * TODO: Describe what the $flimit variable is for
-	 *
-	 * @var int $flimit
-	 */
-	public $flimit;
 
 	/**
 	 * Constructor
@@ -106,6 +107,7 @@ class NbnQueryBuilder
 	{
 		$this->searchType = $searchType;
         $this->pageSize=env('RESULTS_PER_PAGE', false);
+        $this->currentPage=1;
 	}
 
 	/**
@@ -194,26 +196,10 @@ class NbnQueryBuilder
 	{
 		$queryString  = $this->getQueryString($this::BASE_URL . $this->searchType);
         if ($this->isFacetedSearch())
-            $queryString .= 'flimit=' . $this->flimit;
+            $queryString .= 'flimit=' . $this->pageSize . "&facet.offset=" . (($this->currentPage - 1) * $this->pageSize);
         else
-		    $queryString .= 'pageSize=' . $this->pageSize;
+		    $queryString .= 'pageSize=' . $this->pageSize . "&start=" . (($this->currentPage - 1) * $this->pageSize);
 		return $queryString;
-	}
-
-	public function getPagingQueryStringWithStart($start)
-	{
-
-		$pagingQuery = $this->getPagingQueryString();
-        if ($this->isFacetedSearch())
-            return $pagingQuery .= "&facet.offset=" . (($start - 1) * $this->pageSize);
-        else
-		    return $pagingQuery .= "&start=" . (($start - 1) * $this->pageSize);
-	}
-
-	public function getPagingQueryStringWithFacetStart($start)
-	{
-		$pagingQuery = $this->getPagingQueryString();
-		return $pagingQuery .= "&facet.offset=" . (($start - 1) * $this->pageSize);
 	}
 
 

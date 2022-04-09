@@ -18,51 +18,60 @@ class NBNApiResponse
 	 *
 	 * @var string
 	 */
-	public $status;
+	public string $status;
 	/**
 	 * The error message (if one is raised) from calling
 	 * the NBN API
 	 *
 	 * @var string
 	 */
-	public $message;
+	public ?string $message;
 
+    public ?int $numberOfRecords;
+
+    public function __construct()
+	{
+		$this->message = "";
+	}
+
+    //TODO: tighten return type - can be object or array
     public function getRecords($searchType)
     {
         //either return faceted results or occurences
         if ($searchType==NBNQueryBuilder::OCCURENCES_SEARCH&&isset($this->jsonResponse->facetResults[0]))
+        {
+            $this->numberOfRecords=count($this->jsonResponse->facetResults[0]->fieldResult);
             return $this->jsonResponse->facetResults[0]->fieldResult;
+        }
 
         if ($searchType==NBNQueryBuilder::OCCURENCES_SEARCH&&isset($this->jsonResponse->occurrences))
+        {
+            $this->numberOfRecords=$this->jsonResponse->totalRecords;
             return $this->jsonResponse->occurrences;
+        }
 
         if ($searchType==NBNQueryBuilder::OCCURENCE&&isset($this->jsonResponse))
+        {
+            $this->numberOfRecords=count($this->jsonResponse);
             return $this->jsonResponse;
+        }
 
         return [];
     }
 
-    public function getNumberOfRecords($searchType) : int
+    public function getNumberOfRecords() : int
     {
-        //if a faceted query, return number of facet results
-        //otherwise just return number of records
-        if ($searchType==NBNQueryBuilder::OCCURENCES_SEARCH&&isset($this->jsonResponse->facetResults[0]))
-            return count($this->jsonResponse->facetResults[0]->fieldResult);
-        if ($searchType==NBNQueryBuilder::OCCURENCES_SEARCH&&isset($this->jsonResponse->totalRecords))
-            return $this->jsonResponse->totalRecords;
-        return 0;
+        return $this->numberOfRecords;
     }
 
-    public function getTotalNumberOfRecords($searchType) : ?int
+
+    public function getNumberOfPages($pageSize) : int
     {
-        if ($searchType==NBNQueryBuilder::OCCURENCES_SEARCH&&isset($this->jsonResponse->totalRecord))
-            return $this->jsonResponse->totalRecords;
-        return null;
+		return ceil($this->numberOfRecords / $pageSize); //calculate total pages
     }
 
-    public function getCurrentPage($searchType) : int
+    public function getNumberOfPagesWithNumberOfRecords($pageSize, $numberOfRecords) : int
     {
-		$limit = 10; //per page
-		return ceil($this->totalRecords / $limit); //calculate total pages
+		return ceil($numberOfRecords / $pageSize); //calculate total pages
     }
 }

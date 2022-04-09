@@ -39,12 +39,10 @@ class SpeciesController extends Controller
 
     public function index(Request $request)
     {
-        echo("here");
         $speciesName=$request->input('speciesName') ?? $request->cookie('speciesName') ?? "" ;
         $speciesNameType=$request->input('speciesNameType') ?? $request->cookie('speciesNameType') ?? "scientific" ;
         $speciesGroup=$request->input('speciesGroup') ?? $request->cookie('speciesGroup') ?? "plants" ;
         $axiophyteFilter=$request->input('axiophyteFilter')  ?? $request->cookie('axiophyteFilter') ?? "false" ;
-        echo($speciesNameType);
         if (!$request->has("speciesName"))
         {
             return view('species-search',
@@ -61,19 +59,25 @@ class SpeciesController extends Controller
 
     /**
      * Show the profile for a given user.
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @param  string  $nameSearchString
      * @param  string  $speciesGroup
      * @param  string  $nameType
      * @param  string  $axiophyteFilter
      * @return \Illuminate\View\View
      */
-    public function listForCounty($speciesName, $speciesNameType, $speciesGroup,$axiophyteFilter)
+    public function listForDataset(Request $request, $speciesName, $speciesNameType, $speciesGroup,$axiophyteFilter)
 	{
         Cookie::queue('speciesName', $speciesName);
+        Cookie::queue('speciesNameType', $speciesNameType);
+        Cookie::queue('speciesGroup', $speciesGroup);
+        Cookie::queue('axiophyteFilter', $axiophyteFilter);
+
+        $currentPage=$request->input('page') ?? 1;
+
+        $results=$this->queryService->getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter,$currentPage);
 
 
-        $results=$this->queryService->getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter,1);
         return view('species-search',
         [
             'speciesName' => $speciesName,

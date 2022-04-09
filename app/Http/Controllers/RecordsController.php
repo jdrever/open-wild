@@ -39,18 +39,18 @@ class RecordsController extends Controller
 
 
     /**
-     * Show the profile for a given user.
-     *
+     * Show the single species listing for a dataset
+     * @param  \Illuminate\Http\Request  $request
      * @param  string  $speciesName
      * @return \Illuminate\View\View
      */
-    public function singleSpeciesForCounty($speciesName)
+    public function singleSpeciesForDataset(Request $request, string $speciesName)
 	{
-        Cookie::queue('speciesName', $speciesName);
+        $currentPage=$request->input('page') ?? 1;
 
-
-        $results=$this->queryService->getSingleSpeciesRecordsForDataset($speciesName,1);
-
+        $results=$this->queryService->getSingleSpeciesRecordsForDataset($speciesName,$currentPage);
+        $speciesNameSearchedFor=Cookie::get('speciesName') ?? $speciesName ;
+        $speciesNameToDisplay=$request->input('speciesNameToDisplay') ?? $speciesName;
         $speciesNameType=Cookie::get('speciesNameType') ?? "scientific" ;
         $speciesGroup=Cookie::get('speciesGroup') ?? "plants" ;
         $axiophyteFilter=Cookie::get('axiophyteFilter') ?? "false" ;
@@ -63,6 +63,8 @@ class RecordsController extends Controller
             'speciesGroup' => $speciesGroup,
             'axiophyteFilter' => $axiophyteFilter,
             'speciesGuid' => $speciesGuid,
+            'speciesNameSearchedFor' => $speciesNameSearchedFor,
+            'speciesNameToDisplay' => $speciesNameToDisplay,
             'results' =>$results
          ]);
     }

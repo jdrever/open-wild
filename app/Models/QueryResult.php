@@ -4,20 +4,15 @@ namespace App\Models;
 
 class QueryResult
 {
+    //TODO: specifiy type (can be object or array)
 	public $records;
 	public $sites;
-	public $downloadLink;
-    public $numberOfRecords;
-	public $totalNumberOfRecords;
-	public $queryUrl;
-	public $status;
-	public $message;
-
-	public function getTotalPages()
-	{
-		$limit = 10; //per page
-		return ceil($this->totalNumberOfRecords / $limit); //calculate total pages
-	}
+	public string $downloadLink;
+    public int $numberOfRecords;
+    public int $numberOfPages;
+	public string $queryUrl;
+	public string $status;
+	public ?string $message;
 }
 
 ?>
