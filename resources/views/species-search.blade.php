@@ -1,5 +1,34 @@
 <x-layout>
 
+<script>
+function updateDataset(pageNumber)
+{
+showSpinner();
+let speciesName=document.getElementById("speciesName").value;
+let speciesNameType=document.querySelector('input[name="speciesNameType"]:checked').value;;
+let updateUrl='/species-update/'+speciesName+'/type/'+speciesNameType+'/group/plants/axiophytes/false?page='+pageNumber;
+console.log(updateUrl);
+fetch(updateUrl).then(function (response) {
+	// The API call was successful!
+	return response.text();
+}).then(function (html) {
+    var elem = document.querySelector('#data-table');
+
+    //Set HTML content
+    elem.innerHTML = html;
+
+}).catch(function (err) {
+	// There was an error
+	console.warn('Something went wrong.', err);
+});
+}
+
+function showSpinner() {
+    var elem = document.querySelector('#data-table');
+    elem.innerHTML = '<button class="btn btn-primary" type="button" disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading... </button>';
+}
+</script>
+
 <h2 class="text-start text-md-center">Search for a Species in Shropshire</h2>
 
 <form action="/" action="post">
@@ -9,7 +38,7 @@
 		<label for="search" class="form-label visually-hidden">Species name</label>
 		<div class="input-group">
 			<input type="text" id="speciesName" class="form-control" name="speciesName" aria-describedby="search-help" placeholder="Species name" value="{{ $speciesName }}" />
-			<button type="submit" class="btn btn-primary">List Species</button>
+			<button type="submit" onclick="updateDataset(1); return false;" class="btn btn-primary">List Species</button>
 		</div>
 		<small id="search-help" class="form-text text-start text-md-center d-block">Enter all or part of a species name. Try something like "Hedera".</small>
 	</div>
@@ -17,13 +46,13 @@
 <div class="row justify-content-center gy-3">
 	<div class="form-group col-sm-4 col-lg-3">
 		<div class="form-check">
-			<input class="form-check-input" type="radio" name="speciesNameType" id="scientific-name" value="scientific" onchange="if (this.form.search.value!='') { this.form.submit(); }" {{ ($speciesNameType=="scientific")? "checked" : "" }} />
+			<input class="form-check-input" type="radio" name="speciesNameType" id="speciesNameType" value="scientific" onchange="updateDataset(1);" {{ ($speciesNameType=="scientific")? "checked" : "" }} />
 			<label class="form-check-label" for="scientific-name">
 				scientific<span class="d-none d-lg-inline"> name only</span>
 			</label>
 		</div>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" name="speciesNameType" id="common-name" value="common"  onchange="if (this.form.search.value!='') { this.form.submit(); }" {{ ($speciesNameType=="common")? "checked" : "" }} />
+			<input class="form-check-input" type="radio" name="speciesNameType" id="speciesNameType" value="common"  onchange="updateDataset(1);" {{ ($speciesNameType=="common")? "checked" : "" }} />
 			<label class="form-check-label" for="common-name">
 				common<span class="d-none d-lg-inline"> name only</span>
 			</label>
@@ -57,63 +86,10 @@
 		</div>
 	</div>
 </div>
-
-
-{{-- //form_close() --}}
 </form>
 
-<!-- Show the search results if there are any -->
-<?php if (isset($results->records)&&count($results->records)>0) { ?>
-
-    @include('partials/download-link')
-
-
-	<table class="table mt-3">
-		<thead>
-			<tr>
-				<th class="d-none d-md-table-cell">Family</th>
-				<th <?php if ($speciesNameType === 'common') { ?>class="d-none d-sm-table-cell" <?php } ?>>Scientific Name</th>
-				<th <?php if ($speciesNameType === 'scientific') { ?>class="d-none d-sm-table-cell" <?php } ?>>Common Name</th>
-				<th>Records</th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php foreach ($results->records as $species) { ?>
-				<?php $speciesArray = explode('|', (string)$species->label); ?>
-				<tr>
-				<?php if ($speciesNameType === 'scientific') { ?>
-					<td class="d-none d-md-table-cell"><?= $speciesArray[4] ?></td>
-					<td><a href="{{ '/species/' . $speciesArray[0] . '?page=1' }}">{{ $speciesArray[0] }}</a></td>
-					<td class="d-none d-sm-table-cell">
-						<a href="{{ '/species/' . $speciesArray[0] . '?page=1&speciesNameToDisplay=' . $speciesArray[2] }}">{{ $speciesArray[2] }}</a>
-					</td>
-				<?php } ?>
-				<?php if ($speciesNameType === 'common') { ?>
-					<td class="d-none d-md-table-cell"><?= $speciesArray[5] ?></td>
-                    <td class="d-none d-sm-table-cell"><a href="{{ '/species/' . $speciesArray[1] . '?page=1' }}">{{ $speciesArray[1] }}</a></td>
-                    <td>
-						<a href="{{ urldecode('/species/' . $speciesArray[1] . '?page=1&speciesNameToDisplay=' . $speciesArray[0]) }}">{{ $speciesArray[0] }}</a>
-					</td>
-				<?php } ?>
-					<td><?= $species->count ?></td>
-				</tr>
-			<?php } ?>
-		</tbody>
-	</table>
-{{-- //$this->include('pagination') --}}
-    @include('partials/download-link')
-
-    @include('partials/pagination')
-<?php
-}
-else
-{ ?>
-	<?php if (! empty($nameSearchString)) { ?>
-	<div class="alert alert-warning" role="alert">
-		No records could be found matching those criteria.
-	</div>
-	<?php } ?>
-<?php } ?>
-
+<div id="data-table">
+    @include('data-tables/species-in-dataset')
+</div>
 
 </x-layout>

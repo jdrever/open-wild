@@ -113,10 +113,13 @@ class NBNQueryService implements QueryService
         }
         $nbnQueryUrl           = $nbnQuery->getPagingQueryString();
 		$nbnQueryResponse = $this->callNbnApi($nbnQueryUrl);
-        $queryResult  = $this->createQueryResult($nbnQueryResponse, $nbnQuery, $nbnQueryUrl);
 
         if ($nbnQuery->isFacetedSearch())
-            $queryResult->numberOfRecords=$totalNumberOfRecords;
+        {
+            $queryResult  = $this->createQueryResult($nbnQueryResponse, $nbnQuery, $nbnQueryUrl,$totalNumberOfRecords);
+        }
+        else
+            $queryResult  = $this->createQueryResult($nbnQueryResponse, $nbnQuery, $nbnQueryUrl);
 
         return $queryResult;
     }

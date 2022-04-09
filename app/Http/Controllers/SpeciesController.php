@@ -50,7 +50,8 @@ class SpeciesController extends Controller
                 'speciesName' => $speciesName,
                 'speciesNameType' => $speciesNameType,
                 'speciesGroup' => $speciesGroup,
-                'axiophyteFilter' => $axiophyteFilter
+                'axiophyteFilter' => $axiophyteFilter,
+                'showResults' => false
             ]);
         }
         else
@@ -84,6 +85,38 @@ class SpeciesController extends Controller
             'speciesNameType' => $speciesNameType,
             'speciesGroup' => $speciesGroup,
             'axiophyteFilter' => $axiophyteFilter,
+            'showResults' => true,
+            'results' =>$results
+         ]);
+    }
+
+        /**
+     * Show the profile for a given user.
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $nameSearchString
+     * @param  string  $speciesGroup
+     * @param  string  $nameType
+     * @param  string  $axiophyteFilter
+     * @return \Illuminate\View\View
+     */
+    public function updateDataset(Request $request, $speciesName, $speciesNameType, $speciesGroup,$axiophyteFilter)
+	{
+        Cookie::queue('speciesName', $speciesName);
+        Cookie::queue('speciesNameType', $speciesNameType);
+        Cookie::queue('speciesGroup', $speciesGroup);
+        Cookie::queue('axiophyteFilter', $axiophyteFilter);
+
+        $currentPage=$request->input('page') ?? 1;
+
+        $results=$this->queryService->getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter,$currentPage);
+
+        return view('data-tables/species-in-dataset',
+        [
+            'speciesName' => $speciesName,
+            'speciesNameType' => $speciesNameType,
+            'speciesGroup' => $speciesGroup,
+            'axiophyteFilter' => $axiophyteFilter,
+            'showResults' => true,
             'results' =>$results
          ]);
     }
