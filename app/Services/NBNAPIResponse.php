@@ -67,8 +67,6 @@ class NBNApiResponse
 
     public function getNumberOfPages($pageSize) : int
     {
-        echo($this->numberOfRecords);
-        echo($pageSize);
 		return ceil($this->numberOfRecords / $pageSize); //calculate total pages
     }
 

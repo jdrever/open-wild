@@ -7,7 +7,7 @@ $urlToLastSlash=substr(url()->current(),0, $lastSlashInUrl)
 	<?php
 	$range = 3;
 	if ($results->currentPage + $range >7) : ?>
-			<li class="page-item"><a class="page-link" onclick="updateDataset(1) }}); return false;" href="{{ url()->current() . '?page=' . '1' }}">First</a></li>
+			<li class="page-item"><a class="page-link" onclick="updateDataset(1); }}); return false;" href="{{ url()->current() . '?page=' . '1' }}">First</a></li>
 	<?php endif ?>
 	<?php if ($results->currentPage > 1) : ?>
 			<li class="page-item"><a class="page-link" onclick="updateDataset({{ ($results->currentPage - 1) }}); return false;" href="{{ url()->current() . '?page=' . ($results->currentPage - 1) }}">Previous</a></li>
