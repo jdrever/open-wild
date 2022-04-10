@@ -4,7 +4,7 @@ namespace App\Services;
 use App\Interfaces\QueryService;
 use App\Models\QueryResult;
 
-class NBNQueryService implements QueryService
+class NbnQueryService implements QueryService
 {
     public function getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage = 1) : QueryResult
     {

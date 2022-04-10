@@ -7,7 +7,6 @@ namespace App\Services;
  * See the NBN Atlas Query Primer for details about using the API
  * https://docs.google.com/document/d/1FiVasGGZ3kRPnu5347GPAef7Tr5LvvghCS6x82xnfu4/edit
  *
- * @package Libraries
  * @author  Careful Digital <hello@careful.digital>
  * @license https://www.shropshirebotany.org.uk/ Shropshire Botanical Society
  */

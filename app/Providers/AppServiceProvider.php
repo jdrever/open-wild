@@ -17,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(QueryService::class, function ()
         {
-            return new NBNQueryService();
+            return new NbnQueryService();
         });
     }
 
