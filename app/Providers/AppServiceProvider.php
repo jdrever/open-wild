@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Interfaces\QueryService;
-use App\Services\NBNQueryService;
+use App\Services\NbnQueryService;
 
 class AppServiceProvider extends ServiceProvider
 {
