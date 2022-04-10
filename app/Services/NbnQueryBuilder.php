@@ -13,7 +13,7 @@ namespace App\Services;
 
 class NbnQueryBuilder
 {
-	const BASE_URL = 'https://records-ws.nbnatlas.org/';
+	const BASE_URL = 'https://records-ws.nbnatlas.org';
 
     const OCCURENCES_SEARCH = '/occurrences/search';
     const OCCURENCE = '/occurrence';
