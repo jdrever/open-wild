@@ -5,8 +5,10 @@ function updateDataset(pageNumber)
 {
 showSpinner();
 let speciesName=document.getElementById("speciesName").value;
-let speciesNameType=document.querySelector('input[name="speciesNameType"]:checked').value;;
-let updateUrl='/species-update/'+speciesName+'/type/'+speciesNameType+'/group/plants/axiophytes/false?page='+pageNumber;
+let speciesNameType=document.querySelector('input[name="speciesNameType"]:checked').value;
+let speciesGroup=document.querySelector('input[name="speciesGroup"]:checked').value;
+let axiophyteFilter=document.getElementById("axiophyteFilter").checked;
+let updateUrl='/species-update/'+speciesName+'/type/'+speciesNameType+'/group/'+speciesGroup+'/axiophytes/'+axiophyteFilter+'?page='+pageNumber;
 console.log(updateUrl);
 fetch(updateUrl).then(function (response) {
 	// The API call was successful!
@@ -58,7 +60,7 @@ function showSpinner() {
 			</label>
 		</div>
 		<div class="form-check">
-			<input class="form-check-input" type="checkbox" name="axiophyte-filter" id="axiophyte-filter" value="true"  onchange="if (this.form.search.value!='') { this.form.submit(); }" {{ ($axiophyteFilter=="true")? "checked" : "" }} />
+			<input class="form-check-input" type="checkbox" name="axiophyteFilter" id="axiophyteFilter" value="true"  onchange="updateDataset(1);" {{ ($axiophyteFilter=="true")? "checked" : "" }} />
 			<label class="form-check-label" for="axiophyte-name">
 				<span class="d-lg-none">axiophytes</span>
 				<span class="d-none d-lg-inline">axiophytes only</span>
@@ -67,19 +69,19 @@ function showSpinner() {
 	</div>
 	<div class="form-group col-sm-4 col-lg-3">
 		<div class="form-check">
-			<input class="form-check-input" type="radio" name="speciesGroup" id="plants" value="plants"  onchange="if (this.form.search.value!='') { this.form.submit(); }" {{ ($speciesGroup=="plants")? "checked" : "" }} />
+			<input class="form-check-input" type="radio" name="speciesGroup" id="speciesGroup" value="plants" onchange="updateDataset(1);" {{ ($speciesGroup=="plants")? "checked" : "" }} />
 			<label class="form-check-label" for="plants">
 				only plants
 			</label>
 		</div>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" name="speciesGroup" id="bryophytes" value="bryophytes"  onchange="if (this.form.search.value!='') { this.form.submit(); }" {{ ($speciesGroup=="bryophytes")? "checked" : "" }} />
+			<input class="form-check-input" type="radio" name="speciesGroup" id="speciesGroup" value="bryophytes"  onchange="updateDataset(1);" {{ ($speciesGroup=="bryophytes")? "checked" : "" }} />
 			<label class="form-check-label" for="bryophytes">
 				only bryophytes
 			</label>
 		</div>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" name="speciesGroup" id="both" value="both"  onchange="if (this.form.search.value!='') { this.form.submit(); }" {{ ($speciesGroup=="both")? "checked" : "" }} />
+			<input class="form-check-input" type="radio" name="speciesGroup" id="speciesGroup" value="both"  onchange="updateDataset(1);" {{ ($speciesGroup=="both")? "checked" : "" }} />
 			<label class="form-check-label" for="both">
 				both <span class="d-none d-xl-inline">plants and bryophytes</span>
 			</label>
