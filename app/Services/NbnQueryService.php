@@ -21,7 +21,6 @@ class NbnQueryService implements QueryService
         $nbnQuery->currentPage=$currentPage;
         $queryResult=$this->getPagedQueryResult($nbnQuery);
 
-        echo(var_dump($queryResult));
         return $queryResult;
 
     }
