@@ -1,0 +1,15 @@
+{
+	"background_color": "purple",
+	"description": "Shropshire Botanical Records.",
+	"display": "fullscreen",
+	"icons": [
+	  {
+		"src": "images/logo.jpeg",
+		"sizes": "150x150",
+		"type": "image/png"
+	  }
+	],
+	"name": "Botanical Records",
+	"short_name": "Botany",
+	"start_url": "/"
+  }

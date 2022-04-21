@@ -55,7 +55,8 @@ class RecordsController extends Controller
         $speciesGroup=Cookie::get('speciesGroup') ?? "plants" ;
         $axiophyteFilter=Cookie::get('axiophyteFilter') ?? "false" ;
 
-        $speciesGuid=isset($results->records->records[0]->speciesGuid) ? $results->records->records[0]->speciesGuid : '';
+        $speciesGuid=isset($results->records[0]->speciesGuid) ? $results->records[0]->speciesGuid : '';
+
         return view('single-species-records',
         [
             'speciesName' => $speciesName,
@@ -67,5 +68,22 @@ class RecordsController extends Controller
             'speciesNameToDisplay' => $speciesNameToDisplay,
             'results' =>$results
          ]);
+    }
+
+
+    public function singleRecord(Request $request, string $occurrenceId)
+    {
+        $result=$this->queryService->getSingleOccurenceRecord($occurrenceId);
+
+        $displayName                  = $request->input('displayName') ?? $result->scientificName;
+        $displayTitle                 = 'Record detail for ' . urldecode($displayName) . ' recorded by ' . $result->recorders . ' at ' . $result->siteName . ' (' .$result->gridReference . '),' . $result->year . '.';
+
+        return view('single-record',
+        [
+            'result' =>$result,
+            'displayName' => $displayName,
+            'displayTitle' => $displayTitle
+        ]);
+
     }
 }

@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Interfaces\QueryService;
+use App\Models\OccurrenceResult;
 use App\Models\QueryResult;
 
 class NbnQueryService implements QueryService
@@ -85,13 +86,12 @@ class NbnQueryService implements QueryService
 	public function getSingleOccurenceRecord($uuid)
     {
         $nbnQuery            = new NbnQueryBuilder(NbnQueryBuilder::OCCURENCE);
-		$nbnQueryUrl              = $nbnQuery->url() . $uuid;
+		$nbnQueryUrl              = $nbnQuery->url() . '/'.  $uuid;
 		$queryResponse      = $this->callNbnApi($nbnQueryUrl);
-        $queryResult  = $this->createQueryResult($queryResponse, $nbnQuery, $nbnQueryUrl);
+        $occurrenceResult  = $this->createOccurrenceResult($queryResponse, $nbnQuery, $nbnQueryUrl);
 
-		$nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURENCE_DOWNLOAD);
-		$queryResult->downloadLink = $nbnQuery->getSingleRecordDownloadQueryString($queryResult->records->raw->occurrence->occurrenceID);
-		return $queryResult;
+
+		return $occurrenceResult;
 	}
 
 
@@ -135,6 +135,7 @@ class NbnQueryService implements QueryService
 		if ($nbnAPIResponse->status === 'OK' )
         {
             $queryResult->records     = $nbnAPIResponse->getRecords($nbnQuery->searchType);
+            //where the number of records has been specified - because a facteted query and therefore dervied from unpaged query
             if (isset($numberOfRecords))
             {
                 $queryResult->numberOfRecords=$numberOfRecords;
@@ -149,6 +150,56 @@ class NbnQueryService implements QueryService
             $queryResult->downloadLink = $nbnQuery->getDownloadQueryString();
         }
         return $queryResult;
+    }
+
+    private function createOccurrenceResult(NBNAPIResponse $nbnAPIResponse, $nbnQuery, $queryUrl)
+    {
+        $occurrenceResult= new OccurrenceResult();
+        $occurrenceResult->status   	  = $nbnAPIResponse->status;
+        $occurrenceResult->message  	  = $nbnAPIResponse->message;
+        $occurrenceResult->queryUrl = $queryUrl;
+
+        $occurrenceData=$nbnAPIResponse->getRecords($nbnQuery->searchType);
+
+        $occurrenceResult->recordId=$occurrenceData->processed->rowKey;
+        $occurrenceResult->scientificName=$occurrenceData->processed->classification->scientificName;
+        $occurrenceResult->commonName=$occurrenceData->processed->classification->vernacularName ?? "";
+        $occurrenceResult->phylum=$occurrenceData->processed->classification->phylum ?? "";
+
+        $occurrenceResult->recorders=$this->prepareRecorders($occurrenceData->processed->occurrence->recordedBy);
+        $occurrenceResult->siteName=$occurrenceData->raw->location->locationID  ?? "";
+        $occurrenceResult->gridReference=$occurrenceData->raw->location->gridReference ?? "Unknown grid reference";
+        $occurrenceResult->gridReferenceWKT=$occurrenceData->raw->location->gridReferenceWKT;
+        $occurrenceResult->fullDate='Not available';
+        if (isset($occurrenceData->processed->event->eventDate))
+            $occurrenceResult->fullDate =date_format(date_create($occurrenceData->processed->event->eventDate),'jS F Y');
+        $occurrenceResult->year=$occurrenceData->processed->event->year;
+        $occurrenceData->phylum=$occurrenceData->processed->classification->phylum;
+
+
+
+
+        $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURENCE_DOWNLOAD);
+		$occurrenceResult->downloadLink = $nbnQuery->getSingleRecordDownloadQueryString($occurrenceResult->recordId);
+
+        return $occurrenceResult;
+
+    }
+
+    private function prepareRecorders(string $recorders) : string
+    {
+        $oldRecorders    = explode("|", $recorders);
+        $newRecorders = [];
+        foreach ($oldRecorders as $key => $value)
+        {
+            // Stick a semicolon between every other name pair
+            if ($key !== 0 && $key % 2 === 0)
+            {
+                array_push($newRecorders, '; ');
+            }
+            array_push($newRecorders, $value);
+        }
+        return implode($newRecorders);
     }
 
     	/**

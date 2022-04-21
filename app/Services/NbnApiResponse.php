@@ -52,7 +52,7 @@ class NbnApiResponse
 
         if ($searchType==NbnQueryBuilder::OCCURENCE&&isset($this->jsonResponse))
         {
-            $this->numberOfRecords=count($this->jsonResponse);
+            $this->numberOfRecords=1;
             return $this->jsonResponse;
         }
 
