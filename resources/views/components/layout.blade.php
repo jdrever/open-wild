@@ -29,24 +29,27 @@
 
         var element = document.getElementById('back-link');
 
-        // Provide a standard href to facilitate standard browser features such as
-        //  - Hover to see link
-        //  - Right click and copy link
-        //  - Right click and open in new tab
-        element.setAttribute('href', document.referrer);
+        if (element)
+        {
+            // Provide a standard href to facilitate standard browser features such as
+            //  - Hover to see link
+            //  - Right click and copy link
+            //  - Right click and open in new tab
+            element.setAttribute('href', document.referrer);
 
-        // We can't let the browser use the above href for navigation. If it does,
-        // the browser will think that it is a regular link, and place the current
-        // page on the browser history, so that if the user clicks "back" again,
-        // it'll actually return to this page. We need to perform a native back to
-        // integrate properly into the browser's history behavior
-        element.onclick = function() {
-        history.back();
-        return false;
+            // We can't let the browser use the above href for navigation. If it does,
+            // the browser will think that it is a regular link, and place the current
+            // page on the browser history, so that if the user clicks "back" again,
+            // it'll actually return to this page. We need to perform a native back to
+            // integrate properly into the browser's history behavior
+            element.onclick = function() {
+            history.back();
+            return false;
+        }
 }
 	</script>
 	<title>
-    {{ $title ?? 'Shrop Bot' }}
+    {{ $title ?? 'WildSearch' }}
 	</title>
 </head>
 
@@ -54,7 +57,7 @@
 <header>
   <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Botanical Records</a>
+      <a class="navbar-brand" href="#">WildSearch</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
