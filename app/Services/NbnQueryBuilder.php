@@ -33,14 +33,14 @@ class NbnQueryBuilder
 	 *
 	 * @var string $dataResourceUid
 	 */
-	private $dataResourceUid = 'dr782';
+	private $dataResourceUid = '';
 
 	/**
-	 * The filter for axiophytes, as supplied by Sophie at NBN
+	 * The filter for axiophytes in Shropshire, as supplied by Sophie at NBN is species_list_uid:dr1940
 	 *
 	 * @var string $axiophyteFilter
 	 */
-	private $axiophyteFilter='species_list_uid:dr1940';
+	private $axiophyteFilter='';
 
 	/**
 	 * TODO: Describe what the $searchType member variable is for
@@ -105,7 +105,9 @@ class NbnQueryBuilder
 	public function __construct(string $searchType = self::OCCURENCES_SEARCH)
 	{
 		$this->searchType = $searchType;
-        $this->pageSize=env('RESULTS_PER_PAGE', false);
+        $this->pageSize=env('RESULTS_PER_PAGE', 10);
+        $this->dataResourceUid=env('DATA_RESOURCE_ID');
+        $this->axiophyteFilter=env('AXIOPHYTE_FILTER');
         $this->currentPage=1;
 	}
 
