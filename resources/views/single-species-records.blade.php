@@ -7,11 +7,9 @@
 		</svg>
 	</a>
 	<h2>
-		{{ urldecode($speciesNameToDisplay) }} records in
-		Shropshire
+		{{ urldecode($speciesNameToDisplay) }} records in {{ env('AREA') }}
 	</h2>
 </div>
-
 
 @include('partials/download-link')
 
@@ -89,7 +87,7 @@
 	species.addTo(map);
 
 	// Plot page of records on the map with tooltips
-	const records = {{ json_encode($results->records) }};
+	const records = {!! json_encode($results->records) !!};
 
 	const recordMarkers = records.map(record => {
 		const lat = record.decimalLatitude;
@@ -126,7 +124,7 @@
 	L.layerGroup(recordMarkers).addTo(map);
 
 	// Plot the sites to the map as markers
-	const sites = {{ json_encode($results->sites) }};
+	const sites = {!! json_encode($results->sites) !!};
 	const siteMarkers = Object.entries(sites).map(site => {
 		return L.circleMarker(site[1]).bindTooltip(site[0]);
 	});

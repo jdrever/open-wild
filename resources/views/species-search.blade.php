@@ -31,7 +31,7 @@ function showSpinner() {
 }
 </script>
 
-<h2 class="text-start text-md-center">Search for a Species in Shropshire</h2>
+<h2 class="text-start text-md-center">Search for a Species in {{ env('AREA') }}</h2>
 
 <form action="/" action="post">
 @csrf
