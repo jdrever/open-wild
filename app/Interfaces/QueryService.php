@@ -4,7 +4,7 @@ namespace App\Interfaces;
 
 interface QueryService
 {
-	public function getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
+	public function getSpeciesListForDataset(string $speciesName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage);
 	public function getSingleSpeciesRecordsForDataset($speciesName, $currentPage);
 	public function getSingleOccurenceRecord($occurenceId);
 

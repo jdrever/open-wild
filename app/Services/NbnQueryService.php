@@ -7,7 +7,7 @@ use App\Models\QueryResult;
 
 class NbnQueryService implements QueryService
 {
-    public function getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage = 1) : QueryResult
+    public function getSpeciesListForDataset(string $speciesName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage = 1) : QueryResult
     {
 
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
@@ -19,8 +19,7 @@ class NbnQueryService implements QueryService
 
         $nbnQuery->addSpeciesGroup($speciesGroup);
 
-        $nbnQuery->currentPage=$currentPage;
-        $queryResult=$this->getPagedQueryResult($nbnQuery);
+        $queryResult=$this->getPagedQueryResult($nbnQuery, $currentPage);
 
         return $queryResult;
 
@@ -34,18 +33,18 @@ class NbnQueryService implements QueryService
 	 *
 	 * The taxon needs to be in double quotes so the complete string is searched for rather than a partial.
 	 */
-	public function getSingleSpeciesRecordsForDataset($speciesName, $currentPage) : QueryResult
+	public function getSingleSpeciesRecordsForDataset($speciesName, $currentPage = 1) : QueryResult
 	{
 		// mainly to replace the spaces with %20
 		$speciesName      = rawurlencode($speciesName);
 		$nbnQuery       = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
-		$nbnQuery->sort = "year";
-		$nbnQuery->dir  = "desc";
+		$nbnQuery->sortBy(NbnQueryBuilder::SORT_BY_YEAR);
+		$nbnQuery->setDirection(NbnQueryBuilder::SORT_DESCENDING);
+        //TODO: make a function in NbnQueryBuilder for this - needs to be non-faceted search
 		$nbnQuery
 			->add('taxon_name:' . '"' . $speciesName . '"');
-        $nbnQuery->currentPage=$currentPage;
 
-        $queryResult=$this->getPagedQueryResult($nbnQuery);
+        $queryResult=$this->getPagedQueryResult($nbnQuery, $currentPage);
 
         $queryResult->records=$this->prepareSingleSpeciesRecords($queryResult->records);
 
@@ -102,8 +101,9 @@ class NbnQueryService implements QueryService
 	public function getSpeciesListForSquare($gridSquare, $speciesGroup, $speciesNameType, $axiophyteFilter, $page){ return false; }
 	public function getSingleSpeciesRecordsForSquare($gridSquare, $speciesName, $page){ return false; }
 
-    private function getPagedQueryResult(NBNQueryBuilder $nbnQuery)
+    private function getPagedQueryResult(NBNQueryBuilder $nbnQuery, int $currentPage)
     {
+        $nbnQuery->currentPage=$currentPage;
         if ($nbnQuery->isFacetedSearch())
         {
             $nbnQueryUrl            = $nbnQuery->getUnpagedQueryString();

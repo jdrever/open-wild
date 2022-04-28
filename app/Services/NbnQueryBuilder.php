@@ -17,6 +17,9 @@ class NbnQueryBuilder
     const OCCURRENCES_SEARCH = '/occurrences/search';
     const OCCURRENCE = '/occurrence';
     const OCCURRENCE_DOWNLOAD = 'occurrences/index/download';
+
+    const SORT_BY_YEAR = 'year';
+    const SORT_DESCENDING = 'desc';
 	/**
 	 * The unique data resource id code
 	 *
@@ -353,4 +356,16 @@ class NbnQueryBuilder
 		$this->extraQueryParameters[] = $extraQueryParameter;
 		return $this;
 	}
+
+    public function sortBy(string $sort)
+    {
+        $this->sort=$sort;
+    }
+
+    public function setDirection(string $direction)
+    {
+        $this->dir=$direction;
+    }
 }
+
+
