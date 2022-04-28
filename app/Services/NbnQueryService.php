@@ -33,7 +33,7 @@ class NbnQueryService implements QueryService
 	 *
 	 * The taxon needs to be in double quotes so the complete string is searched for rather than a partial.
 	 */
-	public function getSingleSpeciesRecordsForDataset($speciesName, $currentPage = 1) : QueryResult
+	public function getSingleSpeciesRecordsForDataset(string $speciesName, int $currentPage = 1) : QueryResult
 	{
 		// mainly to replace the spaces with %20
 		$speciesName      = rawurlencode($speciesName);
