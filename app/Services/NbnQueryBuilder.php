@@ -18,6 +18,8 @@ class NbnQueryBuilder
     const OCCURRENCE = '/occurrence';
     const OCCURRENCE_DOWNLOAD = 'occurrences/index/download';
 
+    const SCIENTIFIC_NAME = "taxon_name";
+
     const SORT_BY_YEAR = 'year';
     const SORT_DESCENDING = 'desc';
 	/**
@@ -290,23 +292,38 @@ class NbnQueryBuilder
       * @param string $speciesName e.g. Hedera or Ivy
       * @return void
       */
-    public function addSpeciesNameType(string $speciesNameType, string $speciesName) : void
+    public function addSpeciesNameType(string $speciesNameType, string $speciesName, bool $isFacetedSearch=false) : void
     {
         if ($speciesNameType === "scientific")
         {
-            $this->add('taxon_name:' . $speciesName);
-            $this->facets   = 'names_and_lsid';
-            $this->fsort = "index";
+            $this->addScientificName($speciesName, $isFacetedSearch);
         }
 
         if ($speciesNameType === "common")
         {
-            $this->add('common_name:' . $speciesName);
-            $this->facets   = 'common_name_and_lsid';
+            $this->addCommonName($speciesName, $isFacetedSearch);
+        }
+    }
+
+    public function addScientificName(string $speciesName, bool $isFacetedSearch=false) : void
+    {
+        $this->add('taxon_name:' . $speciesName);
+        if ($isFacetedSearch)
+        {
+            $this->facets   = 'names_and_lsid';
             $this->fsort = "index";
         }
     }
 
+    public function addCommonName(string $speciesName, bool $isFacetedSearch=false) : void
+    {
+        $this->add('common_name:' . $speciesName);
+        if ($isFacetedSearch)
+        {
+            $this->facets   = 'common_name_and_lsid';
+            $this->fsort = "index";
+        }
+    }
     /**
      * Adds a query parameter for species_group
      *
