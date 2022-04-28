@@ -38,19 +38,19 @@ class NbnApiResponse
     public function getRecords($searchType)
     {
         //either return faceted results or occurences
-        if ($searchType==NbnQueryBuilder::OCCURENCES_SEARCH&&isset($this->jsonResponse->facetResults[0]))
+        if ($searchType==NbnQueryBuilder::OCCURRENCES_SEARCH&&isset($this->jsonResponse->facetResults[0]))
         {
             $this->numberOfRecords=count($this->jsonResponse->facetResults[0]->fieldResult);
             return $this->jsonResponse->facetResults[0]->fieldResult;
         }
 
-        if ($searchType==NbnQueryBuilder::OCCURENCES_SEARCH&&isset($this->jsonResponse->occurrences))
+        if ($searchType==NbnQueryBuilder::OCCURRENCES_SEARCH&&isset($this->jsonResponse->occurrences))
         {
             $this->numberOfRecords=$this->jsonResponse->totalRecords;
             return $this->jsonResponse->occurrences;
         }
 
-        if ($searchType==NbnQueryBuilder::OCCURENCE&&isset($this->jsonResponse))
+        if ($searchType==NbnQueryBuilder::OCCURRENCE&&isset($this->jsonResponse))
         {
             $this->numberOfRecords=1;
             return $this->jsonResponse;

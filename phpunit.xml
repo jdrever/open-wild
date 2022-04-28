@@ -27,5 +27,7 @@
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
+        <env name="DATA_RESOURCE_ID" value="dr782"/>
+        <env name="RESULTS_PER_PAGE" value="10"/>
     </php>
 </phpunit>

@@ -10,7 +10,7 @@ class NbnQueryService implements QueryService
     public function getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage = 1) : QueryResult
     {
 
-        $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURENCES_SEARCH);
+        $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
 
         $speciesNameForSearch=$this->prepareSearchString($speciesName);
         $nbnQuery->addSpeciesNameType($speciesNameType, $speciesNameForSearch);
@@ -38,7 +38,7 @@ class NbnQueryService implements QueryService
 	{
 		// mainly to replace the spaces with %20
 		$speciesName      = rawurlencode($speciesName);
-		$nbnQuery       = new NbnQueryBuilder(NbnQueryBuilder::OCCURENCES_SEARCH);
+		$nbnQuery       = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
 		$nbnQuery->sort = "year";
 		$nbnQuery->dir  = "desc";
 		$nbnQuery
@@ -85,7 +85,7 @@ class NbnQueryService implements QueryService
 
 	public function getSingleOccurenceRecord($uuid)
     {
-        $nbnQuery            = new NbnQueryBuilder(NbnQueryBuilder::OCCURENCE);
+        $nbnQuery            = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCE);
 		$nbnQueryUrl              = $nbnQuery->url() . '/'.  $uuid;
 		$queryResponse      = $this->callNbnApi($nbnQueryUrl);
         $occurrenceResult  = $this->createOccurrenceResult($queryResponse, $nbnQuery, $nbnQueryUrl);
@@ -179,7 +179,7 @@ class NbnQueryService implements QueryService
 
 
 
-        $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURENCE_DOWNLOAD);
+        $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCE_DOWNLOAD);
 		$occurrenceResult->downloadLink = $nbnQuery->getSingleRecordDownloadQueryString($occurrenceResult->recordId);
 
         return $occurrenceResult;

@@ -14,9 +14,9 @@ class NbnQueryBuilder
 {
 	const BASE_URL = 'https://records-ws.nbnatlas.org';
 
-    const OCCURENCES_SEARCH = '/occurrences/search';
-    const OCCURENCE = '/occurrence';
-    const OCCURENCE_DOWNLOAD = 'occurrences/index/download';
+    const OCCURRENCES_SEARCH = '/occurrences/search';
+    const OCCURRENCE = '/occurrence';
+    const OCCURRENCE_DOWNLOAD = 'occurrences/index/download';
 	/**
 	 * The unique data resource id code
 	 *
@@ -101,7 +101,7 @@ class NbnQueryBuilder
 	 *
 	 * @param string $searchType NBN Atlas API search type
 	 */
-	public function __construct(string $searchType = self::OCCURENCES_SEARCH)
+	public function __construct(string $searchType = self::OCCURRENCES_SEARCH)
 	{
 		$this->searchType = $searchType;
         $this->pageSize=env('RESULTS_PER_PAGE', 10);
@@ -280,24 +280,37 @@ class NbnQueryBuilder
 	}
 
 
-    public function addSpeciesNameType($speciesNameType, $speciesNameForSearch) : void
+     /**
+      * Adds a taxon_name or common_name query parameter, dependent on $speciesNameType
+      *
+      * @param string $speciesNameType either scientific or common
+      * @param string $speciesName e.g. Hedera or Ivy
+      * @return void
+      */
+    public function addSpeciesNameType(string $speciesNameType, string $speciesName) : void
     {
         if ($speciesNameType === "scientific")
         {
-            $this->add('taxon_name:' . $speciesNameForSearch);
+            $this->add('taxon_name:' . $speciesName);
             $this->facets   = 'names_and_lsid';
             $this->fsort = "index";
         }
 
         if ($speciesNameType === "common")
         {
-            $this->add('common_name:' . $speciesNameForSearch);
+            $this->add('common_name:' . $speciesName);
             $this->facets   = 'common_name_and_lsid';
             $this->fsort = "index";
         }
     }
 
-    public function addSpeciesGroup($speciesGroup) : void
+    /**
+     * Adds a query parameter for species_group
+     *
+     * @param string $speciesGroup either Plants, Bryophytes or Both
+     * @return void
+     */
+    public function addSpeciesGroup(string $speciesGroup) : void
     {
         $speciesGroup = ucfirst($speciesGroup);
         if ($speciesGroup === "Plants")

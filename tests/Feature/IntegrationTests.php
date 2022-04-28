@@ -8,7 +8,7 @@ use Tests\TestCase;
 class IntegrationTests extends TestCase
 {
     /**
-     * A basic test example.
+     * Does the root application return a success response?
      *
      * @return void
      */
@@ -19,6 +19,11 @@ class IntegrationTests extends TestCase
         $response->assertStatus(200);
     }
 
+    /**
+     * Does the species search return a success response?
+     *
+     * @return void
+     */
     public function test_species_search_returns_a_successful_response()
     {
         $response = $this->get('/species/Hedera/type/scientific/group/plants/axiophytes/false');
