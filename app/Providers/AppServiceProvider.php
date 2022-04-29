@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use App\Interfaces\QueryService;
 use App\Services\NbnQueryService;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,8 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(QueryService::class, function ()
-        {
+        $this->app->bind(QueryService::class, function () {
             return new NbnQueryService();
         });
     }
