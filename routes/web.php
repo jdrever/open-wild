@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\RecordsController;
-use App\Http\Controllers\SpeciesController;
 use App\Http\Controllers\SitesController;
+use App\Http\Controllers\SpeciesController;
 use Illuminate\Support\Facades\Route;
 
 /*
