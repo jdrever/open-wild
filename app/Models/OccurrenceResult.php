@@ -15,8 +15,5 @@ class OccurrenceResult
     public string $occurrenceYear;
     public string $phylum;
     public string $status;
-	public ?string $message;
-
-
-
+    public ?string $message;
 }

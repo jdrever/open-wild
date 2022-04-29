@@ -1,77 +1,78 @@
 <?php
+
 namespace App\Services;
+
 /**
  * The response from the NBN API, including JSON response, status
- * and error message if one is required
+ * and error message if one is required.
  */
 class NbnApiResponse
 {
-	/**
-	 * The json response from the NBN API
-	 *
-	 * @var object
-	 */
-	public object $jsonResponse;
-	/**
-	 * The status of the response from the NBN API
-	 * Either OK or ERROR
-	 *
-	 * @var string
-	 */
-	public string $status;
-	/**
-	 * The error message (if one is raised) from calling
-	 * the NBN API
-	 *
-	 * @var string
-	 */
-	public ?string $message;
+    /**
+     * The json response from the NBN API.
+     *
+     * @var object
+     */
+    public object $jsonResponse;
+    /**
+     * The status of the response from the NBN API
+     * Either OK or ERROR.
+     *
+     * @var string
+     */
+    public string $status;
+    /**
+     * The error message (if one is raised) from calling
+     * the NBN API.
+     *
+     * @var string
+     */
+    public ?string $message;
 
     public ?int $numberOfRecords;
 
     public function __construct()
-	{
-		$this->message = "";
-	}
+    {
+        $this->message = '';
+    }
 
     //TODO: tighten return type - can be object or array
     public function getRecords($searchType)
     {
         //either return faceted results or occurences
-        if ($searchType==NbnQueryBuilder::OCCURRENCES_SEARCH&&isset($this->jsonResponse->facetResults[0]))
-        {
-            $this->numberOfRecords=count($this->jsonResponse->facetResults[0]->fieldResult);
+        if ($searchType == NbnQueryBuilder::OCCURRENCES_SEARCH && isset($this->jsonResponse->facetResults[0])) {
+            $this->numberOfRecords = count($this->jsonResponse->facetResults[0]->fieldResult);
+
             return $this->jsonResponse->facetResults[0]->fieldResult;
         }
 
-        if ($searchType==NbnQueryBuilder::OCCURRENCES_SEARCH&&isset($this->jsonResponse->occurrences))
-        {
-            $this->numberOfRecords=$this->jsonResponse->totalRecords;
+        if ($searchType == NbnQueryBuilder::OCCURRENCES_SEARCH && isset($this->jsonResponse->occurrences)) {
+            $this->numberOfRecords = $this->jsonResponse->totalRecords;
+
             return $this->jsonResponse->occurrences;
         }
 
-        if ($searchType==NbnQueryBuilder::OCCURRENCE&&isset($this->jsonResponse))
-        {
-            $this->numberOfRecords=1;
+        if ($searchType == NbnQueryBuilder::OCCURRENCE && isset($this->jsonResponse)) {
+            $this->numberOfRecords = 1;
+
             return $this->jsonResponse;
         }
 
         return [];
     }
 
-    public function getNumberOfRecords() : int
+    public function getNumberOfRecords(): int
     {
         return $this->numberOfRecords;
     }
 
-
-    public function getNumberOfPages($pageSize) : int
+    public function getNumberOfPages($pageSize): int
     {
-		return ceil($this->numberOfRecords / $pageSize); //calculate total pages
+        return ceil($this->numberOfRecords / $pageSize); //calculate total pages
     }
 
-    public function getNumberOfPagesWithNumberOfRecords($pageSize, $numberOfRecords) : int
+    public function getNumberOfPagesWithNumberOfRecords($pageSize, $numberOfRecords): int
     {
-		return ceil($numberOfRecords / $pageSize); //calculate total pages
+        return ceil($numberOfRecords / $pageSize); //calculate total pages
     }
 }
