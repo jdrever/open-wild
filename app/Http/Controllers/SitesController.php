@@ -8,7 +8,7 @@ use App\Interfaces\QueryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 
-class SpeciesController extends Controller
+class SitesController extends Controller
 {
     /**
      * The APIQueryService implementation.
@@ -36,21 +36,16 @@ class SpeciesController extends Controller
      */
     public function index(Request $request)
     {
-        $speciesName = $request->input('speciesName') ?? $request->cookie('speciesName') ?? '';
-        $speciesNameType = $request->input('speciesNameType') ?? $request->cookie('speciesNameType') ?? 'scientific';
-        $speciesGroup = $request->input('speciesGroup') ?? $request->cookie('speciesGroup') ?? 'plants';
-        $axiophyteFilter = $request->input('axiophyteFilter') ?? $request->cookie('axiophyteFilter') ?? 'false';
-        if (! $request->has('speciesName')) {
-            return view('species-search',
+        $siteName = $request->input('siteName') ?? $request->cookie('siteName') ?? '';
+
+        if (! $request->has('siteName')) {
+            return view('site-search',
             [
-                'speciesName' => $speciesName,
-                'speciesNameType' => $speciesNameType,
-                'speciesGroup' => $speciesGroup,
-                'axiophyteFilter' => $axiophyteFilter,
+                'siteName' => $siteName,
                 'showResults' => false,
             ]);
         } else {
-            return redirect('/species/'.$speciesName.'/type/'.$speciesNameType.'/group/'.$speciesGroup.'/axiophytes/'.$axiophyteFilter);
+            return redirect('/sites/'.$siteName);
         }
     }
 

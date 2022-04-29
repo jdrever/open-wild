@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\RecordsController;
 use App\Http\Controllers\SpeciesController;
+use App\Http\Controllers\SitesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,3 +23,5 @@ Route::get('/species/{speciesName}/type/{speciesNameType}/group/{speciesGroup}/a
 Route::get('/species-update/{speciesName}/type/{speciesNameType}/group/{speciesGroup}/axiophytes/{axiophyteFilter}', [SpeciesController::class, 'updateDataset']);
 Route::get('/species/{speciesName}', [RecordsController::class, 'singleSpeciesForDataset']);
 Route::get('/record/{occurrenceId}', [RecordsController::class, 'singleRecord']);
+
+Route::get('/sites/', [SitesController::class, 'index']);

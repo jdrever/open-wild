@@ -67,7 +67,7 @@
             <a class="nav-link active" aria-current="page" href="/">Species</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Sites</a>
+            <a class="nav-link" href="/sites/">Sites</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Squares</a>
