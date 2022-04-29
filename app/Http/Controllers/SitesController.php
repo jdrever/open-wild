@@ -50,23 +50,20 @@ class SitesController extends Controller
     }
 
     /**
-     * Display a list of sites in the county
+     * Display a list of sites in the county.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $siteName
      * @return \Illuminate\View\View
      */
-    /**
-
-     */
     public function listForDataset(Request $request, string $siteName)
     {
         Cookie::queue('siteName', $siteName);
 
-        $currentPage = is_int($request->input('page')) ? (int)$request->input('page')  : 1;
+        $currentPage = is_int($request->input('page')) ? (int) $request->input('page') : 1;
 
-        $speciesNameType =  $request->cookie('speciesNameType') ?? 'scientific';
-        $speciesGroup =  $request->cookie('speciesGroup') ?? 'plants';
+        $speciesNameType = $request->cookie('speciesNameType') ?? 'scientific';
+        $speciesGroup = $request->cookie('speciesGroup') ?? 'plants';
         $axiophyteFilter = $request->cookie('axiophyteFilter') ?? 'false';
 
         $results = $this->queryService->getSiteListForDataset($siteName, $currentPage);

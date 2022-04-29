@@ -2,17 +2,18 @@
 
 namespace App\Interfaces;
 
-use App\Models\QueryResult;
 use App\Models\OccurrenceResult;
+use App\Models\QueryResult;
+
 interface QueryService
 {
-    public function getSpeciesListForDataset(string $speciesName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage) : QueryResult;
+    public function getSpeciesListForDataset(string $speciesName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage): QueryResult;
 
-    public function getSingleSpeciesRecordsForDataset(string $speciesName, int $currentPage) : QueryResult;
+    public function getSingleSpeciesRecordsForDataset(string $speciesName, int $currentPage): QueryResult;
 
-    public function getSingleOccurenceRecord(string $occurenceId) : OccurrenceResult;
+    public function getSingleOccurenceRecord(string $occurenceId): OccurrenceResult;
 
-    public function getSiteListForDataset(string $siteName, int $currentPage) : QueryResult;
+    public function getSiteListForDataset(string $siteName, int $currentPage): QueryResult;
 
     public function getSpeciesListForSite($siteName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
 

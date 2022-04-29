@@ -71,7 +71,7 @@ class SpeciesController extends Controller
         Cookie::queue('speciesGroup', $speciesGroup);
         Cookie::queue('axiophyteFilter', $axiophyteFilter);
 
-        $currentPage = is_int($request->input('page')) ? (int)$request->input('page')  : 1;
+        $currentPage = is_int($request->input('page')) ? (int) $request->input('page') : 1;
 
         $results = $this->queryService->getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
 
@@ -103,7 +103,7 @@ class SpeciesController extends Controller
         Cookie::queue('speciesGroup', $speciesGroup);
         Cookie::queue('axiophyteFilter', $axiophyteFilter);
 
-        $currentPage = is_int($request->input('page')) ? (int)$request->input('page')  : 1;
+        $currentPage = is_int($request->input('page')) ? (int) $request->input('page') : 1;
 
         $results = $this->queryService->getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
 

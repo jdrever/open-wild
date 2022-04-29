@@ -76,7 +76,7 @@ class NbnQueryService implements QueryService
         return $sites;
     }
 
-    public function getSingleOccurenceRecord(string $uuid) : OccurrenceResult
+    public function getSingleOccurenceRecord(string $uuid): OccurrenceResult
     {
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCE);
         $nbnQueryUrl = $nbnQuery->url().'/'.$uuid;
@@ -86,16 +86,16 @@ class NbnQueryService implements QueryService
         return $occurrenceResult;
     }
 
-    public function getSiteListForDataset(string $siteName, int $currentPage) : QueryResult
+    public function getSiteListForDataset(string $siteName, int $currentPage): QueryResult
     {
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
-		$nbnQuery->facets   = "location_id";
-		$nbnQuery->addExtraQueryParameter('location_id:'.$siteName.'*');
-        $nbnQuery->addSpeciesGroup("Both");
+        $nbnQuery->facets = 'location_id';
+        $nbnQuery->addExtraQueryParameter('location_id:'.$siteName.'*');
+        $nbnQuery->addSpeciesGroup('Both');
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
-        return $queryResult;
 
+        return $queryResult;
     }
 
     public function getSpeciesListForSite($siteName, $speciesNameType, $speciesGroup, $axiophyteFilter, $page)
@@ -163,7 +163,7 @@ class NbnQueryService implements QueryService
         return $queryResult;
     }
 
-    private function createOccurrenceResult(NBNAPIResponse $nbnAPIResponse, $nbnQuery, $queryUrl) : OccurrenceResult
+    private function createOccurrenceResult(NBNAPIResponse $nbnAPIResponse, $nbnQuery, $queryUrl): OccurrenceResult
     {
         $occurrenceResult = new OccurrenceResult();
         $occurrenceResult->status = $nbnAPIResponse->status;
