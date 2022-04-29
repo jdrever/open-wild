@@ -112,7 +112,7 @@ class SpeciesController extends Controller
             'speciesGroup' => $speciesGroup,
             'axiophyteFilter' => $axiophyteFilter,
             'showResults' => true,
-            'results' =>$results
+            'results' =>$results,
         ]);
     }
 }
