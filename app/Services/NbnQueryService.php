@@ -35,14 +35,12 @@ class NbnQueryService implements QueryService
 	 */
 	public function getSingleSpeciesRecordsForDataset(string $speciesName, int $currentPage = 1) : QueryResult
 	{
-		// mainly to replace the spaces with %20
-		$speciesName      = rawurlencode($speciesName);
+
 		$nbnQuery       = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
 		$nbnQuery->sortBy(NbnQueryBuilder::SORT_BY_YEAR);
 		$nbnQuery->setDirection(NbnQueryBuilder::SORT_DESCENDING);
-        //TODO: make a function in NbnQueryBuilder for this - needs to be non-faceted search
 		$nbnQuery
-			->add('taxon_name:' . '"' . $speciesName . '"');
+			->addScientificName($speciesName, false, true); //add scientific name with double quotes added
 
         $queryResult=$this->getPagedQueryResult($nbnQuery, $currentPage);
 
@@ -88,7 +86,6 @@ class NbnQueryService implements QueryService
 		$nbnQueryUrl              = $nbnQuery->url() . '/'.  $uuid;
 		$queryResponse      = $this->callNbnApi($nbnQueryUrl);
         $occurrenceResult  = $this->createOccurrenceResult($queryResponse, $nbnQuery, $nbnQueryUrl);
-
 
 		return $occurrenceResult;
 	}
@@ -202,32 +199,6 @@ class NbnQueryService implements QueryService
         return implode($newRecorders);
     }
 
-    	/**
-	 * Deals with multi-word search terms and prepares
-	 * theme for use by the NBN API by adding ANDs and
-	 * setting to all lower case
-	 *
-	 * @param string $searchString the search term to prepare
-	 *
-	 * @return string the prepared search search name
-	 */
-	private function prepareSearchString($searchString)
-	{
-		$searchString=ucfirst(strtolower($searchString));
-		$searchWords  = explode(' ', $searchString);
-		if (count($searchWords) === 1)
-		{
-			return '*' . $searchString . '*';
-		}
-		$preparedSearchString = $searchWords[0] . '*';
-		unset($searchWords[0]);
-		foreach ($searchWords as $searchWord)
-		{
-			$preparedSearchString .= '+AND+'. $searchWord;
-		}
-		$preparedSearchString = str_replace(' ', '+%2B', $preparedSearchString);
-		return $preparedSearchString;
-	}
 
 
 	private function callNbnApi($queryUrl) : NBNApiResponse

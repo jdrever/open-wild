@@ -292,21 +292,24 @@ class NbnQueryBuilder
       * @param string $speciesName e.g. Hedera or Ivy
       * @return void
       */
-    public function addSpeciesNameType(string $speciesNameType, string $speciesName, bool $isFacetedSearch=false) : void
+    public function addSpeciesNameType(string $speciesNameType, string $speciesName, bool $isFacetedSearch=false, bool $isPartialName=false) : void
     {
         if ($speciesNameType === "scientific")
         {
-            $this->addScientificName($speciesName, $isFacetedSearch);
+            $this->addScientificName($speciesName, $isFacetedSearch, $isPartialName);
         }
 
         if ($speciesNameType === "common")
         {
-            $this->addCommonName($speciesName, $isFacetedSearch);
+            $this->addCommonName($speciesName, $isFacetedSearch, $isPartialName);
         }
     }
 
-    public function addScientificName(string $speciesName, bool $isFacetedSearch=false) : void
+    public function addScientificName(string $speciesName, bool $isFacetedSearch=false, bool $isPartialName=false) : void
     {
+
+        $speciesName=$this->prepareSearchString($speciesName, $isPartialName);
+
         $this->add('taxon_name:' . $speciesName);
         if ($isFacetedSearch)
         {
@@ -315,8 +318,9 @@ class NbnQueryBuilder
         }
     }
 
-    public function addCommonName(string $speciesName, bool $isFacetedSearch=false) : void
+    public function addCommonName(string $speciesName, bool $isFacetedSearch=false, bool $isPartialName=false) : void
     {
+        $speciesName=$this->prepareSearchString($speciesName, $isPartialName);
         $this->add('common_name:' . $speciesName);
         if ($isFacetedSearch)
         {
@@ -324,6 +328,37 @@ class NbnQueryBuilder
             $this->fsort = "index";
         }
     }
+
+     /**
+	 * Deals with multi-word search terms and prepares
+	 * theme for use by the NBN API by adding ANDs and
+	 * setting to all lower case
+	 *
+	 * @param string $searchString the search term to prepare
+	 *
+	 * @return string the prepared search search name
+	 */
+	private function prepareSearchString(string $searchString, bool $isPartialName)
+	{
+        if (!$isPartialName)
+            return '"' . rawurlencode($searchString) . '"';
+
+		$searchString=ucfirst(strtolower($searchString));
+		$searchWords  = explode(' ', $searchString);
+		if (count($searchWords) === 1)
+		{
+			return '*' . rawurlencode($searchString) . '*';
+		}
+		$preparedSearchString = $searchWords[0] . '*';
+		unset($searchWords[0]);
+		foreach ($searchWords as $searchWord)
+		{
+			$preparedSearchString .= '+AND+'. $searchWord;
+		}
+		$preparedSearchString = str_replace(' ', '+%2B', $preparedSearchString);
+		return $preparedSearchString;
+	}
+
     /**
      * Adds a query parameter for species_group
      *
