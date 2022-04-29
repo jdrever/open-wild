@@ -25,3 +25,4 @@ Route::get('/species/{speciesName}', [RecordsController::class, 'singleSpeciesFo
 Route::get('/record/{occurrenceId}', [RecordsController::class, 'singleRecord']);
 
 Route::get('/sites/', [SitesController::class, 'index']);
+Route::post('/sites/', [SitesController::class, 'index']);

@@ -50,32 +50,26 @@ class SitesController extends Controller
     }
 
     /**
-     * Show the profile for a given user.
+     * Display a list of sites in the county
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  string  $nameSearchString
-     * @param  string  $speciesGroup
-     * @param  string  $nameType
-     * @param  string  $axiophyteFilter
+     * @param  string  $siteName
      * @return \Illuminate\View\View
      */
-    public function listForDataset(Request $request, string $speciesName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter)
+    /**
+
+     */
+    public function listForCounty(Request $request, string $siteName)
     {
-        Cookie::queue('speciesName', $speciesName);
-        Cookie::queue('speciesNameType', $speciesNameType);
-        Cookie::queue('speciesGroup', $speciesGroup);
-        Cookie::queue('axiophyteFilter', $axiophyteFilter);
+        Cookie::queue('siteName', $siteName);
 
         $currentPage = $request->input('page') ?? 1;
 
-        $results = $this->queryService->getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
+        $results = $this->queryService->getSiteListForDataset($siteName, $currentPage);
 
-        return view('species-search',
+        return view('site-search',
         [
-            'speciesName' => $speciesName,
-            'speciesNameType' => $speciesNameType,
-            'speciesGroup' => $speciesGroup,
-            'axiophyteFilter' => $axiophyteFilter,
+            'siteName' => $siteName,
             'showResults' => true,
             'results' =>$results,
         ]);

@@ -1,6 +1,6 @@
 <x-layout>
 
-<form action="/" action="post">
+<form action="/sites/" action="post">
     @csrf
     <div class="row mb-2">
         <div class="col-lg-8 mx-auto">
