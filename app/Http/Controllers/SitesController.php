@@ -59,17 +59,24 @@ class SitesController extends Controller
     /**
 
      */
-    public function listForCounty(Request $request, string $siteName)
+    public function listForDataset(Request $request, string $siteName)
     {
         Cookie::queue('siteName', $siteName);
 
-        $currentPage = $request->input('page') ?? 1;
+        $currentPage = is_int($request->input('page')) ? (int)$request->input('page')  : 1;
+
+        $speciesNameType =  $request->cookie('speciesNameType') ?? 'scientific';
+        $speciesGroup =  $request->cookie('speciesGroup') ?? 'plants';
+        $axiophyteFilter = $request->cookie('axiophyteFilter') ?? 'false';
 
         $results = $this->queryService->getSiteListForDataset($siteName, $currentPage);
 
         return view('site-search',
         [
             'siteName' => $siteName,
+            'speciesNameType' => $speciesNameType,
+            'speciesGroup' => $speciesGroup,
+            'axiophyteFilter' => $axiophyteFilter,
             'showResults' => true,
             'results' =>$results,
         ]);
