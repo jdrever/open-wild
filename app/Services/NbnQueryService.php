@@ -12,8 +12,7 @@ class NbnQueryService implements QueryService
     {
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
 
-        $speciesNameForSearch = $this->prepareSearchString($speciesName);
-        $nbnQuery->addSpeciesNameType($speciesNameType, $speciesNameForSearch, true);
+        $nbnQuery->addSpeciesNameType($speciesNameType, $speciesName, true, true);
         if ($axiophyteFilter === 'true') {
             $nbnQuery->addAxiophyteFilter();
         }

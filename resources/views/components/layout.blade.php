@@ -97,9 +97,6 @@
         <span class="small">Supported by
             <a href="https://registry.nbnatlas.org/public/show/dp120" target="_blank">National Biodiversity Network</a>
         </span>
-<?php if (isset($results->queryUrl)) { ?>
-        <details style="font-size:small;"><summary>NBN API Query</summary>{{ $results->queryUrl }}</details>
-<?php } ?>
     </div>
 </footer>
 <!-- Bootstrap 5-beta2 bundle -->
