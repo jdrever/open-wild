@@ -56,7 +56,7 @@ class SitesController extends Controller
      * @param  string  $siteName
      * @return \Illuminate\View\View
      */
-    public function listForDataset(Request $request, string $siteName, bool $refresh=false)
+    public function listForDataset(Request $request, string $siteName, bool $refresh = false)
     {
         Cookie::queue('siteName', $siteName);
 
@@ -68,7 +68,7 @@ class SitesController extends Controller
 
         $results = $this->queryService->getSiteListForDataset($siteName, $currentPage);
 
-        $viewName=$refresh ? "data-tables/sites-in-dataset" : "site-search";
+        $viewName = $refresh ? 'data-tables/sites-in-dataset' : 'site-search';
 
         return view($viewName,
         [
