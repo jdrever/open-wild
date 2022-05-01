@@ -15,6 +15,6 @@ class Controller extends BaseController
 
     public function getCurrentPage(Request $request) : int
     {
-        return is_int($request->input('page')) ? (int) $request->input('page') : 1;
+        return is_numeric($request->query('page')) ? (int) $request->query('page') : 1;
     }
 }

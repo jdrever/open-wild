@@ -192,6 +192,7 @@ class NbnQueryBuilder
     public function getPagingQueryString()
     {
         $queryString = $this->getQueryString($this::BASE_URL.$this->searchType);
+
         if ($this->isFacetedSearch()) {
             $queryString .= 'flimit='.$this->pageSize.'&facet.offset='.(($this->currentPage - 1) * $this->pageSize);
         } else {
