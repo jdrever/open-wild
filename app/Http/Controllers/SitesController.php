@@ -56,7 +56,7 @@ class SitesController extends Controller
      * @param  string  $siteName
      * @return \Illuminate\View\View
      */
-    public function listForDataset(Request $request, string $siteName)
+    public function listForDataset(Request $request, string $siteName, bool $refresh=false)
     {
         Cookie::queue('siteName', $siteName);
 
@@ -68,41 +68,11 @@ class SitesController extends Controller
 
         $results = $this->queryService->getSiteListForDataset($siteName, $currentPage);
 
-        return view('site-search',
+        $viewName=$refresh ? "data-tables/sites-in-dataset" : "site-search";
+
+        return view($viewName,
         [
             'siteName' => $siteName,
-            'speciesNameType' => $speciesNameType,
-            'speciesGroup' => $speciesGroup,
-            'axiophyteFilter' => $axiophyteFilter,
-            'showResults' => true,
-            'results' =>$results,
-        ]);
-    }
-
-    /**
-     * Show the profile for a given user.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $nameSearchString
-     * @param  string  $speciesGroup
-     * @param  string  $nameType
-     * @param  string  $axiophyteFilter
-     * @return \Illuminate\View\View
-     */
-    public function updateDataset(Request $request, string $speciesName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter)
-    {
-        Cookie::queue('speciesName', $speciesName);
-        Cookie::queue('speciesNameType', $speciesNameType);
-        Cookie::queue('speciesGroup', $speciesGroup);
-        Cookie::queue('axiophyteFilter', $axiophyteFilter);
-
-        $currentPage = $this->getCurrentPage($request);
-
-        $results = $this->queryService->getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
-
-        return view('data-tables/species-in-dataset',
-        [
-            'speciesName' => $speciesName,
             'speciesNameType' => $speciesNameType,
             'speciesGroup' => $speciesGroup,
             'axiophyteFilter' => $axiophyteFilter,

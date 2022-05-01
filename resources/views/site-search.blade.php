@@ -1,5 +1,15 @@
 <x-layout>
 
+    <script type="text/javascript" src="/js/update-dataset.js"></script>
+    <script>
+    function getUpdateUrl(pageNumber)
+    {
+        let siteName=document.getElementById("siteName").value;
+        let updateUrl='/sites/'+siteName+'/true?page='+pageNumber;
+        return updateUrl;
+    }
+    </script>
+
 <form action="/sites/" action="post">
     @csrf
     <div class="row mb-2">
@@ -7,7 +17,7 @@
             <label for="search" class="form-label visually-hidden">Site name</label>
             <div class="input-group">
                 <input type="text" class="form-control" name="siteName" id="siteName" aria-describedby="search-help" placeholder="Enter a site" value="{{ $siteName }}" />
-                <button type="submit" class="btn btn-primary">List Sites</button>
+                <button type="submit" class="btn btn-primary" onclick="return updateDataset(1);">List Sites</button>
             </div>
             <small id="search-help" class="form-text text-start text-md-center d-block">Enter all or part of a site name. Try something like "Aston".</small>
         </div>
