@@ -64,7 +64,7 @@ class SpeciesController extends Controller
      * @param  string  $axiophyteFilter
      * @return \Illuminate\View\View
      */
-    public function listForDataset(Request $request, string $speciesName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, string $refresh="")
+    public function listForDataset(Request $request, string $speciesName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, string $refresh = '')
     {
         Cookie::queue('speciesName', $speciesName);
         Cookie::queue('speciesNameType', $speciesNameType);
@@ -75,7 +75,7 @@ class SpeciesController extends Controller
 
         $results = $this->queryService->getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
 
-        $viewName= ($refresh=="refresh") ? "data-tables/species-in-dataset" : "species-search";
+        $viewName = ($refresh == 'refresh') ? 'data-tables/species-in-dataset' : 'species-search';
 
         return view($viewName,
         [

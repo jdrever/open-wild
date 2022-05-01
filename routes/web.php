@@ -27,4 +27,3 @@ Route::get('/record/{occurrenceId}', [RecordsController::class, 'singleRecord'])
 Route::get('/sites/', [SitesController::class, 'index']);
 Route::post('/sites/', [SitesController::class, 'index']);
 Route::get('/sites/{siteName}/{refresh?}', [SitesController::class, 'listForDataset']);
-
