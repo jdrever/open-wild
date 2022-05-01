@@ -9,7 +9,7 @@ function getUpdateUrl(pageNumber)
     let speciesNameType=document.querySelector('input[name="speciesNameType"]:checked').value;
     let speciesGroup=document.querySelector('input[name="speciesGroup"]:checked').value;
     let axiophyteFilter=document.getElementById("axiophyteFilter").checked;
-    let updateUrl='/species-update/'+speciesName+'/type/'+speciesNameType+'/group/'+speciesGroup+'/axiophytes/'+axiophyteFilter+'?page='+pageNumber;
+    let updateUrl='/species/'+speciesName+'/type/'+speciesNameType+'/group/'+speciesGroup+'/axiophytes/'+axiophyteFilter+'/refresh?page='+pageNumber;
     return updateUrl;
 }
 </script>

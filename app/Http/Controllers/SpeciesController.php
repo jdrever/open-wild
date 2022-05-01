@@ -64,7 +64,7 @@ class SpeciesController extends Controller
      * @param  string  $axiophyteFilter
      * @return \Illuminate\View\View
      */
-    public function listForDataset(Request $request, string $speciesName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter)
+    public function listForDataset(Request $request, string $speciesName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, string $refresh="")
     {
         Cookie::queue('speciesName', $speciesName);
         Cookie::queue('speciesNameType', $speciesNameType);
@@ -75,39 +75,9 @@ class SpeciesController extends Controller
 
         $results = $this->queryService->getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
 
-        return view('species-search',
-        [
-            'speciesName' => $speciesName,
-            'speciesNameType' => $speciesNameType,
-            'speciesGroup' => $speciesGroup,
-            'axiophyteFilter' => $axiophyteFilter,
-            'showResults' => true,
-            'results' =>$results,
-        ]);
-    }
+        $viewName= ($refresh=="refresh") ? "data-tables/species-in-dataset" : "species-search";
 
-    /**
-     * Show the profile for a given user.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $nameSearchString
-     * @param  string  $speciesGroup
-     * @param  string  $nameType
-     * @param  string  $axiophyteFilter
-     * @return \Illuminate\View\View
-     */
-    public function updateDataset(Request $request, string $speciesName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter)
-    {
-        Cookie::queue('speciesName', $speciesName);
-        Cookie::queue('speciesNameType', $speciesNameType);
-        Cookie::queue('speciesGroup', $speciesGroup);
-        Cookie::queue('axiophyteFilter', $axiophyteFilter);
-
-        $currentPage = $this->getCurrentPage($request);
-
-        $results = $this->queryService->getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
-
-        return view('data-tables/species-in-dataset',
+        return view($viewName,
         [
             'speciesName' => $speciesName,
             'speciesNameType' => $speciesNameType,

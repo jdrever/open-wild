@@ -1,12 +1,13 @@
 <?php
-$urlIfNoJavaScript=str_replace("-update","", url()->current());
+//ensure progressive enhancement works by having links pointing to non-AJAX address if JS not enabled
+$urlIfNoJavaScript=str_replace("/refresh","", url()->current());
 ?>
 <nav>
 		<ul class="pagination justify-content-center">
 	<?php
 	$range = 3;
 	if ($results->currentPage + $range >7) : ?>
-			<li class="page-item"><a class="page-link" onclick="updateDataset(1); }}); return false;" href="{{ $urlIfNoJavaScript . '?page=' . '1' }}">First</a></li>
+			<li class="page-item"><a class="page-link" onclick="updateDataset(1); return false;" href="{{ $urlIfNoJavaScript . '?page=' . '1' }}">First</a></li>
 	<?php endif ?>
 	<?php if ($results->currentPage > 1) : ?>
 			<li class="page-item"><a class="page-link" onclick="updateDataset({{ ($results->currentPage - 1) }}); return false;" href="{{ $urlIfNoJavaScript . '?page=' . ($results->currentPage - 1) }}">Previous</a></li>

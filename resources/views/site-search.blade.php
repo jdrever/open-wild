@@ -5,7 +5,7 @@
     function getUpdateUrl(pageNumber)
     {
         let siteName=document.getElementById("siteName").value;
-        let updateUrl='/sites/'+siteName+'/true?page='+pageNumber;
+        let updateUrl='/sites/'+siteName+'/refresh?page='+pageNumber;
         return updateUrl;
     }
     </script>
