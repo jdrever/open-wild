@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Cookie;
 class SitesController extends Controller
 {
     /**
-     * The APIQueryService implementation.
+     * The QueryService implementation.
      *
      * @var QueryService
      */
@@ -29,7 +29,7 @@ class SitesController extends Controller
     }
 
     /**
-     * Store a new user.
+     * handles initial site search
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -50,7 +50,7 @@ class SitesController extends Controller
     }
 
     /**
-     * Display a list of sites in the county.
+     * Displays a list of sites in the dataset.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $siteName

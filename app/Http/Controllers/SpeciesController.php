@@ -29,7 +29,7 @@ class SpeciesController extends Controller
     }
 
     /**
-     * Store a new user.
+     * handles initial species search
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -55,7 +55,7 @@ class SpeciesController extends Controller
     }
 
     /**
-     * Show the profile for a given user.
+     * Displays a list of species in the dataset.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $nameSearchString
