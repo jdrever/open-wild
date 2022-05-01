@@ -42,7 +42,7 @@ class RecordsController extends Controller
      */
     public function singleSpeciesForDataset(Request $request, string $speciesName)
     {
-        $currentPage = $request->input('page') ?? 1;
+        $currentPage = $this->getCurrentPage($request);
 
         $results = $this->queryService->getSingleSpeciesRecordsForDataset($speciesName, $currentPage);
         $speciesNameSearchedFor = Cookie::get('speciesName') ?? $speciesName;
