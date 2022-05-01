@@ -1,36 +1,19 @@
 
 <x-layout>
 
+<script type="text/javascript" src="/js/update-dataset.js"></script>
 <script>
-function updateDataset(pageNumber)
+function getUpdateUrl(pageNumber)
 {
-showSpinner();
-let speciesName=document.getElementById("speciesName").value;
-let speciesNameType=document.querySelector('input[name="speciesNameType"]:checked').value;
-let speciesGroup=document.querySelector('input[name="speciesGroup"]:checked').value;
-let axiophyteFilter=document.getElementById("axiophyteFilter").checked;
-let updateUrl='/species-update/'+speciesName+'/type/'+speciesNameType+'/group/'+speciesGroup+'/axiophytes/'+axiophyteFilter+'?page='+pageNumber;
-console.log(updateUrl);
-fetch(updateUrl).then(function (response) {
-	// The API call was successful!
-	return response.text();
-}).then(function (html) {
-    var elem = document.querySelector('#data-table');
-
-    //Set HTML content
-    elem.innerHTML = html;
-
-}).catch(function (err) {
-	// There was an error
-	console.warn('Something went wrong.', err);
-});
-}
-
-function showSpinner() {
-    var elem = document.querySelector('#data-table');
-    elem.innerHTML = '<div class="text-center"><button class="btn btn-primary" type="button" disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading... </button></div>';
+    let speciesName=document.getElementById("speciesName").value;
+    let speciesNameType=document.querySelector('input[name="speciesNameType"]:checked').value;
+    let speciesGroup=document.querySelector('input[name="speciesGroup"]:checked').value;
+    let axiophyteFilter=document.getElementById("axiophyteFilter").checked;
+    let updateUrl='/species-update/'+speciesName+'/type/'+speciesNameType+'/group/'+speciesGroup+'/axiophytes/'+axiophyteFilter+'?page='+pageNumber;
+    return updateUrl;
 }
 </script>
+
 
 <h2 class="text-start text-md-center">Search for a Species in {{ env('AREA') }}</h2>
 
