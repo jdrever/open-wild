@@ -21,5 +21,5 @@ interface QueryService
 
     public function getSpeciesListForSquare(string $gridSquare, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage);
 
-    public function getSingleSpeciesRecordsForSquare($gridSquare, $speciesName, $currentPage);
+    public function getSingleSpeciesRecordsForSquare(string $gridSquare, string $speciesName, int $currentPage);
 }
