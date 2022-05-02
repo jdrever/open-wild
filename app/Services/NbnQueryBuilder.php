@@ -120,7 +120,7 @@ class NbnQueryBuilder
      * @param  string  $url  The full url to query
      * @return string
      */
-    private function getQueryString(string $url) : string
+    private function getQueryString(string $url): string
     {
         $queryString = $url.'?';
         $queryParameters = array_merge(['data_resource_uid:'.$this->dataResourceUid], $this->extraQueryParameters);
@@ -145,7 +145,7 @@ class NbnQueryBuilder
      * @param  string  $url  The full url to query
      * @return string
      */
-    private function getSingleRecordDownloadUrl(string $url, string $occurrenceId) : string
+    private function getSingleRecordDownloadUrl(string $url, string $occurrenceId): string
     {
         $queryString = $url.'?';
         $queryString .= 'fq=occurrence_id:'.$occurrenceId.'&';
@@ -159,12 +159,12 @@ class NbnQueryBuilder
      *
      * @return string
      */
-    public function url() : string
+    public function url(): string
     {
         return $this::BASE_URL.$this->searchType;
     }
 
-    public function isFacetedSearch() : bool
+    public function isFacetedSearch(): bool
     {
         return ! empty($this->facets);
     }
@@ -176,7 +176,7 @@ class NbnQueryBuilder
      *
      * @return string
      */
-    public function getUnpagedQueryString() : string
+    public function getUnpagedQueryString(): string
     {
         $queryString = $this->getQueryString($this::BASE_URL.$this->searchType);
         $queryString .= 'pageSize=0&flimit=-1';
@@ -189,7 +189,7 @@ class NbnQueryBuilder
      *
      * @return string
      */
-    public function getPagingQueryString() : string
+    public function getPagingQueryString(): string
     {
         $queryString = $this->getQueryString($this::BASE_URL.$this->searchType);
 
@@ -207,7 +207,7 @@ class NbnQueryBuilder
      *
      * @return string
      */
-    public function getDownloadQueryString() : string
+    public function getDownloadQueryString(): string
     {
         $queryString = $this->getQueryString($this::BASE_URL.'/occurrences/index/download');
         $queryString .= '&reasonTypeId=11&fileType=csv';
@@ -220,7 +220,7 @@ class NbnQueryBuilder
      *
      * @return string
      */
-    public function getSingleRecordDownloadQueryString($occurrenceId) : string
+    public function getSingleRecordDownloadQueryString($occurrenceId): string
     {
         $queryString = $this->getSingleRecordDownloadUrl($this::BASE_URL.'occurrences/index/download', $occurrenceId);
         $queryString .= '&reasonTypeId=11';
@@ -247,7 +247,7 @@ class NbnQueryBuilder
      * @param  string  $filterQueryParameter  A single filter query parameter
      * @return self
      */
-    public function add(string $filterQueryParameter) : self
+    public function add(string $filterQueryParameter): self
     {
         $this->filterQueryParameters[] = $filterQueryParameter;
 
@@ -273,7 +273,7 @@ class NbnQueryBuilder
      * @param  string  $filterNotQueryParameter  A single filter query parameter
      * @return self
      */
-    public function addNot(string $filterNotQueryParameter) : self
+    public function addNot(string $filterNotQueryParameter): self
     {
         $this->filterNotQueryParameters[] = $filterNotQueryParameter;
 
@@ -301,11 +301,11 @@ class NbnQueryBuilder
     }
 
     /**
-     * Adds a taxon_name and associated facets (names_and_lsid)
+     * Adds a taxon_name and associated facets (names_and_lsid).
      *
-     * @param string $speciesName
-     * @param boolean $isFacetedSearch
-     * @param boolean $isPartialName
+     * @param  string  $speciesName
+     * @param  bool  $isFacetedSearch
+     * @param  bool  $isPartialName
      * @return self
      */
     public function addScientificName(string $speciesName, bool $isFacetedSearch = false, bool $isPartialName = false): self
@@ -322,11 +322,11 @@ class NbnQueryBuilder
     }
 
     /**
-     * Adds a common_name and associated facets (common_name_and_lsid)
+     * Adds a common_name and associated facets (common_name_and_lsid).
      *
-     * @param string $speciesName
-     * @param boolean $isFacetedSearch
-     * @param boolean $isPartialName
+     * @param  string  $speciesName
+     * @param  bool  $isFacetedSearch
+     * @param  bool  $isPartialName
      * @return self
      */
     public function addCommonName(string $speciesName, bool $isFacetedSearch = false, bool $isPartialName = false): self
@@ -393,7 +393,7 @@ class NbnQueryBuilder
 
     /**
      * adds an Axiopyte filter query parameter
-     * based on the AXIOPHYTE_FILTER environmental variable
+     * based on the AXIOPHYTE_FILTER environmental variable.
      *
      * @return self
      */
@@ -430,7 +430,7 @@ class NbnQueryBuilder
         return $this;
     }
 
-        /**
+    /**
      * Adds a location_id query.
      *
      * @param  string  $location
@@ -457,7 +457,7 @@ class NbnQueryBuilder
      * @param  string  $extraQueryParameter  A single extra query parameter
      * @return self
      */
-    public function addExtraQueryParameter(string $extraQueryParameter) : self
+    public function addExtraQueryParameter(string $extraQueryParameter): self
     {
         $this->extraQueryParameters[] = $extraQueryParameter;
 
@@ -465,12 +465,12 @@ class NbnQueryBuilder
     }
 
     /**
-     * Adds a sort
+     * Adds a sort.
      *
-     * @param string $sort
+     * @param  string  $sort
      * @return self
      */
-    public function sortBy(string $sort) : self
+    public function sortBy(string $sort): self
     {
         $this->sort = $sort;
 
@@ -483,7 +483,7 @@ class NbnQueryBuilder
      * @param  string  $nameType  : either scientific or common
      * @return self
      */
-    public function setSpeciesNameType(string $nameType) : self
+    public function setSpeciesNameType(string $nameType): self
     {
         if ($nameType === 'scientific') {
             $this->facets = 'names_and_lsid';
@@ -497,12 +497,12 @@ class NbnQueryBuilder
     }
 
     /**
-     * Adds a faceted sort
+     * Adds a faceted sort.
      *
-     * @param string $facetedSort
+     * @param  string  $facetedSort
      * @return self
      */
-    public function setFacetedSort(string $facetedSort) : self
+    public function setFacetedSort(string $facetedSort): self
     {
         $this->fsort = $facetedSort;
 
@@ -510,12 +510,12 @@ class NbnQueryBuilder
     }
 
     /**
-     * Sets the direction (dir in Solr)
+     * Sets the direction (dir in Solr).
      *
-     * @param string $direction
+     * @param  string  $direction
      * @return self
      */
-    public function setDirection(string $direction) : self
+    public function setDirection(string $direction): self
     {
         $this->dir = $direction;
 

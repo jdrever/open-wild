@@ -126,7 +126,6 @@ class NbnQueryService implements QueryService
             $nbnQuery->addAxiophyteFilter();
         }
 
-
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
 
         return $queryResult;
