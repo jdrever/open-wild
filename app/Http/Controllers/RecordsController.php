@@ -66,6 +66,27 @@ class RecordsController extends Controller
         ]);
     }
 
+    public function singleSpeciesForSquare(Request $request, $gridSquare, $speciesName)
+	{
+		// Get a 6 digit grid reference (1km square) from any length of original
+		// grid reference by finding the midpoint of the position splitting the
+		// string.
+		$gsSplitPoint = strlen($gridSquare) / 2 + 1;
+		$gridSquare = substr($gridSquare, 0, 4) . substr($gridSquare, $gsSplitPoint, 2);
+
+        $currentPage = $this->getCurrentPage($request);
+
+		$results                    = $this->queryService->getSingleSpeciesRecordsForSquare($gridSquare, $speciesName, $currentPage);
+
+        return view('square-species-records',
+        [
+            'gridSquare' => $gridSquare,
+            'speciesName' => $speciesName,
+            'results' =>$results,
+        ]);
+		echo view('square_species_records', $this->data);
+	}
+
     public function singleRecord(Request $request, string $occurrenceId)
     {
         $result = $this->queryService->getSingleOccurenceRecord($occurrenceId);
