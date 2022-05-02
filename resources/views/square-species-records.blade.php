@@ -33,7 +33,7 @@
 
 <div id="tab-content" class="row">
 	<div id="data" class="tab-pane fade show active col-lg">
-		@if (isset($recordsList))
+		@if (isset($results->records))
 			<table class="table">
 				<thead>
 					<tr>
@@ -45,7 +45,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					@foreach ($result->$records as $record)
+					@foreach ($results->records as $record)
 						<tr data-uuid="{{ $record->uuid }}">
 							<td>
 								<a href="/site/{{ $record->locationId }}/species/{{ $speciesName }}">
