@@ -209,7 +209,7 @@ class NbnQueryBuilder
      */
     public function getDownloadQueryString()
     {
-        $queryString = $this->getQueryString($this::BASE_URL.'occurrences/index/download');
+        $queryString = $this->getQueryString($this::BASE_URL.'/occurrences/index/download');
         $queryString .= '&reasonTypeId=11&fileType=csv';
 
         return $queryString;
