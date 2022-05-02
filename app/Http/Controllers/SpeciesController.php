@@ -86,7 +86,46 @@ class SpeciesController extends Controller
         ]);
     }
 
-    public function listforSquare(Request $request, $gridSquare, $speciesNameType, $speciesGroup, $axiophyteFilter, string $refresh = '')
+    /**
+     * Return the species list for a named site.
+     *
+     * @param Request $request
+     * @param string $siteName
+     * @param string $speciesNameType
+     * @param string $speciesGroup
+     * @param string $axiophyteFilter
+     * @return void
+     */
+	public function listForSite(Request $request, string $siteName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter)
+	{
+        $currentPage = $this->getCurrentPage($request);
+
+        $this->setCookies($speciesNameType, $speciesGroup, $axiophyteFilter);
+
+		$results = $this->queryService->getSpeciesListForDataset($siteName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
+
+        return view("site-species-list",
+        [
+            'siteName' => $siteName,
+            'speciesNameType' => $speciesNameType,
+            'speciesGroup' => $speciesGroup,
+            'axiophyteFilter' => $axiophyteFilter,
+            'results' =>$results,
+        ]);
+	}
+
+    /**
+     * Return the species list for a given
+     *
+     * @param Request $request
+     * @param string $gridSquare
+     * @param string $speciesNameType
+     * @param string $speciesGroup
+     * @param string $axiophyteFilter
+     * @param string $refresh
+     * @return void
+     */
+    public function listforSquare(Request $request, string $gridSquare, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, string $refresh = '')
     {
         $this->setCookies($speciesNameType, $speciesGroup, $axiophyteFilter);
         $currentPage = $this->getCurrentPage($request);
