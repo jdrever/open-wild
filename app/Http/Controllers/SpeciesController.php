@@ -67,7 +67,7 @@ class SpeciesController extends Controller
     public function listForDataset(Request $request, string $speciesName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, string $refresh = '')
     {
         Cookie::queue('speciesName', $speciesName);
-        $this->setCookies($speciesName,  $speciesNameType, $speciesGroup, $axiophyteFilter);
+        $this->setCookies($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter);
 
         $currentPage = $this->getCurrentPage($request);
 
@@ -86,9 +86,9 @@ class SpeciesController extends Controller
         ]);
     }
 
-    public function listforSquare(Request $request,$gridSquare, $speciesNameType, $speciesGroup,$axiophyteFilter)
-	{
+    public function listforSquare(Request $request, $gridSquare, $speciesNameType, $speciesGroup, $axiophyteFilter)
+    {
         $this->setCookies($speciesNameType, $speciesGroup, $axiophyteFilter);
-		$results = $this->queryService->getSpeciesListForSquare($gridSquare, $speciesNameType, $speciesGroup, $axiophyteFilter, $this->page);
+        $results = $this->queryService->getSpeciesListForSquare($gridSquare, $speciesNameType, $speciesGroup, $axiophyteFilter, $this->page);
     }
 }
