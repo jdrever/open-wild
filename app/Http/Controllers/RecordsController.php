@@ -67,7 +67,7 @@ class RecordsController extends Controller
     }
 
     /**
-     * Show the single species listing for a dataset.
+     * Show the single species listing for a site.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $speciesName
@@ -77,24 +77,12 @@ class RecordsController extends Controller
     {
         $currentPage = $this->getCurrentPage($request);
 
-        $results = $this->queryService->getSingleSpeciesRecordsForSite($speciesName, $siteName, $currentPage);
-        $speciesNameSearchedFor = Cookie::get('speciesName') ?? $speciesName;
-        $speciesNameToDisplay = $request->input('speciesNameToDisplay') ?? $speciesName;
-        $speciesNameType = Cookie::get('speciesNameType') ?? 'scientific';
-        $speciesGroup = Cookie::get('speciesGroup') ?? 'plants';
-        $axiophyteFilter = Cookie::get('axiophyteFilter') ?? 'false';
+        $results = $this->queryService->getSingleSpeciesRecordsForSite($siteName, $speciesName, $currentPage);
 
-        $speciesGuid = isset($results->records[0]->speciesGuid) ? $results->records[0]->speciesGuid : '';
-
-        return view('single-species-records',
+        return view('site-species-records',
         [
+            'siteName' => $siteName,
             'speciesName' => $speciesName,
-            'speciesNameType' => $speciesNameType,
-            'speciesGroup' => $speciesGroup,
-            'axiophyteFilter' => $axiophyteFilter,
-            'speciesGuid' => $speciesGuid,
-            'speciesNameSearchedFor' => $speciesNameSearchedFor,
-            'speciesNameToDisplay' => $speciesNameToDisplay,
             'results' =>$results,
         ]);
     }
@@ -117,7 +105,6 @@ class RecordsController extends Controller
             'speciesName' => $speciesName,
             'results' =>$results,
         ]);
-        echo view('square_species_records', $this->data);
     }
 
     public function singleRecord(Request $request, string $occurrenceId)

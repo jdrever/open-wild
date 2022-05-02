@@ -98,9 +98,18 @@ class NbnQueryService implements QueryService
         return $queryResult;
     }
 
-    public function getSingleSpeciesRecordsForSite($site_name, $speciesName, $page)
+    public function getSingleSpeciesRecordsForSite($siteName, $speciesName, $currentPage) : QueryResult
     {
-        return false;
+        $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
+        $nbnQuery->addScientificName($speciesName);
+        $nbnQuery->setDirection('desc');
+        $nbnQuery->sortBy('year');
+        $nbnQuery->add('location_id:' . '"' . urlencode($siteName) . '"');
+
+        $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
+        $queryResult->records = $this->prepareSingleSpeciesRecords($queryResult->records);
+        $queryResult->sites = $this->prepareSites($queryResult->records);
+        return $queryResult;
     }
 
     public function getSpeciesListForSquare(string $gridSquare, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage): QueryResult
