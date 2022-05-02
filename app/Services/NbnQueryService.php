@@ -151,8 +151,9 @@ class NbnQueryService implements QueryService
             $nbnQueryUrl = $nbnQuery->getUnpagedQueryString();
             $nbnQueryResponse = $this->callNbnApi($nbnQueryUrl);
             //if the unpaged query throws an error, return the error
-            if ($nbnQueryResponse->status==false)
-                return $this->createQueryResult($nbnQueryResponse,$nbnQuery,$nbnQueryUrl);
+            if ($nbnQueryResponse->status == false) {
+                return $this->createQueryResult($nbnQueryResponse, $nbnQuery, $nbnQueryUrl);
+            }
 
             $nbnQueryResponse->getRecords($nbnQuery->searchType);
             $totalNumberOfRecords = $nbnQueryResponse->getNumberOfRecords($nbnQuery->searchType);

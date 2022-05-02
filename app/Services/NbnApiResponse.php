@@ -15,7 +15,7 @@ class NbnApiResponse
      */
     public object $jsonResponse;
     /**
-     * The status of the response from the NBN API
+     * The status of the response from the NBN API.
      *
      * @var bool
      */
