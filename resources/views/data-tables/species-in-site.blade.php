@@ -16,7 +16,7 @@
 			</tr></thead>
 			<tbody>
 				@foreach ($results->records as $species)
-				<?php $speciesArray = explode('|', (string)$species->label); ?>
+				<?php $speciesArray = explode('|', (string) $species->label); ?>
 				<tr>
 					@if ($speciesNameType === 'scientific' || $speciesNameType === 'axiophyte')
 						<td class="d-none d-md-table-cell">{{ $speciesArray[4] }}</td>
