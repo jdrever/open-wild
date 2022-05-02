@@ -19,9 +19,8 @@ class Controller extends BaseController
         return is_numeric($request->query('page')) ? (int) $request->query('page') : 1;
     }
 
-    public function setCookies(string $speciesName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter)
+    public function setCookies(string $speciesNameType, string $speciesGroup, string $axiophyteFilter)
     {
-        Cookie::queue('speciesName', $speciesName);
         Cookie::queue('speciesNameType', $speciesNameType);
         Cookie::queue('speciesGroup', $speciesGroup);
         Cookie::queue('axiophyteFilter', $axiophyteFilter);
