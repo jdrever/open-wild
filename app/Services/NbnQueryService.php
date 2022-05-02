@@ -112,22 +112,20 @@ class NbnQueryService implements QueryService
     {
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
 
-		$nbnQuery->addSpeciesGroup($speciesGroup);
+        $nbnQuery->addSpeciesGroup($speciesGroup);
         $nbnQuery->setSpeciesNameType($speciesNameType);
 
-		if ($axiophyteFilter === "true")
-		{
-			$nbnQuery->addAxiophyteFilter();
-		}
+        if ($axiophyteFilter === 'true') {
+            $nbnQuery->addAxiophyteFilter();
+        }
 
-		$nbnQuery->add('grid_ref_1000:"' . rawurlencode($gridSquare) . '"');
+        $nbnQuery->add('grid_ref_1000:"'.rawurlencode($gridSquare).'"');
 
-		$nbnQuery->setFacetedSort("index");
+        $nbnQuery->setFacetedSort('index');
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
 
         return $queryResult;
-
     }
 
     public function getSingleSpeciesRecordsForSquare($gridSquare, $speciesName, $page)

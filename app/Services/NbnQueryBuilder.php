@@ -400,27 +400,25 @@ class NbnQueryBuilder
     }
 
     /**
-     * Set the facts for a species name type
+     * Set the facts for a species name type.
      *
-     * @param string $nameType : either scientific or common
+     * @param  string  $nameType  : either scientific or common
      * @return void
      */
     public function setSpeciesNameType(string $nameType)
     {
-        if ($nameType === "scientific")
-		{
-			$this->facets   = 'names_and_lsid';
-		}
+        if ($nameType === 'scientific') {
+            $this->facets = 'names_and_lsid';
+        }
 
-		if ($nameType === "common")
-		{
-			$this->facets   = 'common_name_and_lsid';
-		}
+        if ($nameType === 'common') {
+            $this->facets = 'common_name_and_lsid';
+        }
     }
 
     public function setFacetedSort(string $facetedSort)
     {
-        $this->fsort= $facetedSort;
+        $this->fsort = $facetedSort;
     }
 
     public function setDirection(string $direction)
