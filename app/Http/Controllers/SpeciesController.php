@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Cookie;
 class SpeciesController extends Controller
 {
     /**
-     * The APIQueryService implementation.
+     * The QueryService implementation.
      *
      * @var QueryService
      */
@@ -20,7 +20,7 @@ class SpeciesController extends Controller
     /**
      * Create a new controller instance.
      *
-     * @param  QueryService  $apiQueryService
+     * @param  QueryService  $queryService
      * @return void
      */
     public function __construct(QueryService $queryService)
@@ -66,10 +66,7 @@ class SpeciesController extends Controller
      */
     public function listForDataset(Request $request, string $speciesName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, string $refresh = '')
     {
-        Cookie::queue('speciesName', $speciesName);
-        Cookie::queue('speciesNameType', $speciesNameType);
-        Cookie::queue('speciesGroup', $speciesGroup);
-        Cookie::queue('axiophyteFilter', $axiophyteFilter);
+        $this->setCookies($speciesName,  $speciesNameType, $speciesGroup, $axiophyteFilter);
 
         $currentPage = $this->getCurrentPage($request);
 
@@ -86,5 +83,11 @@ class SpeciesController extends Controller
             'showResults' => true,
             'results' =>$results,
         ]);
+    }
+
+    public function listforSquare(Request $request,$gridSquare, $speciesGroup, $nameType, $axiophyteFilter)
+	{
+        $this->setCookies($speciesName,  $speciesNameType, $speciesGroup, $axiophyteFilter);
+		$results = $this->queryService->getSpeciesListForSquare($gridSquare, $speciesGroup, $nameType, $axiophyteFilter, $this->page);
     }
 }

@@ -70,7 +70,7 @@
             <a class="nav-link" href="/sites/">Sites</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Squares</a>
+            <a class="nav-link" href="/squares/">Squares</a>
           </li>
           <li class="nav-item">
 		    <a class="nav-link" href="/about">About</a>
