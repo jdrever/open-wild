@@ -89,22 +89,22 @@ class SpeciesController extends Controller
     /**
      * Return the species list for a named site.
      *
-     * @param Request $request
-     * @param string $siteName
-     * @param string $speciesNameType
-     * @param string $speciesGroup
-     * @param string $axiophyteFilter
+     * @param  Request  $request
+     * @param  string  $siteName
+     * @param  string  $speciesNameType
+     * @param  string  $speciesGroup
+     * @param  string  $axiophyteFilter
      * @return void
      */
-	public function listForSite(Request $request, string $siteName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter)
-	{
+    public function listForSite(Request $request, string $siteName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter)
+    {
         $currentPage = $this->getCurrentPage($request);
 
         $this->setCookies($speciesNameType, $speciesGroup, $axiophyteFilter);
 
-		$results = $this->queryService->getSpeciesListForDataset($siteName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
+        $results = $this->queryService->getSpeciesListForDataset($siteName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
 
-        return view("site-species-list",
+        return view('site-species-list',
         [
             'siteName' => $siteName,
             'speciesNameType' => $speciesNameType,
@@ -112,17 +112,17 @@ class SpeciesController extends Controller
             'axiophyteFilter' => $axiophyteFilter,
             'results' =>$results,
         ]);
-	}
+    }
 
     /**
-     * Return the species list for a given
+     * Return the species list for a given.
      *
-     * @param Request $request
-     * @param string $gridSquare
-     * @param string $speciesNameType
-     * @param string $speciesGroup
-     * @param string $axiophyteFilter
-     * @param string $refresh
+     * @param  Request  $request
+     * @param  string  $gridSquare
+     * @param  string  $speciesNameType
+     * @param  string  $speciesGroup
+     * @param  string  $axiophyteFilter
+     * @param  string  $refresh
      * @return void
      */
     public function listforSquare(Request $request, string $gridSquare, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, string $refresh = '')
