@@ -15,7 +15,7 @@ interface QueryService
 
     public function getSiteListForDataset(string $siteName, int $currentPage): QueryResult;
 
-    public function getSpeciesListForSite($siteName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
+    public function getSpeciesListForSite(string $siteName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage) : QueryResult;
 
     public function getSingleSpeciesRecordsForSite($siteName, $speciesName, $currentPage);
 

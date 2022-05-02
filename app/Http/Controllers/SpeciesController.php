@@ -96,15 +96,17 @@ class SpeciesController extends Controller
      * @param  string  $axiophyteFilter
      * @return void
      */
-    public function listForSite(Request $request, string $siteName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter)
+    public function listForSite(Request $request, string $siteName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, $refresh="")
     {
         $currentPage = $this->getCurrentPage($request);
 
         $this->setCookies($speciesNameType, $speciesGroup, $axiophyteFilter);
 
-        $results = $this->queryService->getSpeciesListForDataset($siteName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
+        $results = $this->queryService->getSpeciesListForSite($siteName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
 
-        return view('site-species-list',
+        $viewName = ($refresh == 'refresh') ? 'data-tables/species-in-site' : 'site-species-list';
+
+        return view($viewName,
         [
             'siteName' => $siteName,
             'speciesNameType' => $speciesNameType,

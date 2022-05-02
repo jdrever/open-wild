@@ -23,14 +23,14 @@
 						<td><?=$speciesArray[0]?></td>
 						<td class="d-none d-sm-table-cell">{{ $speciesArray[2] }}</td>
 						<td><?=$species->count?></td>
-						<td><a href="/site/{{ $gridSquare }} /species/{{ $speciesArray[0] }}">see records</a></td>
+						<td><a href="/site/{{ $siteName }} /species/{{ $speciesArray[0] }}">see records</a></td>
 					@endif
 					@if ($speciesNameType === 'common')
 						<td class="d-none d-md-table-cell">{{ $speciesArray[5] }}</td>
 						<td><?=$speciesArray[1]?></td>
 						<td class="d-none d-sm-table-cell">{{ $speciesArray[3] }}</td>
 						<td><?=$species->count?></td>
-						<td><a href="/site/{{ $gridSquare }}/species/{{ $speciesArray[1] }}">see records</a></td>
+						<td><a href="/site/{{ $siteName }}/species/{{ $speciesArray[1] }}">see records</a></td>
 					@endif
 				</tr>
 				@endforeach
@@ -48,7 +48,7 @@
 			// Unless the first occurrence didn't contain a site location, create a
 		// marker for the site's location
 		@if (!empty($siteLocation))
-		const siteMarker = L.marker(<?= json_encode($siteLocation) ?>, {
+		const siteMarker = L.marker({{!! json_encode($results->siteLocation) !!}}, {
 			opacity: 0.75
 		});
 		siteMarker.addTo(map);

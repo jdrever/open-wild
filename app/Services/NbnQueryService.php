@@ -48,33 +48,7 @@ class NbnQueryService implements QueryService
         return $queryResult;
     }
 
-    private function prepareSingleSpeciesRecords($records)
-    {
-        usort($records, function ($a, $b) {
-            return $b->year <=> $a->year;
-        });
 
-        return $records;
-    }
-
-    private function prepareSites($records)
-    {
-        $sites = [];
-        foreach ($records as $record) {
-            $record->locationId = $record->locationId ?? '';
-            $record->collector = $record->collector ?? 'Unknown';
-
-            // To plot site markers on the map, we must capture the locationId
-            // (site name) and latLong of only the _first_ record for each site.
-            // The latLong returned from the API is a single string, so we
-            // convert into an array of two floats.
-            if (! array_key_exists($record->locationId, $sites) && isset($record->latLong)) {
-                $sites[$record->locationId] = array_map('floatval', explode(',', $record->latLong));
-            }
-        }
-
-        return $sites;
-    }
 
     public function getSingleOccurenceRecord(string $uuid): OccurrenceResult
     {
@@ -98,9 +72,36 @@ class NbnQueryService implements QueryService
         return $queryResult;
     }
 
-    public function getSpeciesListForSite($siteName, $speciesNameType, $speciesGroup, $axiophyteFilter, $page)
+    public function getSpeciesListForSite(string $siteName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage) : QueryResult
     {
-        return false;
+        $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
+
+		$nbnQuery->addSpeciesGroup($speciesGroup);
+        $nbnQuery->setSpeciesNameType($speciesNameType);
+
+        if ($axiophyteFilter === 'true') {
+            $nbnQuery->addAxiophyteFilter();
+        }
+
+		$nbnQuery->setFacetedSort('index');
+
+		$nbnQuery->add('location_id:' . str_replace(" ", "\%20", $siteName)); // Use "\ " instead of spaces to search only for species matching whole site name
+
+        $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
+
+		// Get site location from first occurrence
+		if (isset($queryResult->jsonResponse->occurrences[0]->decimalLatitude))
+		{
+			$queryResult->siteLocation = [$queryResult->jsonResponse->occurrences[0]->decimalLatitude, $queryResult->jsonResponse->occurrences[0]->decimalLongitude];
+		}
+		else
+		{
+			// No location data - currently just doesn't show a site marker
+			$queryResult->siteLocation = [];
+		}
+
+
+		return $queryResult;
     }
 
     public function getSingleSpeciesRecordsForSite($site_name, $speciesName, $page)
@@ -217,6 +218,34 @@ class NbnQueryService implements QueryService
         $occurrenceResult->downloadLink = $nbnQuery->getSingleRecordDownloadQueryString($occurrenceResult->recordId);
 
         return $occurrenceResult;
+    }
+
+    private function prepareSingleSpeciesRecords($records)
+    {
+        usort($records, function ($a, $b) {
+            return $b->year <=> $a->year;
+        });
+
+        return $records;
+    }
+
+    private function prepareSites($records)
+    {
+        $sites = [];
+        foreach ($records as $record) {
+            $record->locationId = $record->locationId ?? '';
+            $record->collector = $record->collector ?? 'Unknown';
+
+            // To plot site markers on the map, we must capture the locationId
+            // (site name) and latLong of only the _first_ record for each site.
+            // The latLong returned from the API is a single string, so we
+            // convert into an array of two floats.
+            if (! array_key_exists($record->locationId, $sites) && isset($record->latLong)) {
+                $sites[$record->locationId] = array_map('floatval', explode(',', $record->latLong));
+            }
+        }
+
+        return $sites;
     }
 
     private function prepareRecorders(string $recorders): string

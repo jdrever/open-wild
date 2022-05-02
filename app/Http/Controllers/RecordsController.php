@@ -66,7 +66,40 @@ class RecordsController extends Controller
         ]);
     }
 
-    public function singleSpeciesForSquare(Request $request, $gridSquare, $speciesName)
+        /**
+     * Show the single species listing for a dataset.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $speciesName
+     * @return \Illuminate\View\View
+     */
+    public function singleSpeciesForSite(Request $request, string $siteName, string $speciesName)
+    {
+        $currentPage = $this->getCurrentPage($request);
+
+        $results = $this->queryService->getSingleSpeciesRecordsForSite($speciesName, $siteName, $currentPage);
+        $speciesNameSearchedFor = Cookie::get('speciesName') ?? $speciesName;
+        $speciesNameToDisplay = $request->input('speciesNameToDisplay') ?? $speciesName;
+        $speciesNameType = Cookie::get('speciesNameType') ?? 'scientific';
+        $speciesGroup = Cookie::get('speciesGroup') ?? 'plants';
+        $axiophyteFilter = Cookie::get('axiophyteFilter') ?? 'false';
+
+        $speciesGuid = isset($results->records[0]->speciesGuid) ? $results->records[0]->speciesGuid : '';
+
+        return view('single-species-records',
+        [
+            'speciesName' => $speciesName,
+            'speciesNameType' => $speciesNameType,
+            'speciesGroup' => $speciesGroup,
+            'axiophyteFilter' => $axiophyteFilter,
+            'speciesGuid' => $speciesGuid,
+            'speciesNameSearchedFor' => $speciesNameSearchedFor,
+            'speciesNameToDisplay' => $speciesNameToDisplay,
+            'results' =>$results,
+        ]);
+    }
+
+    public function singleSpeciesForSquare(Request $request, string $gridSquare, string $speciesName)
     {
         // Get a 6 digit grid reference (1km square) from any length of original
         // grid reference by finding the midpoint of the position splitting the

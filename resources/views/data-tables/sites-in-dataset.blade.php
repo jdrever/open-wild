@@ -10,7 +10,7 @@
 			<?php foreach ($results->records as $site) : ?>
 				<tr>
 					<td>
-						<a href="{{ '/site/' . $site->label . '/group/' . $speciesGroup .  '/type/' . $speciesNameType . '/axiophyte/' . $axiophyteFilter }}">
+						<a href="{{ '/site/' . $site->label . '/type/' . $speciesNameType . '/group/' . $speciesGroup .  '/axiophytes/' . $axiophyteFilter }}">
 							<?= $site->label ?>
 						</a>
 					</td>

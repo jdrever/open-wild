@@ -25,6 +25,9 @@ Route::get('/record/{occurrenceId}', [RecordsController::class, 'singleRecord'])
 
 Route::get('/sites/', [SitesController::class, 'index']);
 Route::post('/sites/', [SitesController::class, 'index']);
+Route::get('/sites/{siteName}', [SitesController::class, 'listForDataset']);
+Route::get('/site/{siteName}/type/{speciesNameType}/group/{speciesGroup}/axiophytes/{axiophyteFilter}/{refresh?}', [SpeciesController::class, 'listForSite']);
+Route::get('/site/{siteName}/species/{speciesName}', [RecordsController::class, 'singleSpeciesForSite']);
 
 Route::get('/squares/', [SquaresController::class, 'index']);
 Route::get('/square/{gridSquare}/type/{speciesNameType}/group/{speciesGroup}/axiophytes/{axiophyteFilter}/{refresh?}', [SpeciesController::class, 'listForSquare']);
