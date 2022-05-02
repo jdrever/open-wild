@@ -29,7 +29,7 @@ class SquaresController extends Controller
     }
 
     /**
-     * handles initial site search
+     * handles initial site search.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -38,8 +38,8 @@ class SquaresController extends Controller
     {
         $squareName = $request->input('squareName') ?? $request->cookie('squareName') ?? '';
 
-        		// Get map position and zoom data from cookie
-		$mapState = $request->cookie('mapState') ?? "52.6354,-2.71975,9";
+        // Get map position and zoom data from cookie
+        $mapState = $request->cookie('mapState') ?? '52.6354,-2.71975,9';
         $speciesNameType = $request->cookie('speciesNameType') ?? 'scientific';
         $speciesGroup = $request->cookie('speciesGroup') ?? 'plants';
         $axiophyteFilter = $request->cookie('axiophyteFilter') ?? 'false';
