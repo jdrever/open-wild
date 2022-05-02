@@ -12,6 +12,6 @@ class QueryResult
     public int $numberOfRecords;
     public int $numberOfPages;
     public string $queryUrl;
-    public string $status;
+    public bool $status;
     public ?string $message;
 }

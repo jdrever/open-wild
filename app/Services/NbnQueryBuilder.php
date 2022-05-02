@@ -367,11 +367,32 @@ class NbnQueryBuilder
         }
     }
 
-    public function addAxiophyteFilter()
+    public function addAxiophyteFilter() : void
     {
         $this->filterQueryParameters[] = $this->axiophyteFilter;
+    }
 
-        return $this;
+
+    /**
+     * Adds a location_id query
+     *
+     * @param string $location
+     * @return void
+     */
+    public function addLocation(string $location) : void
+    {
+        $this->add('location_id:"'.rawurlencode($location) . '"');
+    }
+
+        /**
+     * Adds a location_id query
+     *
+     * @param string $gridSquare
+     * @return void
+     */
+    public function add1kmGridSquare(string $gridSquare) : void
+    {
+        $this->add('grid_ref_1000:"'.rawurlencode($gridSquare).'"');
     }
 
     /**

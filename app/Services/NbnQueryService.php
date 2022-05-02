@@ -83,8 +83,7 @@ class NbnQueryService implements QueryService
 
         $nbnQuery->setFacetedSort('index');
 
-        $nbnQuery->add('location_id:'.str_replace(' ', "\%20", $siteName)); // Use "\ " instead of spaces to search only for species matching whole site name
-
+        $nbnQuery->addLocation($siteName);
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
 
         // Get site location from first occurrence
@@ -104,7 +103,7 @@ class NbnQueryService implements QueryService
         $nbnQuery->addScientificName($speciesName);
         $nbnQuery->setDirection('desc');
         $nbnQuery->sortBy('year');
-        $nbnQuery->add('location_id:'.'"'.urlencode($siteName).'"');
+        $nbnQuery->addLocation($siteName);
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
         $queryResult->records = $this->prepareSingleSpeciesRecords($queryResult->records);
@@ -119,13 +118,10 @@ class NbnQueryService implements QueryService
 
         $nbnQuery->addSpeciesGroup($speciesGroup);
         $nbnQuery->setSpeciesNameType($speciesNameType);
-
         if ($axiophyteFilter === 'true') {
             $nbnQuery->addAxiophyteFilter();
         }
-
-        $nbnQuery->add('grid_ref_1000:"'.rawurlencode($gridSquare).'"');
-
+        $nbnQuery->add1kmGridSquare($gridSquare);
         $nbnQuery->setFacetedSort('index');
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
@@ -137,7 +133,7 @@ class NbnQueryService implements QueryService
     {
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
         $nbnQuery->addScientificName($speciesName);
-        $nbnQuery->add('grid_ref_1000:'.'"'.urlencode($gridSquare).'"');
+        $nbnQuery->add1kmGridSquare($gridSquare);
         $nbnQuery->setDirection('desc');
         $nbnQuery->sortBy('year');
 
@@ -154,6 +150,10 @@ class NbnQueryService implements QueryService
         if ($nbnQuery->isFacetedSearch()) {
             $nbnQueryUrl = $nbnQuery->getUnpagedQueryString();
             $nbnQueryResponse = $this->callNbnApi($nbnQueryUrl);
+            //if the unpaged query throws an error, return the error
+            if ($nbnQueryResponse->status==false)
+                return $this->createQueryResult($nbnQueryResponse,$nbnQuery,$nbnQueryUrl);
+
             $nbnQueryResponse->getRecords($nbnQuery->searchType);
             $totalNumberOfRecords = $nbnQueryResponse->getNumberOfRecords($nbnQuery->searchType);
         }
@@ -176,7 +176,7 @@ class NbnQueryService implements QueryService
         $queryResult->message = $nbnAPIResponse->message;
         $queryResult->queryUrl = $queryUrl;
 
-        if ($nbnAPIResponse->status === 'OK') {
+        if ($nbnAPIResponse->status) {
             $queryResult->records = $nbnAPIResponse->getRecords($nbnQuery->searchType);
             //where the number of records has been specified - because a facteted query and therefore dervied from unpaged query
             if (isset($numberOfRecords)) {
@@ -278,7 +278,7 @@ class NbnQueryService implements QueryService
             $jsonResponse = json_decode($jsonResults);
 
             if (isset($jsonResponse->status) && $jsonResponse->status === 'ERROR') {
-                $nbnApiResponse->status = 'ERROR';
+                $nbnApiResponse->status = false;
                 $errorMessage = $jsonResponse->errorMessage;
                 if (strpos($errorMessage, 'No live SolrServers available') !== false) {
                     $errorMessage = '<b>The NBN API is currently not able to provide results.</b>';
@@ -287,10 +287,10 @@ class NbnQueryService implements QueryService
                 $nbnApiResponse->jsonResponse = [];
             } else {
                 $nbnApiResponse->jsonResponse = $jsonResponse;
-                $nbnApiResponse->status = 'OK';
+                $nbnApiResponse->status = true;
             }
         } catch (\Throwable $e) {
-            $nbnApiResponse->status = 'ERROR';
+            $nbnApiResponse->status = false;
             $errorMessage = $e->getMessage();
             if (strpos($errorMessage, '400 Bad Request') !== false) {
                 $errorMessage = '<b>It looks like there is a problem with the query.</b>  Here are the details: '.$errorMessage;

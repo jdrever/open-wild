@@ -16,11 +16,10 @@ class NbnApiResponse
     public object $jsonResponse;
     /**
      * The status of the response from the NBN API
-     * Either OK or ERROR.
      *
-     * @var string
+     * @var bool
      */
-    public string $status;
+    public bool $status;
     /**
      * The error message (if one is raised) from calling
      * the NBN API.
