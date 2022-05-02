@@ -27,5 +27,3 @@ Route::get('/sites/', [SitesController::class, 'index']);
 Route::post('/sites/', [SitesController::class, 'index']);
 
 Route::get('/squares/', [SquaresController::class, 'index']);
-
-

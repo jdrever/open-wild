@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 
 use App\Interfaces\QueryService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cookie;
 
 class SpeciesController extends Controller
 {
@@ -66,7 +65,7 @@ class SpeciesController extends Controller
      */
     public function listForDataset(Request $request, string $speciesName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, string $refresh = '')
     {
-        $this->setCookies($speciesName,  $speciesNameType, $speciesGroup, $axiophyteFilter);
+        $this->setCookies($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter);
 
         $currentPage = $this->getCurrentPage($request);
 
@@ -85,9 +84,9 @@ class SpeciesController extends Controller
         ]);
     }
 
-    public function listforSquare(Request $request,$gridSquare, $speciesGroup, $nameType, $axiophyteFilter)
-	{
-        $this->setCookies($speciesName,  $speciesNameType, $speciesGroup, $axiophyteFilter);
-		$results = $this->queryService->getSpeciesListForSquare($gridSquare, $speciesGroup, $nameType, $axiophyteFilter, $this->page);
+    public function listforSquare(Request $request, $gridSquare, $speciesGroup, $nameType, $axiophyteFilter)
+    {
+        $this->setCookies($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter);
+        $results = $this->queryService->getSpeciesListForSquare($gridSquare, $speciesGroup, $nameType, $axiophyteFilter, $this->page);
     }
 }
