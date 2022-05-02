@@ -341,34 +341,7 @@ class NbnQueryBuilder
         return $this;
     }
 
-    /**
-     * Deals with multi-word search terms and prepares
-     * theme for use by the NBN API by adding ANDs and
-     * setting to all lower case.
-     *
-     * @param  string  $searchString  the search term to prepare
-     * @return string the prepared search search name
-     */
-    private function prepareSearchString(string $searchString, bool $isPartialName)
-    {
-        if (! $isPartialName) {
-            return '"'.rawurlencode($searchString).'"';
-        }
 
-        $searchString = ucfirst(strtolower($searchString));
-        $searchWords = explode(' ', $searchString);
-        if (count($searchWords) === 1) {
-            return '*'.rawurlencode($searchString).'*';
-        }
-        $preparedSearchString = $searchWords[0].'*';
-        unset($searchWords[0]);
-        foreach ($searchWords as $searchWord) {
-            $preparedSearchString .= '+AND+'.$searchWord;
-        }
-        $preparedSearchString = str_replace(' ', '+%2B', $preparedSearchString);
-
-        return $preparedSearchString;
-    }
 
     /**
      * Adds a query parameter for species_group.
@@ -412,7 +385,7 @@ class NbnQueryBuilder
      */
     public function addLocation(string $location): self
     {
-        $this->add('location_id:"'.rawurlencode($location).'"');
+        $this->add('location_id:"'.$this->prepareLocationString($location).'"');
 
         return $this;
     }
@@ -439,7 +412,7 @@ class NbnQueryBuilder
     public function addWildcardLocationParamter(string $location): self
     {
         $this->facets = 'location_id';
-        $this->addExtraQueryParameter('location_id:'.rawurlencode($location).'*');
+        $this->addExtraQueryParameter('location_id:'.$this->prepareLocationString($location).'*');
 
         return $this;
     }
@@ -520,5 +493,49 @@ class NbnQueryBuilder
         $this->dir = $direction;
 
         return $this;
+    }
+
+        /**
+     * Deals with multi-word search terms and prepares
+     * theme for use by the NBN API by adding ANDs and
+     * setting to all lower case.
+     *
+     * @param  string  $searchString  the search term to prepare
+     * @return string the prepared search search name
+     */
+    private function prepareSearchString(string $searchString, bool $isPartialName)
+    {
+        if (! $isPartialName) {
+            return '"'.rawurlencode($searchString).'"';
+        }
+
+        $searchString = ucfirst(strtolower($searchString));
+        $searchWords = explode(' ', $searchString);
+        if (count($searchWords) === 1) {
+            return '*'.rawurlencode($searchString).'*';
+        }
+        $preparedSearchString = $searchWords[0].'*';
+        unset($searchWords[0]);
+        foreach ($searchWords as $searchWord) {
+            $preparedSearchString .= '+AND+'.$searchWord;
+        }
+        $preparedSearchString = str_replace(' ', '+%2B', $preparedSearchString);
+
+        return $preparedSearchString;
+    }
+
+    /**
+     * Makes upper cases and replaces spaces
+     *
+     * @param string $location
+     * @return string
+     */
+    private function prepareLocationString(string $location): string
+    {
+        // API respects case - upper case all words in search string
+		$location = ucwords($location);
+		// Replace spaces with "\%20" so the query searches for the whole string
+		$location = str_replace(" ", "\%20", $location);
+        return $location;
     }
 }
