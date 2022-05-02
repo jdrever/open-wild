@@ -29,7 +29,7 @@ class SpeciesController extends Controller
     }
 
     /**
-     * handles initial species search
+     * handles initial species search.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

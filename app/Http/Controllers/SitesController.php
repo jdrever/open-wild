@@ -29,7 +29,7 @@ class SitesController extends Controller
     }
 
     /**
-     * handles initial site search
+     * handles initial site search.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
