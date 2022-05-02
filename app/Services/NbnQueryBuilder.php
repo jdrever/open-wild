@@ -120,7 +120,7 @@ class NbnQueryBuilder
      * @param  string  $url  The full url to query
      * @return string
      */
-    private function getQueryString(string $url)
+    private function getQueryString(string $url) : string
     {
         $queryString = $url.'?';
         $queryParameters = array_merge(['data_resource_uid:'.$this->dataResourceUid], $this->extraQueryParameters);
@@ -145,7 +145,7 @@ class NbnQueryBuilder
      * @param  string  $url  The full url to query
      * @return string
      */
-    private function getSingleRecordDownloadUrl(string $url, string $occurrenceId)
+    private function getSingleRecordDownloadUrl(string $url, string $occurrenceId) : string
     {
         $queryString = $url.'?';
         $queryString .= 'fq=occurrence_id:'.$occurrenceId.'&';
@@ -159,12 +159,12 @@ class NbnQueryBuilder
      *
      * @return string
      */
-    public function url()
+    public function url() : string
     {
         return $this::BASE_URL.$this->searchType;
     }
 
-    public function isFacetedSearch()
+    public function isFacetedSearch() : bool
     {
         return ! empty($this->facets);
     }
@@ -176,7 +176,7 @@ class NbnQueryBuilder
      *
      * @return string
      */
-    public function getUnpagedQueryString()
+    public function getUnpagedQueryString() : string
     {
         $queryString = $this->getQueryString($this::BASE_URL.$this->searchType);
         $queryString .= 'pageSize=0&flimit=-1';
@@ -189,7 +189,7 @@ class NbnQueryBuilder
      *
      * @return string
      */
-    public function getPagingQueryString()
+    public function getPagingQueryString() : string
     {
         $queryString = $this->getQueryString($this::BASE_URL.$this->searchType);
 
@@ -207,7 +207,7 @@ class NbnQueryBuilder
      *
      * @return string
      */
-    public function getDownloadQueryString()
+    public function getDownloadQueryString() : string
     {
         $queryString = $this->getQueryString($this::BASE_URL.'/occurrences/index/download');
         $queryString .= '&reasonTypeId=11&fileType=csv';
@@ -220,7 +220,7 @@ class NbnQueryBuilder
      *
      * @return string
      */
-    public function getSingleRecordDownloadQueryString($occurrenceId)
+    public function getSingleRecordDownloadQueryString($occurrenceId) : string
     {
         $queryString = $this->getSingleRecordDownloadUrl($this::BASE_URL.'occurrences/index/download', $occurrenceId);
         $queryString .= '&reasonTypeId=11';
@@ -245,9 +245,9 @@ class NbnQueryBuilder
      * https://species-ws.nbnatlas.org/admin/indexFields
      *
      * @param  string  $filterQueryParameter  A single filter query parameter
-     * @return $this
+     * @return self
      */
-    public function add(string $filterQueryParameter)
+    public function add(string $filterQueryParameter) : self
     {
         $this->filterQueryParameters[] = $filterQueryParameter;
 
@@ -271,9 +271,9 @@ class NbnQueryBuilder
      * https://species-ws.nbnatlas.org/admin/indexFields
      *
      * @param  string  $filterNotQueryParameter  A single filter query parameter
-     * @return $this
+     * @return self
      */
-    public function addNot(string $filterNotQueryParameter)
+    public function addNot(string $filterNotQueryParameter) : self
     {
         $this->filterNotQueryParameters[] = $filterNotQueryParameter;
 
@@ -285,9 +285,9 @@ class NbnQueryBuilder
      *
      * @param  string  $speciesNameType  either scientific or common
      * @param  string  $speciesName  e.g. Hedera or Ivy
-     * @return void
+     * @return self
      */
-    public function addSpeciesNameType(string $speciesNameType, string $speciesName, bool $isFacetedSearch = false, bool $isPartialName = false): void
+    public function addSpeciesNameType(string $speciesNameType, string $speciesName, bool $isFacetedSearch = false, bool $isPartialName = false): self
     {
         if ($speciesNameType === 'scientific') {
             $this->addScientificName($speciesName, $isFacetedSearch, $isPartialName);
@@ -296,9 +296,19 @@ class NbnQueryBuilder
         if ($speciesNameType === 'common') {
             $this->addCommonName($speciesName, $isFacetedSearch, $isPartialName);
         }
+
+        return $this;
     }
 
-    public function addScientificName(string $speciesName, bool $isFacetedSearch = false, bool $isPartialName = false): void
+    /**
+     * Adds a taxon_name and associated facets (names_and_lsid)
+     *
+     * @param string $speciesName
+     * @param boolean $isFacetedSearch
+     * @param boolean $isPartialName
+     * @return self
+     */
+    public function addScientificName(string $speciesName, bool $isFacetedSearch = false, bool $isPartialName = false): self
     {
         $speciesName = $this->prepareSearchString($speciesName, $isPartialName);
 
@@ -307,9 +317,19 @@ class NbnQueryBuilder
             $this->facets = 'names_and_lsid';
             $this->fsort = 'index';
         }
+
+        return $this;
     }
 
-    public function addCommonName(string $speciesName, bool $isFacetedSearch = false, bool $isPartialName = false): void
+    /**
+     * Adds a common_name and associated facets (common_name_and_lsid)
+     *
+     * @param string $speciesName
+     * @param boolean $isFacetedSearch
+     * @param boolean $isPartialName
+     * @return self
+     */
+    public function addCommonName(string $speciesName, bool $isFacetedSearch = false, bool $isPartialName = false): self
     {
         $speciesName = $this->prepareSearchString($speciesName, $isPartialName);
         $this->add('common_name:'.$speciesName);
@@ -317,6 +337,8 @@ class NbnQueryBuilder
             $this->facets = 'common_name_and_lsid';
             $this->fsort = 'index';
         }
+
+        return $this;
     }
 
     /**
@@ -352,9 +374,9 @@ class NbnQueryBuilder
      * Adds a query parameter for species_group.
      *
      * @param  string  $speciesGroup  either Plants, Bryophytes or Both
-     * @return void
+     * @return self
      */
-    public function addSpeciesGroup(string $speciesGroup): void
+    public function addSpeciesGroup(string $speciesGroup): self
     {
         $speciesGroup = ucfirst($speciesGroup);
         if ($speciesGroup === 'Plants') {
@@ -365,33 +387,61 @@ class NbnQueryBuilder
         } else {
             $this->add('species_group:'.'Plants+OR+Bryophytes');
         }
+
+        return $this;
     }
 
-    public function addAxiophyteFilter(): void
+    /**
+     * adds an Axiopyte filter query parameter
+     * based on the AXIOPHYTE_FILTER environmental variable
+     *
+     * @return self
+     */
+    public function addAxiophyteFilter(): self
     {
         $this->filterQueryParameters[] = $this->axiophyteFilter;
+
+        return $this;
     }
 
     /**
      * Adds a location_id query.
      *
      * @param  string  $location
-     * @return void
+     * @return self
      */
-    public function addLocation(string $location): void
+    public function addLocation(string $location): self
     {
         $this->add('location_id:"'.rawurlencode($location).'"');
+
+        return $this;
     }
 
     /**
      * Adds a location_id query.
      *
      * @param  string  $gridSquare
-     * @return void
+     * @return self
      */
-    public function add1kmGridSquare(string $gridSquare): void
+    public function add1kmGridSquare(string $gridSquare): self
     {
         $this->add('grid_ref_1000:"'.rawurlencode($gridSquare).'"');
+
+        return $this;
+    }
+
+        /**
+     * Adds a location_id query.
+     *
+     * @param  string  $location
+     * @return self
+     */
+    public function addWildcardLocationParamter(string $location): self
+    {
+        $this->facets = 'location_id';
+        $this->addExtraQueryParameter('location_id:'.rawurlencode($location).'*');
+
+        return $this;
     }
 
     /**
@@ -405,27 +455,35 @@ class NbnQueryBuilder
      * Adds to the list of extra query parameters.
      *
      * @param  string  $extraQueryParameter  A single extra query parameter
-     * @return $this
+     * @return self
      */
-    public function addExtraQueryParameter(string $extraQueryParameter)
+    public function addExtraQueryParameter(string $extraQueryParameter) : self
     {
         $this->extraQueryParameters[] = $extraQueryParameter;
 
         return $this;
     }
 
-    public function sortBy(string $sort)
+    /**
+     * Adds a sort
+     *
+     * @param string $sort
+     * @return self
+     */
+    public function sortBy(string $sort) : self
     {
         $this->sort = $sort;
+
+        return $this;
     }
 
     /**
      * Set the facts for a species name type.
      *
      * @param  string  $nameType  : either scientific or common
-     * @return void
+     * @return self
      */
-    public function setSpeciesNameType(string $nameType)
+    public function setSpeciesNameType(string $nameType) : self
     {
         if ($nameType === 'scientific') {
             $this->facets = 'names_and_lsid';
@@ -434,15 +492,33 @@ class NbnQueryBuilder
         if ($nameType === 'common') {
             $this->facets = 'common_name_and_lsid';
         }
+
+        return $this;
     }
 
-    public function setFacetedSort(string $facetedSort)
+    /**
+     * Adds a faceted sort
+     *
+     * @param string $facetedSort
+     * @return self
+     */
+    public function setFacetedSort(string $facetedSort) : self
     {
         $this->fsort = $facetedSort;
+
+        return $this;
     }
 
-    public function setDirection(string $direction)
+    /**
+     * Sets the direction (dir in Solr)
+     *
+     * @param string $direction
+     * @return self
+     */
+    public function setDirection(string $direction) : self
     {
         $this->dir = $direction;
+
+        return $this;
     }
 }

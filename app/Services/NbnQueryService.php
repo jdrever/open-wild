@@ -12,12 +12,12 @@ class NbnQueryService implements QueryService
     {
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
 
-        $nbnQuery->addSpeciesNameType($speciesNameType, $speciesName, true, true);
+        $nbnQuery
+            ->addSpeciesNameType($speciesNameType, $speciesName, true, true)
+            ->addSpeciesGroup($speciesGroup);
         if ($axiophyteFilter === 'true') {
             $nbnQuery->addAxiophyteFilter();
         }
-
-        $nbnQuery->addSpeciesGroup($speciesGroup);
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
 
@@ -34,9 +34,9 @@ class NbnQueryService implements QueryService
     public function getSingleSpeciesRecordsForDataset(string $speciesName, int $currentPage = 1): QueryResult
     {
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
-        $nbnQuery->sortBy(NbnQueryBuilder::SORT_BY_YEAR);
-        $nbnQuery->setDirection(NbnQueryBuilder::SORT_DESCENDING);
         $nbnQuery
+            ->sortBy(NbnQueryBuilder::SORT_BY_YEAR)
+            ->setDirection(NbnQueryBuilder::SORT_DESCENDING)
             ->addScientificName($speciesName, false, true); //add scientific name with double quotes added
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
@@ -61,8 +61,7 @@ class NbnQueryService implements QueryService
     public function getSiteListForDataset(string $siteName, int $currentPage): QueryResult
     {
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
-        $nbnQuery->facets = 'location_id';
-        $nbnQuery->addExtraQueryParameter('location_id:'.$siteName.'*');
+        $nbnQuery->addWildcardLocationParamter($siteName);
         $nbnQuery->addSpeciesGroup('Both');
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
@@ -74,16 +73,16 @@ class NbnQueryService implements QueryService
     {
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
 
-        $nbnQuery->addSpeciesGroup($speciesGroup);
-        $nbnQuery->setSpeciesNameType($speciesNameType);
+        $nbnQuery
+            ->addSpeciesGroup($speciesGroup)
+            ->setSpeciesNameType($speciesNameType)
+            ->addLocation($siteName)
+            ->setFacetedSort('index');
 
         if ($axiophyteFilter === 'true') {
             $nbnQuery->addAxiophyteFilter();
         }
 
-        $nbnQuery->setFacetedSort('index');
-
-        $nbnQuery->addLocation($siteName);
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
 
         // Get site location from first occurrence
@@ -100,10 +99,11 @@ class NbnQueryService implements QueryService
     public function getSingleSpeciesRecordsForSite($siteName, $speciesName, $currentPage): QueryResult
     {
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
-        $nbnQuery->addScientificName($speciesName);
-        $nbnQuery->setDirection('desc');
-        $nbnQuery->sortBy('year');
-        $nbnQuery->addLocation($siteName);
+        $nbnQuery
+            ->addScientificName($speciesName)
+            ->addLocation($siteName)
+            ->setDirection('desc')
+            ->sortBy('year');
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
         $queryResult->records = $this->prepareSingleSpeciesRecords($queryResult->records);
@@ -116,13 +116,16 @@ class NbnQueryService implements QueryService
     {
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
 
-        $nbnQuery->addSpeciesGroup($speciesGroup);
-        $nbnQuery->setSpeciesNameType($speciesNameType);
+        $nbnQuery
+            ->add1kmGridSquare($gridSquare)
+            ->addSpeciesGroup($speciesGroup)
+            ->setSpeciesNameType($speciesNameType)
+            ->setFacetedSort('index');
+
         if ($axiophyteFilter === 'true') {
             $nbnQuery->addAxiophyteFilter();
         }
-        $nbnQuery->add1kmGridSquare($gridSquare);
-        $nbnQuery->setFacetedSort('index');
+
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
 
@@ -132,10 +135,11 @@ class NbnQueryService implements QueryService
     public function getSingleSpeciesRecordsForSquare($gridSquare, $speciesName, $currentPage): QueryResult
     {
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
-        $nbnQuery->addScientificName($speciesName);
-        $nbnQuery->add1kmGridSquare($gridSquare);
-        $nbnQuery->setDirection('desc');
-        $nbnQuery->sortBy('year');
+        $nbnQuery
+            ->addScientificName($speciesName)
+            ->add1kmGridSquare($gridSquare)
+            ->setDirection('desc')
+            ->sortBy('year');
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
         $queryResult->records = $this->prepareSingleSpeciesRecords($queryResult->records);
