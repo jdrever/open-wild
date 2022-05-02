@@ -341,8 +341,6 @@ class NbnQueryBuilder
         return $this;
     }
 
-
-
     /**
      * Adds a query parameter for species_group.
      *
@@ -495,7 +493,7 @@ class NbnQueryBuilder
         return $this;
     }
 
-        /**
+    /**
      * Deals with multi-word search terms and prepares
      * theme for use by the NBN API by adding ANDs and
      * setting to all lower case.
@@ -525,17 +523,18 @@ class NbnQueryBuilder
     }
 
     /**
-     * Makes upper cases and replaces spaces
+     * Makes upper cases and replaces spaces.
      *
-     * @param string $location
+     * @param  string  $location
      * @return string
      */
     private function prepareLocationString(string $location): string
     {
         // API respects case - upper case all words in search string
-		$location = ucwords($location);
-		// Replace spaces with "\%20" so the query searches for the whole string
-		$location = str_replace(" ", "\%20", $location);
+        $location = ucwords($location);
+        // Replace spaces with "\%20" so the query searches for the whole string
+        $location = str_replace(' ', "\%20", $location);
+
         return $location;
     }
 }
