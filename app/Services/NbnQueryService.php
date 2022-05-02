@@ -108,7 +108,7 @@ class NbnQueryService implements QueryService
         return false;
     }
 
-    public function getSpeciesListForSquare($gridSquare, $speciesGroup, $speciesNameType, $axiophyteFilter, $page)
+    public function getSpeciesListForSquare(string $gridSquare, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage)
     {
         return false;
     }
