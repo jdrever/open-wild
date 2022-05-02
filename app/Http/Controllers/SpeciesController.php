@@ -96,7 +96,7 @@ class SpeciesController extends Controller
      * @param  string  $axiophyteFilter
      * @return void
      */
-    public function listForSite(Request $request, string $siteName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, $refresh="")
+    public function listForSite(Request $request, string $siteName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, $refresh = '')
     {
         $currentPage = $this->getCurrentPage($request);
 

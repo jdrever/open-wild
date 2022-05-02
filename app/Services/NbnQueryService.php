@@ -48,8 +48,6 @@ class NbnQueryService implements QueryService
         return $queryResult;
     }
 
-
-
     public function getSingleOccurenceRecord(string $uuid): OccurrenceResult
     {
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCE);
@@ -72,36 +70,32 @@ class NbnQueryService implements QueryService
         return $queryResult;
     }
 
-    public function getSpeciesListForSite(string $siteName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage) : QueryResult
+    public function getSpeciesListForSite(string $siteName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage): QueryResult
     {
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
 
-		$nbnQuery->addSpeciesGroup($speciesGroup);
+        $nbnQuery->addSpeciesGroup($speciesGroup);
         $nbnQuery->setSpeciesNameType($speciesNameType);
 
         if ($axiophyteFilter === 'true') {
             $nbnQuery->addAxiophyteFilter();
         }
 
-		$nbnQuery->setFacetedSort('index');
+        $nbnQuery->setFacetedSort('index');
 
-		$nbnQuery->add('location_id:' . str_replace(" ", "\%20", $siteName)); // Use "\ " instead of spaces to search only for species matching whole site name
+        $nbnQuery->add('location_id:'.str_replace(' ', "\%20", $siteName)); // Use "\ " instead of spaces to search only for species matching whole site name
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
 
-		// Get site location from first occurrence
-		if (isset($queryResult->jsonResponse->occurrences[0]->decimalLatitude))
-		{
-			$queryResult->siteLocation = [$queryResult->jsonResponse->occurrences[0]->decimalLatitude, $queryResult->jsonResponse->occurrences[0]->decimalLongitude];
-		}
-		else
-		{
-			// No location data - currently just doesn't show a site marker
-			$queryResult->siteLocation = [];
-		}
+        // Get site location from first occurrence
+        if (isset($queryResult->jsonResponse->occurrences[0]->decimalLatitude)) {
+            $queryResult->siteLocation = [$queryResult->jsonResponse->occurrences[0]->decimalLatitude, $queryResult->jsonResponse->occurrences[0]->decimalLongitude];
+        } else {
+            // No location data - currently just doesn't show a site marker
+            $queryResult->siteLocation = [];
+        }
 
-
-		return $queryResult;
+        return $queryResult;
     }
 
     public function getSingleSpeciesRecordsForSite($site_name, $speciesName, $page)

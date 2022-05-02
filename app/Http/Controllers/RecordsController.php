@@ -66,7 +66,7 @@ class RecordsController extends Controller
         ]);
     }
 
-        /**
+    /**
      * Show the single species listing for a dataset.
      *
      * @param  \Illuminate\Http\Request  $request
