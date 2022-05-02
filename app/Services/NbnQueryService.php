@@ -98,17 +98,18 @@ class NbnQueryService implements QueryService
         return $queryResult;
     }
 
-    public function getSingleSpeciesRecordsForSite($siteName, $speciesName, $currentPage) : QueryResult
+    public function getSingleSpeciesRecordsForSite($siteName, $speciesName, $currentPage): QueryResult
     {
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
         $nbnQuery->addScientificName($speciesName);
         $nbnQuery->setDirection('desc');
         $nbnQuery->sortBy('year');
-        $nbnQuery->add('location_id:' . '"' . urlencode($siteName) . '"');
+        $nbnQuery->add('location_id:'.'"'.urlencode($siteName).'"');
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
         $queryResult->records = $this->prepareSingleSpeciesRecords($queryResult->records);
         $queryResult->sites = $this->prepareSites($queryResult->records);
+
         return $queryResult;
     }
 
