@@ -185,7 +185,7 @@ class NbnQueryService implements QueryService
             $queryResult->currentPage = $nbnQuery->currentPage;
             $queryResult->downloadLink = $nbnQuery->getDownloadQueryString();
 
-            $queryResult->siteLocation=$nbnAPIResponse->getSiteLocation();
+            $queryResult->siteLocation = $nbnAPIResponse->getSiteLocation();
         }
 
         return $queryResult;
