@@ -12,6 +12,11 @@ fetch(updateUrl).then(function (response) {
 
     //Set HTML content
     elem.innerHTML = html;
+    if (document.getElementById('map-container'))
+    {
+        const map = initialiseBasicMap();
+        updateMarker();
+    }
 
 }).catch(function (err) {
 	// There was an error

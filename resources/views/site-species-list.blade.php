@@ -1,16 +1,6 @@
 <x-layout>
 
-    <script type="text/javascript" src="/js/update-dataset.js"></script>
-    <script>
-    function getUpdateUrl(pageNumber)
-    {
-        let speciesNameType=document.querySelector('input[name="speciesNameType"]:checked').value;
-        let speciesGroup=document.querySelector('input[name="speciesGroup"]:checked').value;
-        let axiophyteFilter=document.getElementById("axiophyteFilter").checked;
-        let updateUrl='/site/{{ $siteName }}/type/'+speciesNameType+'/group/'+speciesGroup+'/axiophytes/'+axiophyteFilter+'/refresh?page='+pageNumber;
-        return updateUrl;
-    }
-    </script>
+
 
 <style>
 	svg {
@@ -46,5 +36,17 @@
 <div id="data-table">
     @include("data-tables/species-in-site")
 </div>
+
+<script type="text/javascript" src="/js/update-dataset.js" defer></script>
+<script>
+function getUpdateUrl(pageNumber)
+{
+    let speciesNameType=document.querySelector('input[name="speciesNameType"]:checked').value;
+    let speciesGroup=document.querySelector('input[name="speciesGroup"]:checked').value;
+    let axiophyteFilter=document.getElementById("axiophyteFilter").checked;
+    let updateUrl='/site/{{ $siteName }}/type/'+speciesNameType+'/group/'+speciesGroup+'/axiophytes/'+axiophyteFilter+'/refresh?page='+pageNumber;
+    return updateUrl;
+}
+</script>
 
 </x-layout>

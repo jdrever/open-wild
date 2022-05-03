@@ -43,16 +43,20 @@
 </div>
 <script>
 	// Initialise the map
-	const map = initialiseBasicMap()
+	const map = initialiseBasicMap();
+    addMarker();
 
+    function addMarker()
+    {
 			// Unless the first occurrence didn't contain a site location, create a
 		// marker for the site's location
-		@if (!empty($siteLocation))
-		const siteMarker = L.marker({{!! json_encode($results->siteLocation) !!}}, {
+		@if (!empty($results->siteLocation))
+		const siteMarker = L.marker([{{ rtrim(implode(',',$results->siteLocation),',') }}], {
 			opacity: 0.75
 		});
 		siteMarker.addTo(map);
 		@endif
+    }
 </script>
 @else
 <div class="alert alert-warning" role="alert">

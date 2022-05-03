@@ -1,4 +1,5 @@
 function initialiseBasicMap(fitToShropshire = true, handleResize = true, mapState =  [52.6354, -2.71975, 9]) {
+
 	// Initialise the map
 	// mapState = map center lat, map center lng, map zoom level
 	const map = L.map("map", {

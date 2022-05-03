@@ -85,14 +85,6 @@ class NbnQueryService implements QueryService
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
 
-        // Get site location from first occurrence
-        if (isset($queryResult->jsonResponse->occurrences[0]->decimalLatitude)) {
-            $queryResult->siteLocation = [$queryResult->jsonResponse->occurrences[0]->decimalLatitude, $queryResult->jsonResponse->occurrences[0]->decimalLongitude];
-        } else {
-            // No location data - currently just doesn't show a site marker
-            $queryResult->siteLocation = [];
-        }
-
         return $queryResult;
     }
 
@@ -192,6 +184,8 @@ class NbnQueryService implements QueryService
             }
             $queryResult->currentPage = $nbnQuery->currentPage;
             $queryResult->downloadLink = $nbnQuery->getDownloadQueryString();
+
+            $queryResult->siteLocation=$nbnAPIResponse->getSiteLocation();
         }
 
         return $queryResult;

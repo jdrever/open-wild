@@ -74,4 +74,15 @@ class NbnApiResponse
     {
         return ceil($numberOfRecords / $pageSize); //calculate total pages
     }
+
+    public function getSiteLocation() : array
+    {
+        // Get site location from first occurrence
+        if (isset($this->jsonResponse->occurrences[0]->decimalLatitude)) {
+            return [$this->jsonResponse->occurrences[0]->decimalLatitude, $this->jsonResponse->occurrences[0]->decimalLongitude];
+        } else {
+            // No location data - currently just doesn't show a site marker
+            return [];
+        }
+    }
 }
