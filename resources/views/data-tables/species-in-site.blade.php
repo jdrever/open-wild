@@ -4,6 +4,8 @@
 
 @include('partials/data-map-tabs')
 
+
+<p>.{{ $siteName }}.</p>
 <div id="tab-content" class="row">
 	<div id="data" class="tab-pane fade show active col-lg">
 		<table class="table">
@@ -23,7 +25,7 @@
 						<td><?=$speciesArray[0]?></td>
 						<td class="d-none d-sm-table-cell">{{ $speciesArray[2] }}</td>
 						<td><?=$species->count?></td>
-						<td><a href="/site/{{ $siteName }} /species/{{ $speciesArray[0] }}">see records</a></td>
+						<td><a href="/site/{{ $siteName }}/species/{{ $speciesArray[0] }}">see records</a></td>
 					@endif
 					@if ($speciesNameType === 'common')
 						<td class="d-none d-md-table-cell">{{ $speciesArray[5] }}</td>
