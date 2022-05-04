@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 
 use App\Interfaces\QueryService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cookie;
 
 class SquaresController extends Controller
 {
@@ -43,6 +42,7 @@ class SquaresController extends Controller
 
         if (! $request->has('squareName')) {
             $mapState = $request->cookie('mapState') ?? '52.6354,-2.71975,9';
+
             return view('squares-search',
             [
                 'squareName'  => $squareName,
@@ -54,7 +54,8 @@ class SquaresController extends Controller
             ]);
         } else {
             $mapState = $request->query('mapState');
-            return redirect('/square/'.$squareName.'?mapState='+$mapState);
+
+            return redirect('/square/'.$squareName.'?mapState=' + $mapState);
         }
     }
 

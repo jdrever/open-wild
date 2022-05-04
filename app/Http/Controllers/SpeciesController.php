@@ -132,8 +132,7 @@ class SpeciesController extends Controller
         $this->setCookies($speciesNameType, $speciesGroup, $axiophyteFilter);
 
         //update mapState cookie if have query string
-        if ($request->has('mapState'))
-        {
+        if ($request->has('mapState')) {
             Cookie::queue('mapState', $request->query('mapState'));
         }
         $currentPage = $this->getCurrentPage($request);
