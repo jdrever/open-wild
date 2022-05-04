@@ -10,6 +10,8 @@
     }
     </script>
 
+
+<h2 class="text-start text-md-center">Search for a Site in {{ env('AREA') }}</h2>
 <form action="/sites/" action="post">
     @csrf
     <div class="row mb-2">

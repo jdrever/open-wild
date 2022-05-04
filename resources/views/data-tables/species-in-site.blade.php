@@ -4,8 +4,6 @@
 
 @include('partials/data-map-tabs')
 
-
-<p>.{{ $siteName }}.</p>
 <div id="tab-content" class="row">
 	<div id="data" class="tab-pane fade show active col-lg">
 		<table class="table">
@@ -66,11 +64,7 @@
 @include('partials/download-link')
 
 @else
-<div class="alert alert-warning" role="alert">
-	No records could be found matching those criteria.
-</div>
+    @include('partials/no-records')
 @endif
-
-
 
 @include('partials/nbn-query')

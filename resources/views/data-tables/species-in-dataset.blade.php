@@ -1,6 +1,7 @@
-<?php if (isset($results->records)&&count($results->records)>0) { ?>
+@if ($showResults)
+    @if (isset($results->records)&&count($results->records)>0)
 
-@include('partials/download-link')
+        @include('partials/download-link')
 
 <table class="table mt-3">
     <thead>
@@ -38,17 +39,9 @@
 
 @include('partials/pagination')
 
+    @else
+        @include('partials/no-records')
+    @endif
+    @include('partials/nbn-query')
+@endif
 
-
-<?php
-}
-else
-{ ?>
-	<?php if ($showResults) { ?>
-	<div class="alert alert-warning" role="alert">
-		No records could be found matching those criteria.
-	</div>
-	<?php } ?>
-<?php } ?>
-
-@include('partials/nbn-query')

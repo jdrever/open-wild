@@ -27,9 +27,11 @@
 	</h2>
 </div>
 
-@include('partials/download-link')
+@if (isset($results->records)&&count($results->records)>0)
 
-@include('partials/data-map-tabs')
+    @include('partials/download-link')
+
+    @include('partials/data-map-tabs')
 
 <div id="tab-content" class="row">
 	<div id="data" class="tab-pane fade show active col-lg">
@@ -129,9 +131,13 @@
     }
 </script>
 
-@include('partials/pagination')
+    @include('partials/pagination')
 
-@include('partials/download-link')
+    @include('partials/download-link')
+
+@else
+    @include('partials/no-records')
+@endif
 
 @include('partials/nbn-query')
 

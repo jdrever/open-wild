@@ -1,8 +1,8 @@
 @if (isset($results->records)&&count($results->records)>0)
 
-@include('partials/download-link')
+    @include('partials/download-link')
 
-@include('partials/data-map-tabs')
+    @include('partials/data-map-tabs')
 
 <div id="tab-content" class="row">
 	<div id="data" class="tab-pane fade show active col-lg">
@@ -91,16 +91,14 @@
 		this.stream.point(point.x, point.y)
     }
 </script>
-@include('partials/pagination')
+    @include('partials/pagination')
 
-@include('partials/download-link')
+    @include('partials/download-link')
+
+    @include('partials/nbn-query')
 
 @else
-<div class="alert alert-warning" role="alert">
-	No records could be found matching those criteria.
-</div>
+    @include('partials/no-records')
 @endif
 
 
-
-@include('partials/nbn-query')

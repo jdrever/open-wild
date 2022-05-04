@@ -84,7 +84,7 @@
 
 			// Create outline of record location and zoom to fit to it
 			const wkt = new Wkt.Wkt();
-			wkt.read("<?= $result->gridReferenceWKT ?>");
+			wkt.read("{{ $result->gridReferenceWKT }}");
 			const wktRecord = wkt.toJson();
 			wktBoundary.addData(wktRecord);
 			wktBoundary.addTo(map)

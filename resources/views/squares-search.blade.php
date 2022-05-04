@@ -35,7 +35,7 @@
 <script src="https://unpkg.com/brc-atlas-bigr/dist/bigr.min.umd.js"></script>
 <script src="https://d3js.org/d3.v5.min.js"></script>
 
-<h2>Find A Square</h2>
+<h2 class="text-start text-md-center">Search for a Square in {{ env('AREA') }}</h2>
 
 <p id="selection"> Zoom in to select a 1km square </p>
 
