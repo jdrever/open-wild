@@ -133,4 +133,6 @@
 
 @include('partials/download-link')
 
+@include('partials/nbn-query')
+
 </x-layout>

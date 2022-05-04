@@ -91,12 +91,16 @@
 		this.stream.point(point.x, point.y)
     }
 </script>
+@include('partials/pagination')
+
+@include('partials/download-link')
+
 @else
 <div class="alert alert-warning" role="alert">
 	No records could be found matching those criteria.
 </div>
 @endif
 
-@include('partials/pagination')
 
-@include('partials/download-link')
+
+@include('partials/nbn-query')
