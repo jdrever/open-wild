@@ -75,7 +75,7 @@ class NbnApiResponse
         return ceil($numberOfRecords / $pageSize); //calculate total pages
     }
 
-    public function getSiteLocation() : array
+    public function getSiteLocation(): array
     {
         // Get site location from first occurrence
         if (isset($this->jsonResponse->occurrences[0]->decimalLatitude)) {
