@@ -44,7 +44,7 @@
 <script>
 	// Get mapState from the php data and initialise the map using that state
 	// (and not fitting to shropshire or handling resize)
-	var mapState = <?= json_encode(explode(",", $mapState)) ?>;
+	var mapState = {!! json_encode(explode(",", $mapState)) !!};
 	const map = initialiseBasicMap(fitToShropshire = false, handleResize = false, mapState = mapState)
 
 	L.control.locate().addTo(map)
@@ -62,7 +62,7 @@
 		if (map.getZoom() >= 11) {
 			// Go to species list for square page
 			grs = bigr.getGrFromCoords(e.latlng.lng, e.latlng.lat, 'wg', '', [100000, 10000, 5000, 1000])
-			window.location.href = "/square/" + grs.p1000 + "/type/{{ $speciesNameType }}/group/{{ $speciesGroup }}/axiophytes/{{ $axiophyteFilter }}";
+			window.location.href = "/square/" + grs.p1000 + "/type/{{ $speciesNameType }}/group/{{ $speciesGroup }}/axiophytes/{{ $axiophyteFilter }}?mapState="+mapState;
 		}
 	})
     map.on("zoomend", reset)
@@ -134,8 +134,9 @@
 			g.select(".c3").style("fill-opacity", 0)
 		}
 
+        mapState=map.getCenter().lat+","+map.getCenter().lng+","+map.getZoom();
 		// Update mapState cookie with map position and zoom
-		document.cookie = "mapState="+map.getCenter().lat+","+map.getCenter().lng+","+map.getZoom()+";SameSite=Lax;"
+		//document.cookie = "mapState="+map.getCenter().lat+","+map.getCenter().lng+","+map.getZoom()+";SameSite=Lax;";
 	}
 
     function projectPoint(x, y) {

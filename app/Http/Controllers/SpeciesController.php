@@ -130,6 +130,12 @@ class SpeciesController extends Controller
     public function listforSquare(Request $request, string $gridSquare, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, string $refresh = '')
     {
         $this->setCookies($speciesNameType, $speciesGroup, $axiophyteFilter);
+
+        //update mapState cookie if have query string
+        if ($request->has('mapState'))
+        {
+            Cookie::queue('mapState', $request->query('mapState'));
+        }
         $currentPage = $this->getCurrentPage($request);
         $results = $this->queryService->getSpeciesListForSquare($gridSquare, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
 

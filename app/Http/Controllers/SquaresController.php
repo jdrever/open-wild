@@ -37,14 +37,12 @@ class SquaresController extends Controller
     public function index(Request $request)
     {
         $squareName = $request->input('squareName') ?? $request->cookie('squareName') ?? '';
-
-        // Get map position and zoom data from cookie
-        $mapState = $request->cookie('mapState') ?? '52.6354,-2.71975,9';
         $speciesNameType = $request->cookie('speciesNameType') ?? 'scientific';
         $speciesGroup = $request->cookie('speciesGroup') ?? 'plants';
         $axiophyteFilter = $request->cookie('axiophyteFilter') ?? 'false';
 
         if (! $request->has('squareName')) {
+            $mapState = $request->cookie('mapState') ?? '52.6354,-2.71975,9';
             return view('squares-search',
             [
                 'squareName'  => $squareName,
@@ -55,7 +53,8 @@ class SquaresController extends Controller
                 'showResults' => false,
             ]);
         } else {
-            return redirect('/square/'.$squareName);
+            $mapState = $request->query('mapState');
+            return redirect('/square/'.$squareName.'?mapState='+$mapState);
         }
     }
 
@@ -68,8 +67,6 @@ class SquaresController extends Controller
      */
     public function listForDataset(Request $request, string $siteName, string $refresh = '')
     {
-        Cookie::queue('siteName', $siteName);
-
         $currentPage = $this->getCurrentPage($request);
 
         $speciesNameType = $request->cookie('speciesNameType') ?? 'scientific';
