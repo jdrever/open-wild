@@ -3,9 +3,9 @@
 namespace App\Services;
 
 use App\Interfaces\QueryService;
+use App\Models\AutocompleteResult;
 use App\Models\OccurrenceResult;
 use App\Models\QueryResult;
-use App\Models\AutocompleteResult;
 
 class NbnQueryService implements QueryService
 {
@@ -142,10 +142,11 @@ class NbnQueryService implements QueryService
 
     public function getSpeciesNameAutocomplete(string $speciesName): AutocompleteResult
     {
-        $nbnQuery=new NbnQueryBuilder(NbnQueryBuilder::AUTOCOMPLETE_SEARCH);
+        $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::AUTOCOMPLETE_SEARCH);
         $nbnQueryUrl = $nbnQuery->url().'/?q='.$speciesName;
         $nbnQueryResponse = $this->callNbnApi($nbnQueryUrl);
-        $queryResult=$this->createAutocompleteResult($nbnQueryResponse, $nbnQueryUrl);
+        $queryResult = $this->createAutocompleteResult($nbnQueryResponse, $nbnQueryUrl);
+
         return $queryResult;
     }
 
