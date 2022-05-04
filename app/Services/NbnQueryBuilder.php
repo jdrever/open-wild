@@ -18,6 +18,8 @@ class NbnQueryBuilder
     const OCCURRENCE = '/occurrence';
     const OCCURRENCE_DOWNLOAD = 'occurrences/index/download';
 
+    const AUTOCOMPLETE_SEARCH = '/autocomplete/search';
+
     const SCIENTIFIC_NAME = 'taxon_name';
 
     const SORT_BY_YEAR = 'year';

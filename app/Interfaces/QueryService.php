@@ -4,6 +4,7 @@ namespace App\Interfaces;
 
 use App\Models\OccurrenceResult;
 use App\Models\QueryResult;
+use App\Models\AutocompleteResult;
 
 interface QueryService
 {
@@ -22,4 +23,6 @@ interface QueryService
     public function getSpeciesListForSquare(string $gridSquare, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage): QueryResult;
 
     public function getSingleSpeciesRecordsForSquare(string $gridSquare, string $speciesName, int $currentPage): QueryResult;
+
+    public function getSpeciesNameAutocomplete(string $speciesName) : AutocompleteResult;
 }

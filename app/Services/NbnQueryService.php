@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Interfaces\QueryService;
 use App\Models\OccurrenceResult;
 use App\Models\QueryResult;
+use App\Models\AutocompleteResult;
 
 class NbnQueryService implements QueryService
 {
@@ -139,6 +140,15 @@ class NbnQueryService implements QueryService
         return $queryResult;
     }
 
+    public function getSpeciesNameAutocomplete(string $speciesName): AutocompleteResult
+    {
+        $nbnQuery=new NbnQueryBuilder(NbnQueryBuilder::AUTOCOMPLETE_SEARCH);
+        $nbnQueryUrl = $nbnQuery->url().'/?q='.$speciesName;
+        $nbnQueryResponse = $this->callNbnApi($nbnQueryUrl);
+        $queryResult=$this->createAutocompleteResult($nbnQueryResponse, $nbnQueryUrl);
+        return $queryResult;
+    }
+
     private function getPagedQueryResult(NBNQueryBuilder $nbnQuery, int $currentPage)
     {
         $nbnQuery->currentPage = $currentPage;
@@ -220,6 +230,20 @@ class NbnQueryService implements QueryService
         $occurrenceResult->downloadLink = $nbnQuery->getSingleRecordDownloadQueryString($occurrenceResult->recordId);
 
         return $occurrenceResult;
+    }
+
+    private function createAutocompleteResult(NbnApiResponse $nbnApiResponse, string $queryUrl)
+    {
+        $queryResult = new AutocompleteResult();
+        $queryResult->status = $nbnApiResponse->status;
+        $queryResult->message = $nbnApiResponse->message;
+        $queryResult->queryUrl = $queryUrl;
+
+        if ($nbnApiResponse->status) {
+            $queryResult->records = $nbnApiResponse->getRecords(NbnQueryBuilder::AUTOCOMPLETE_SEARCH);
+        }
+
+        return $queryResult;
     }
 
     private function prepareSingleSpeciesRecords($records)

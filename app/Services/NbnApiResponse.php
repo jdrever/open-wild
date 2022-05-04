@@ -57,6 +57,11 @@ class NbnApiResponse
             return $this->jsonResponse;
         }
 
+        if ($searchType==NbnQueryBuilder::AUTOCOMPLETE_SEARCH)
+        {
+            return $this->jsonResponse->searchResults->results;
+        }
+
         return [];
     }
 
