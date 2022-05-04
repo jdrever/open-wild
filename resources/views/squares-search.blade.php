@@ -36,7 +36,8 @@
 <script src="https://d3js.org/d3.v5.min.js"></script>
 
 <h2 class="text-start text-md-center">Search for a Square in {{ env('AREA') }}</h2>
-
+<div class="row mb-2">
+    <div class="col-lg-8 mx-auto">
 <p id="selection"> Zoom in to select a 1km square </p>
 
 <div id="map"></div>
@@ -142,5 +143,8 @@
     	this.stream.point(point.x, point.y)
     }
 </script>
+
+    </div>
+</div>
 
 </x-layout>
