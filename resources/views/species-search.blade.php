@@ -14,6 +14,7 @@ function getUpdateUrl(pageNumber)
 }
 </script>
 
+<livewire:species-autocomplete />
 
 <h2 class="text-start text-md-center">Search for a Species in {{ env('AREA') }}</h2>
 
