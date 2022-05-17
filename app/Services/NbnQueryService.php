@@ -244,8 +244,8 @@ class NbnQueryService implements QueryService
             $nbnApiRecords = $nbnApiResponse->getRecords(NbnQueryBuilder::AUTOCOMPLETE_SEARCH);
             $records = [];
             foreach ($nbnApiRecords as $record) {
-                $speciesNameType=isset($record->commonName) ? "Common Name" : "Scientific Name";
-                $records[] = $speciesNameType . ": " . $record->matchedNames[0];
+                $speciesNameType = isset($record->commonName) ? 'Common Name' : 'Scientific Name';
+                $records[] = $speciesNameType.': '.$record->matchedNames[0];
             }
             $queryResult->records = $records;
         }
