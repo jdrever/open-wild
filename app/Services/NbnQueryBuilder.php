@@ -231,7 +231,7 @@ class NbnQueryBuilder
         return $queryString;
     }
 
-       /**
+    /**
      * Return the query string for downloading the data.
      *
      * @return string
@@ -505,8 +505,6 @@ class NbnQueryBuilder
 
         return $this;
     }
-
-
 
     /**
      * Deals with multi-word search terms and prepares
