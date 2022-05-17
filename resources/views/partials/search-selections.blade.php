@@ -1,13 +1,13 @@
 <div class="row justify-content-center gy-3">
 	<div class="form-group col-sm-4 col-lg-3">
 		<div class="form-check">
-			<input class="form-check-input" type="radio" name="speciesNameType" id="speciesNameType" value="scientific" onchange="updateDataset(1);" {{ ($speciesNameType=="scientific")? "checked" : "" }} />
+			<input class="form-check-input" type="radio" name="speciesNameType" id="speciesNameTypeScientific" value="scientific" onchange="updateDataset(1);" {{ ($speciesNameType=="scientific")? "checked" : "" }} />
 			<label class="form-check-label" for="scientific-name">
 				scientific<span class="d-none d-lg-inline"> name only</span>
 			</label>
 		</div>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" name="speciesNameType" id="speciesNameType" value="common"  onchange="updateDataset(1);" {{ ($speciesNameType=="common")? "checked" : "" }} />
+			<input class="form-check-input" type="radio" name="speciesNameType" id="speciesNameTypeCommon" value="common"  onchange="updateDataset(1);" {{ ($speciesNameType=="common")? "checked" : "" }} />
 			<label class="form-check-label" for="common-name">
 				common<span class="d-none d-lg-inline"> name only</span>
 			</label>
