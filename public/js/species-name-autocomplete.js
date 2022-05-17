@@ -1,6 +1,5 @@
 let speciesName=document.getElementById("speciesName");
 let speciesNameAutocomplete=document.getElementById("speciesNameAutocompleteList");
-console.log(speciesName);
 
 speciesName.oninput = function () {
 
@@ -27,7 +26,6 @@ speciesName.oninput = function () {
             return response.text();
         }).then(function (html) {
         speciesNameAutocomplete.innerHTML =html;
-        speciesName.setAttribute('list','speciesNameAutocompleteList');
     }).catch(function (err) {
         // There was an error
         console.warn('Something went wrong.', err);

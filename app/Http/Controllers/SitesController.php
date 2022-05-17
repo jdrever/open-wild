@@ -80,4 +80,14 @@ class SitesController extends Controller
             'results' =>$results,
         ]);
     }
+
+    public function getSiteNameAutoComplete($siteName)
+    {
+        $results = $this->queryService->getSiteNameAutoComplete($siteName);
+
+        return view('partials/search-autocomplete',
+        [
+            'results' =>$results,
+        ]);
+    }
 }

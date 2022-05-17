@@ -25,4 +25,6 @@ interface QueryService
     public function getSingleSpeciesRecordsForSquare(string $gridSquare, string $speciesName, int $currentPage): QueryResult;
 
     public function getSpeciesNameAutocomplete(string $speciesName): AutocompleteResult;
+
+    public function getSiteNameAutocomplete(string $siteName): AutocompleteResult;
 }

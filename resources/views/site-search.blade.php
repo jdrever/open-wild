@@ -18,7 +18,9 @@
         <div class="col-lg-8 mx-auto">
             <label for="search" class="form-label visually-hidden">Site name</label>
             <div class="input-group">
-                <input type="text" class="form-control" name="siteName" id="siteName" aria-describedby="search-help" placeholder="Enter a site" value="{{ $siteName }}" />
+                <input type="text" class="form-control" name="siteName" id="siteName" aria-describedby="search-help" placeholder="Enter a site" value="{{ $siteName }}" list="siteNameAutocompleteList"/>
+                <datalist id="siteNameAutocompleteList" name="siteNameAutocompleteList">
+                </datalist>
                 <button type="submit" class="btn btn-primary" onclick="return updateDataset(1);">List Sites</button>
             </div>
             <small id="search-help" class="form-text text-start text-md-center d-block">Enter all or part of a site name. Try something like "Aston".</small>
@@ -31,8 +33,7 @@
 </div>
 
 
-
-
+<script type="text/javascript" src="/js/site-name-autocomplete.js"></script>
 
 </x-layout>
 

@@ -145,10 +145,22 @@ class NbnQueryService implements QueryService
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::AUTOCOMPLETE_SEARCH);
         $nbnQueryUrl = $nbnQuery->getAutocompleteQueryString($speciesName);
         $nbnQueryResponse = $this->callNbnApi($nbnQueryUrl);
-        $queryResult = $this->createAutocompleteResult($nbnQueryResponse, $nbnQueryUrl);
-
+        $queryResult = $this->createSpeciesNameAutocompleteResult($nbnQueryResponse, $nbnQueryUrl);
         return $queryResult;
     }
+
+    public function getSiteNameAutocomplete(string $siteName): AutocompleteResult
+    {
+        $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
+        $nbnQuery->addWildcardLocationParamter($siteName);
+        $nbnQuery->addSpeciesGroup('Both');
+        $nbnQuery->pageSize=10;
+        $nbnQueryUrl = $nbnQuery->getUnpagedQueryString();
+        $nbnQueryResponse = $this->callNbnApi($nbnQueryUrl);
+        $queryResult = $this->createSiteNameAutocompleteResult($nbnQueryResponse, $nbnQueryUrl);
+        return $queryResult;
+    }
+
 
     private function getPagedQueryResult(NBNQueryBuilder $nbnQuery, int $currentPage)
     {
@@ -233,12 +245,9 @@ class NbnQueryService implements QueryService
         return $occurrenceResult;
     }
 
-    private function createAutocompleteResult(NbnApiResponse $nbnApiResponse, string $queryUrl)
+    private function createSpeciesNameAutocompleteResult(NbnApiResponse $nbnApiResponse, string $queryUrl)
     {
-        $queryResult = new AutocompleteResult();
-        $queryResult->status = $nbnApiResponse->status;
-        $queryResult->message = $nbnApiResponse->message;
-        $queryResult->queryUrl = $queryUrl;
+        $queryResult=$this->createAutoCompleteResult($nbnApiResponse,$queryUrl);
 
         if ($nbnApiResponse->status) {
             $nbnApiRecords = $nbnApiResponse->getRecords(NbnQueryBuilder::AUTOCOMPLETE_SEARCH);
@@ -251,6 +260,32 @@ class NbnQueryService implements QueryService
         }
 
         return $queryResult;
+    }
+
+    private function createSiteNameAutocompleteResult(NbnApiResponse $nbnApiResponse, string $queryUrl)
+    {
+        $queryResult=$this->createAutoCompleteResult($nbnApiResponse,$queryUrl);
+        if ($nbnApiResponse->status) {
+            $nbnApiRecords = $nbnApiResponse->getRecords(NbnQueryBuilder::OCCURRENCES_SEARCH);
+            //dd($nbnApiRecords);
+            $records = [];
+            foreach ($nbnApiRecords as $record) {
+                $records[] = $record->label;
+            }
+            $queryResult->records = $records;
+        }
+
+        return $queryResult;
+    }
+
+    private function createAutoCompleteResult(NbnApiResponse $nbnApiResponse, string $queryUrl) : AutocompleteResult
+    {
+        $queryResult = new AutocompleteResult();
+        $queryResult->status = $nbnApiResponse->status;
+        $queryResult->message = $nbnApiResponse->message;
+        $queryResult->queryUrl = $queryUrl;
+        return $queryResult;
+
     }
 
     private function prepareSingleSpeciesRecords($records)

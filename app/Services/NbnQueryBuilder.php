@@ -20,6 +20,7 @@ class NbnQueryBuilder
     const OCCURRENCE_DOWNLOAD = '/occurrences/index/download';
 
     const AUTOCOMPLETE_SEARCH = '/search/auto';
+    const AUTOCOMPLETE_OCCURRENCES_SEARCH = '/autocomplete/search';
 
     const SCIENTIFIC_NAME = 'taxon_name';
 
@@ -238,7 +239,7 @@ class NbnQueryBuilder
      */
     public function getAutocompleteQueryString($speciesName): string
     {
-        return $this::SPECIES_URL.$this->searchType.'/?q='.$this->prepareAutocompleteSearchString($speciesName, true);
+        return $this::SPECIES_URL.$this->searchType.'/?q='.$this->prepareAutocompleteSearchString($speciesName, true).'&idxType=TAXON';
     }
 
     /**
