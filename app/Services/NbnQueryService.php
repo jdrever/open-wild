@@ -241,7 +241,7 @@ class NbnQueryService implements QueryService
         $queryResult->queryUrl = $queryUrl;
 
         if ($nbnApiResponse->status) {
-            $nbnApiRecords=$nbnApiResponse->getRecords(NbnQueryBuilder::AUTOCOMPLETE_SEARCH);
+            $nbnApiRecords = $nbnApiResponse->getRecords(NbnQueryBuilder::AUTOCOMPLETE_SEARCH);
             $records = [];
             foreach ($nbnApiRecords as $record) {
                 $records[] = $record->matchedNames[0];
