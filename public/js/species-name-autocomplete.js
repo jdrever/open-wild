@@ -7,14 +7,14 @@ speciesName.oninput = function () {
     if (this.value.startsWith("Scientific Name:"))
     {
         document.getElementById('speciesNameTypeScientific').checked=true;
-        speciesName.value=this.value.replace("Scientific Name:","");
+        speciesName.value=this.value.replace("Scientific Name: ","");
         return;
     }
 
     if (this.value.startsWith("Common Name:"))
     {
         document.getElementById('speciesNameTypeCommon').checked=true;
-        speciesName.value=this.value.replace("Common Name:","");
+        speciesName.value=this.value.replace("Common Name: ","");
         return;
     }
     const userInput = encodeURIComponent(this.value);
