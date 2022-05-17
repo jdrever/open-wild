@@ -13,12 +13,13 @@ namespace App\Services;
 class NbnQueryBuilder
 {
     const BASE_URL = 'https://records-ws.nbnatlas.org';
+    const SPECIES_URL = 'https://species-ws.nbnatlas.org';
 
     const OCCURRENCES_SEARCH = '/occurrences/search';
     const OCCURRENCE = '/occurrence';
-    const OCCURRENCE_DOWNLOAD = 'occurrences/index/download';
+    const OCCURRENCE_DOWNLOAD = '/occurrences/index/download';
 
-    const AUTOCOMPLETE_SEARCH = '/autocomplete/search';
+    const AUTOCOMPLETE_SEARCH = '/search/auto';
 
     const SCIENTIFIC_NAME = 'taxon_name';
 
@@ -228,6 +229,16 @@ class NbnQueryBuilder
         $queryString .= '&reasonTypeId=11';
 
         return $queryString;
+    }
+
+       /**
+     * Return the query string for downloading the data.
+     *
+     * @return string
+     */
+    public function getAutocompleteQueryString($speciesName): string
+    {
+        return $this::SPECIES_URL.$this->searchType.'/?q='.$this->prepareAutocompleteSearchString($speciesName, true);
     }
 
     /**
@@ -495,6 +506,8 @@ class NbnQueryBuilder
         return $this;
     }
 
+
+
     /**
      * Deals with multi-word search terms and prepares
      * theme for use by the NBN API by adding ANDs and
@@ -515,6 +528,35 @@ class NbnQueryBuilder
             return '*'.rawurlencode($searchString).'*';
         }
         $preparedSearchString = $searchWords[0].'*';
+        unset($searchWords[0]);
+        foreach ($searchWords as $searchWord) {
+            $preparedSearchString .= '+AND+'.$searchWord;
+        }
+        $preparedSearchString = str_replace(' ', '+%2B', $preparedSearchString);
+
+        return $preparedSearchString;
+    }
+
+    /**
+     * Deals with multi-word search terms and prepares
+     * theme for use by the NBN API by adding ANDs and
+     * setting to all lower case.
+     *
+     * @param  string  $searchString  the search term to prepare
+     * @return string the prepared search search name
+     */
+    private function prepareAutocompleteSearchString(string $searchString, bool $isPartialName)
+    {
+        if (! $isPartialName) {
+            return '"'.rawurlencode($searchString).'"';
+        }
+
+        $searchString = ucfirst(strtolower($searchString));
+        $searchWords = explode(' ', $searchString);
+        if (count($searchWords) === 1) {
+            return rawurlencode($searchString);
+        }
+        $preparedSearchString = $searchWords[0];
         unset($searchWords[0]);
         foreach ($searchWords as $searchWord) {
             $preparedSearchString .= '+AND+'.$searchWord;

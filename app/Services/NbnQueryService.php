@@ -143,7 +143,7 @@ class NbnQueryService implements QueryService
     public function getSpeciesNameAutocomplete(string $speciesName): AutocompleteResult
     {
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::AUTOCOMPLETE_SEARCH);
-        $nbnQueryUrl = $nbnQuery->url().'/?q='.$speciesName;
+        $nbnQueryUrl = $nbnQuery->getAutocompleteQueryString($speciesName);
         $nbnQueryResponse = $this->callNbnApi($nbnQueryUrl);
         $queryResult = $this->createAutocompleteResult($nbnQueryResponse, $nbnQueryUrl);
 
@@ -241,7 +241,12 @@ class NbnQueryService implements QueryService
         $queryResult->queryUrl = $queryUrl;
 
         if ($nbnApiResponse->status) {
-            $queryResult->records = $nbnApiResponse->getRecords(NbnQueryBuilder::AUTOCOMPLETE_SEARCH);
+            $nbnApiRecords=$nbnApiResponse->getRecords(NbnQueryBuilder::AUTOCOMPLETE_SEARCH);
+            $records = [];
+            foreach ($nbnApiRecords as $record) {
+                $records[] = $record->matchedNames[0];
+            }
+            $queryResult->records = $records;
         }
 
         return $queryResult;

@@ -58,7 +58,7 @@ class NbnApiResponse
         }
 
         if ($searchType == NbnQueryBuilder::AUTOCOMPLETE_SEARCH) {
-            return $this->jsonResponse->searchResults->results;
+            return $this->jsonResponse->autoCompleteList;
         }
 
         return [];

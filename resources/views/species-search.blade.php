@@ -16,6 +16,7 @@ function getUpdateUrl(pageNumber)
 
 
 
+
 <h2 class="text-start text-md-center">Search for a Species in {{ env('AREA') }}</h2>
 
 <form action="/" action="post">
@@ -24,8 +25,10 @@ function getUpdateUrl(pageNumber)
 	<div class="col-lg-8 mx-auto">
 		<label for="search" class="form-label visually-hidden">Species name</label>
 		<div class="input-group">
-            <livewire:species-autocomplete />
-			<button type="submit" onclick="return updateDataset(1);" class="btn btn-primary">List Species</button>
+            <input type="text" id="speciesName" class="form-control" name="speciesName" aria-describedby="search-help" placeholder="Species name" value="{{ $speciesName }}" list="speciesNameAutocompleteList" autocomplete="off"/>
+            <datalist id="speciesNameAutocompleteList" name="speciesNameAutocompleteList">
+            </datalist>
+            <button type="submit" onclick="return updateDataset(1);" class="btn btn-primary">List Species</button>
 		</div>
 		<small id="search-help" class="form-text text-start text-md-center d-block">Enter all or part of a species name. Try something like "Hedera".</small>
 	</div>
@@ -38,4 +41,5 @@ function getUpdateUrl(pageNumber)
     @include('data-tables/species-in-dataset')
 </div>
 
+<script type="text/javascript" src="/js/species-name-autocomplete.js"></script>
 </x-layout>
