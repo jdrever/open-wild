@@ -13,11 +13,11 @@
 			<?php foreach ($results->records as $site) : ?>
 				<tr>
 					<td>
-						<a href="{{ '/site/' . $site->label . '/type/' . $speciesNameType . '/group/' . $speciesGroup .  '/axiophytes/' . $axiophyteFilter }}">
-							<?= $site->label ?>
+						<a href="{{ '/site/' . $site->name . '/type/' . $speciesNameType . '/group/' . $speciesGroup .  '/axiophytes/' . $axiophyteFilter }}">
+							<?= $site->name ?>
 						</a>
 					</td>
-					<td><?= $site->count ?></td>
+					<td><?= $site->recordCount ?></td>
 				</tr>
 			<?php endforeach ?>
 		</tbody>

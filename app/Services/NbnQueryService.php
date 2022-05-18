@@ -6,6 +6,7 @@ use App\Interfaces\QueryService;
 use App\Models\AutocompleteResult;
 use App\Models\OccurrenceResult;
 use App\Models\QueryResult;
+use App\Models\Site;
 use Illuminate\Support\Facades\Cache;
 
 class NbnQueryService implements QueryService
@@ -75,7 +76,28 @@ class NbnQueryService implements QueryService
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
 
+        $queryResult->records=$this->getSiteList($queryResult->records);
+
         return $queryResult;
+    }
+
+    /**
+     * Converts NBN record data into array of Site objects
+     *
+     * @param [type] $records
+     * @return iterable Site[]
+     */
+    private function getSiteList($records) : iterable
+    {
+        $sites = [];
+        foreach($records as $record)
+        {
+            $site = new Site();
+            $site->name=$record->label;
+            $site->recordCount=$record->count;
+            $sites[]=$site;
+        }
+        return $sites;
     }
 
     public function getSpeciesListForSite(string $siteName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage = 1): QueryResult
