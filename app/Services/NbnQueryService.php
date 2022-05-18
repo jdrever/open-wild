@@ -72,12 +72,10 @@ class NbnQueryService implements QueryService
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
 
-        $queryResult->records=$this->getSiteList($queryResult->records);
+        $queryResult->records = $this->getSiteList($queryResult->records);
 
         return $queryResult;
     }
-
-
 
     public function getSpeciesListForSite(string $siteName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage = 1): QueryResult
     {
