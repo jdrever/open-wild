@@ -51,7 +51,6 @@ class NbnQueryService implements QueryService
         $queryResult->sites = $this->prepareSites($queryResult->records);
         $queryResult->records = $this->getSingleSpeciesRecordList($queryResult->records);
 
-
         return $queryResult;
     }
 
