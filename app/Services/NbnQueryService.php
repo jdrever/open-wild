@@ -76,27 +76,27 @@ class NbnQueryService implements QueryService
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
 
-        $queryResult->records=$this->getSiteList($queryResult->records);
+        $queryResult->records = $this->getSiteList($queryResult->records);
 
         return $queryResult;
     }
 
     /**
-     * Converts NBN record data into array of Site objects
+     * Converts NBN record data into array of Site objects.
      *
      * @param [type] $records
      * @return iterable Site[]
      */
-    private function getSiteList($records) : iterable
+    private function getSiteList($records): iterable
     {
         $sites = [];
-        foreach($records as $record)
-        {
+        foreach ($records as $record) {
             $site = new Site();
-            $site->name=$record->label;
-            $site->recordCount=$record->count;
-            $sites[]=$site;
+            $site->name = $record->label;
+            $site->recordCount = $record->count;
+            $sites[] = $site;
         }
+
         return $sites;
     }
 
