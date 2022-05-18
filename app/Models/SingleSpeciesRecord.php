@@ -12,5 +12,4 @@ class SingleSpeciesRecord
     public string $decimalLatitude;
     public string $decimalLongitude;
     public string $speciesGuid;
-
 }
