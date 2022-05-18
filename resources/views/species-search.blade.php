@@ -1,22 +1,6 @@
 
 <x-layout>
 
-<script type="text/javascript" src="/js/update-dataset.js"></script>
-<script>
-function getUpdateUrl(pageNumber)
-{
-    let speciesName=document.getElementById("speciesName").value;
-    let speciesNameType=document.querySelector('input[name="speciesNameType"]:checked').value;
-    let speciesGroup=document.querySelector('input[name="speciesGroup"]:checked').value;
-    let axiophyteFilter=document.getElementById("axiophyteFilter").checked;
-    let updateUrl='/species/'+speciesName+'/type/'+speciesNameType+'/group/'+speciesGroup+'/axiophytes/'+axiophyteFilter+'/refresh?page='+pageNumber;
-    return updateUrl;
-}
-</script>
-
-
-
-
 <h2 class="text-start text-md-center">Search for a Species in {{ env('AREA') }}</h2>
 
 <form action="/" action="post">
@@ -42,4 +26,16 @@ function getUpdateUrl(pageNumber)
 </div>
 
 <script type="text/javascript" src="/js/species-name-autocomplete.js"></script>
+<script type="text/javascript" src="/js/update-dataset.js"></script>
+<script>
+function getUpdateUrl(pageNumber)
+{
+    let speciesName=document.getElementById("speciesName").value;
+    let speciesNameType=document.querySelector('input[name="speciesNameType"]:checked').value;
+    let speciesGroup=document.querySelector('input[name="speciesGroup"]:checked').value;
+    let axiophyteFilter=document.getElementById("axiophyteFilter").checked;
+    let updateUrl='/species/'+speciesName+'/type/'+speciesNameType+'/group/'+speciesGroup+'/axiophytes/'+axiophyteFilter+'/refresh?page='+pageNumber;
+    return updateUrl;
+}
+</script>
 </x-layout>
