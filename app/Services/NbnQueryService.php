@@ -9,12 +9,10 @@ use App\Models\QueryResult;
 use App\Models\Site;
 use App\Models\Species;
 
-
 class NbnQueryService implements QueryService
 {
     public function getSpeciesListForDataset(string $speciesName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage = 1): QueryResult
     {
-
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
 
         $nbnQuery
@@ -25,7 +23,7 @@ class NbnQueryService implements QueryService
         }
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
-        $queryResult->records=$this->getSpeciesList($queryResult->records, $speciesNameType);
+        $queryResult->records = $this->getSpeciesList($queryResult->records, $speciesNameType);
 
         return $queryResult;
     }
@@ -92,12 +90,10 @@ class NbnQueryService implements QueryService
         }
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
-        $queryResult->records=$this->getSpeciesList($queryResult->records, $speciesNameType);
+        $queryResult->records = $this->getSpeciesList($queryResult->records, $speciesNameType);
 
         return $queryResult;
     }
-
-
 
     public function getSingleSpeciesRecordsForSite(string $siteName, string $speciesName, int $currentPage = 1): QueryResult
     {
@@ -130,7 +126,7 @@ class NbnQueryService implements QueryService
         }
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
-        $queryResult->records=$this->getSpeciesList($queryResult->records, $speciesNameType);
+        $queryResult->records = $this->getSpeciesList($queryResult->records, $speciesNameType);
 
         return $queryResult;
     }
@@ -301,52 +297,50 @@ class NbnQueryService implements QueryService
     }
 
     /**
-     * Converts NBN record data into array of Species objects
+     * Converts NBN record data into array of Species objects.
      *
      * @param [type] $records
      * @return iterable Species[]
      */
-    private function getSpeciesList($records, $speciesNameType) : iterable
+    private function getSpeciesList($records, $speciesNameType): iterable
     {
         $speciesList = [];
-        foreach($records as $record)
-        {
+        foreach ($records as $record) {
             $species = new Species();
-            $speciesArray = explode('|', (string)$record->label);
-            if ($speciesNameType=='scientific')
-            {
-                $species->family=$speciesArray[4];
-                $species->scientificName=$speciesArray[0];
-                $species->commonName=$speciesArray[2];
+            $speciesArray = explode('|', (string) $record->label);
+            if ($speciesNameType == 'scientific') {
+                $species->family = $speciesArray[4];
+                $species->scientificName = $speciesArray[0];
+                $species->commonName = $speciesArray[2];
             }
-            if ($speciesNameType=='common')
-            {
-                $species->family=$speciesArray[5];
-                $species->scientificName=$speciesArray[1];
-                $species->commonName=$speciesArray[0];
+            if ($speciesNameType == 'common') {
+                $species->family = $speciesArray[5];
+                $species->scientificName = $speciesArray[1];
+                $species->commonName = $speciesArray[0];
             }
-            $species->recordCount=$record->count;
-            $speciesList[]=$species;
+            $species->recordCount = $record->count;
+            $speciesList[] = $species;
         }
+
         return $speciesList;
     }
 
     /**
-     * Converts NBN record data into array of Site objects
+     * Converts NBN record data into array of Site objects.
      *
      * @param [type] $records
      * @return iterable Site[]
      */
-    private function getSiteList($records) : iterable
+    private function getSiteList($records): iterable
     {
         $siteList = [];
-        foreach($records as $record)
-        {
+        foreach ($records as $record) {
             $site = new Site();
-            $site->name=$record->label;
-            $site->recordCount=$record->count;
-            $siteList[]=$site;
+            $site->name = $record->label;
+            $site->recordCount = $record->count;
+            $siteList[] = $site;
         }
+
         return $siteList;
     }
 
