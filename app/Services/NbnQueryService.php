@@ -6,11 +6,16 @@ use App\Interfaces\QueryService;
 use App\Models\AutocompleteResult;
 use App\Models\OccurrenceResult;
 use App\Models\QueryResult;
+use Illuminate\Support\Facades\Cache;
 
 class NbnQueryService implements QueryService
 {
     public function getSpeciesListForDataset(string $speciesName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage = 1): QueryResult
     {
+        $cacheKey='getSpeciesListForDataset:' . $speciesName .'-'. $speciesNameType  .'-'. $speciesGroup  .'-'.  $axiophyteFilter  .'-'.  $currentPage;
+        if (Cache::has($cacheKey))
+            return Cache::get($cacheKey);
+
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
 
         $nbnQuery
@@ -21,6 +26,8 @@ class NbnQueryService implements QueryService
         }
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
+
+        Cache::put($cacheKey, $queryResult);
 
         return $queryResult;
     }
@@ -59,7 +66,7 @@ class NbnQueryService implements QueryService
         return $occurrenceResult;
     }
 
-    public function getSiteListForDataset(string $siteName, int $currentPage): QueryResult
+    public function getSiteListForDataset(string $siteName, int $currentPage = 1): QueryResult
     {
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
         $nbnQuery->addWildcardLocationParamter($siteName);
@@ -70,7 +77,7 @@ class NbnQueryService implements QueryService
         return $queryResult;
     }
 
-    public function getSpeciesListForSite(string $siteName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage): QueryResult
+    public function getSpeciesListForSite(string $siteName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage = 1): QueryResult
     {
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
 
@@ -89,7 +96,7 @@ class NbnQueryService implements QueryService
         return $queryResult;
     }
 
-    public function getSingleSpeciesRecordsForSite($siteName, $speciesName, $currentPage): QueryResult
+    public function getSingleSpeciesRecordsForSite(string $siteName, string $speciesName, int $currentPage = 1): QueryResult
     {
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
         $nbnQuery
@@ -105,7 +112,7 @@ class NbnQueryService implements QueryService
         return $queryResult;
     }
 
-    public function getSpeciesListForSquare(string $gridSquare, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage): QueryResult
+    public function getSpeciesListForSquare(string $gridSquare, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage = 1): QueryResult
     {
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
 
@@ -124,7 +131,7 @@ class NbnQueryService implements QueryService
         return $queryResult;
     }
 
-    public function getSingleSpeciesRecordsForSquare($gridSquare, $speciesName, $currentPage): QueryResult
+    public function getSingleSpeciesRecordsForSquare(string $gridSquare, string $speciesName, int $currentPage = 1 ): QueryResult
     {
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
         $nbnQuery
