@@ -365,7 +365,10 @@ class NbnQueryService implements QueryService
             $speciesRecord->site = $record->locationId;
             $speciesRecord->square = $record->gridReference;
             $speciesRecord->collector = $record->collector;
+            $speciesRecord->decimalLongitude = $record->decimalLongitude;
+            $speciesRecord->decimalLatitude = $record->decimalLatitude;
             $speciesRecord->year = $record->year;
+            $speciesRecord->speciesGuid = $record->speciesGuid;
             $speciesRecordList[] = $speciesRecord;
         }
 

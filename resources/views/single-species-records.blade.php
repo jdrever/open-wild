@@ -71,7 +71,7 @@
 
 	// Make a dot map layer
 	const wmsUrl = "https://records-ws.nbnatlas.org/mapping/wms/reflect?" +
-		"Q=lsid:{{ $speciesGuid }}" +
+		"Q=lsid:{{ $results->records[0]->speciesGuid }}" +
 		"&ENV=colourmode:osgrid;color:ffff00;name:circle;size:4;opacity:0.5;" +
 		"gridlabels:true;gridres:singlegrid" +
 		"&fq=data_resource_uid:dr782";
@@ -98,10 +98,10 @@
 			fillOpacity: .75
 		});
 
-		marker.uuid = record.uuid;
+		marker.uuid = record.recordId;
 
 		marker.bindPopup(`
-			${record.locationId} (${record.gridReference})<br>
+			${record.site} (${record.square})<br>
 			${record.collector}<br>
 		`);
 
@@ -141,7 +141,7 @@
 @endif
 
 @include('partials/nbn-query')
-
+<script type="text/javascript" src="/js/update-dataset.js"></script>
 
 
 

@@ -9,4 +9,8 @@ class SingleSpeciesRecord
     public string $square;
     public string $collector;
     public string $year;
+    public string $decimalLatitude;
+    public string $decimalLongitude;
+    public string $speciesGuid;
+
 }

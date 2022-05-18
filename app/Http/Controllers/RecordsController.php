@@ -51,15 +51,12 @@ class RecordsController extends Controller
         $speciesGroup = Cookie::get('speciesGroup') ?? 'plants';
         $axiophyteFilter = Cookie::get('axiophyteFilter') ?? 'false';
 
-        $speciesGuid = isset($results->records[0]->speciesGuid) ? $results->records[0]->speciesGuid : '';
-
         return view('single-species-records',
         [
             'speciesName' => $speciesName,
             'speciesNameType' => $speciesNameType,
             'speciesGroup' => $speciesGroup,
             'axiophyteFilter' => $axiophyteFilter,
-            'speciesGuid' => $speciesGuid,
             'speciesNameSearchedFor' => $speciesNameSearchedFor,
             'speciesNameToDisplay' => $speciesNameToDisplay,
             'results' =>$results,
