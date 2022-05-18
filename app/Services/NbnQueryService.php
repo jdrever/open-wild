@@ -12,9 +12,10 @@ class NbnQueryService implements QueryService
 {
     public function getSpeciesListForDataset(string $speciesName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage = 1): QueryResult
     {
-        $cacheKey='getSpeciesListForDataset:' . $speciesName .'-'. $speciesNameType  .'-'. $speciesGroup  .'-'.  $axiophyteFilter  .'-'.  $currentPage;
-        if (Cache::has($cacheKey))
+        $cacheKey = 'getSpeciesListForDataset:'.$speciesName.'-'.$speciesNameType.'-'.$speciesGroup.'-'.$axiophyteFilter.'-'.$currentPage;
+        if (Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
+        }
 
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
 
@@ -131,7 +132,7 @@ class NbnQueryService implements QueryService
         return $queryResult;
     }
 
-    public function getSingleSpeciesRecordsForSquare(string $gridSquare, string $speciesName, int $currentPage = 1 ): QueryResult
+    public function getSingleSpeciesRecordsForSquare(string $gridSquare, string $speciesName, int $currentPage = 1): QueryResult
     {
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
         $nbnQuery

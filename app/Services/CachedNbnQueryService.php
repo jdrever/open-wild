@@ -12,12 +12,13 @@ class CachedNbnQueryService implements QueryService
 {
     public function getSpeciesListForDataset(string $speciesName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage = 1): QueryResult
     {
-        $cacheKey='getSpeciesListForDataset:' . $speciesName .'-'. $speciesNameType  .'-'. $speciesGroup  .'-'.  $axiophyteFilter  .'-'.  $currentPage;
-        if (env('CACHING')&&Cache::has($cacheKey))
+        $cacheKey = 'getSpeciesListForDataset:'.$speciesName.'-'.$speciesNameType.'-'.$speciesGroup.'-'.$axiophyteFilter.'-'.$currentPage;
+        if (env('CACHING') && Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
+        }
 
         $nbnQueryService = new NbnQueryService();
-        $queryResult=$nbnQueryService->getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
+        $queryResult = $nbnQueryService->getSpeciesListForDataset($speciesName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
 
         Cache::put($cacheKey, $queryResult);
 
@@ -33,12 +34,13 @@ class CachedNbnQueryService implements QueryService
      */
     public function getSingleSpeciesRecordsForDataset(string $speciesName, int $currentPage = 1): QueryResult
     {
-        $cacheKey='getSingleSpeciesRecordsForDataset:' . $speciesName .'-'. $currentPage;
-        if (env('CACHING')&&Cache::has($cacheKey))
+        $cacheKey = 'getSingleSpeciesRecordsForDataset:'.$speciesName.'-'.$currentPage;
+        if (env('CACHING') && Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
+        }
 
         $nbnQueryService = new NbnQueryService();
-        $queryResult=$nbnQueryService->getSingleSpeciesRecordsForDataset($speciesName,$currentPage);
+        $queryResult = $nbnQueryService->getSingleSpeciesRecordsForDataset($speciesName, $currentPage);
 
         Cache::put($cacheKey, $queryResult);
 
@@ -47,40 +49,43 @@ class CachedNbnQueryService implements QueryService
 
     public function getSingleOccurenceRecord(string $uuid): OccurrenceResult
     {
-        $cacheKey='getSingleOccurenceRecord:' . $uuid;
-        if (env('CACHING')&&Cache::has($cacheKey))
+        $cacheKey = 'getSingleOccurenceRecord:'.$uuid;
+        if (env('CACHING') && Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
+        }
 
         $nbnQueryService = new NbnQueryService();
-        $queryResult=$nbnQueryService->getSingleOccurenceRecord($uuid);
+        $queryResult = $nbnQueryService->getSingleOccurenceRecord($uuid);
 
         Cache::put($cacheKey, $queryResult);
 
         return $queryResult;
     }
 
-    public function getSiteListForDataset(string $siteName, int $currentPage=1): QueryResult
+    public function getSiteListForDataset(string $siteName, int $currentPage = 1): QueryResult
     {
-        $cacheKey='getSiteListForDataset:' . $siteName . '-' . $currentPage;
-        if (env('CACHING')&&Cache::has($cacheKey))
+        $cacheKey = 'getSiteListForDataset:'.$siteName.'-'.$currentPage;
+        if (env('CACHING') && Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
+        }
 
         $nbnQueryService = new NbnQueryService();
-        $queryResult=$nbnQueryService->getSiteListForDataset($siteName, $currentPage);
+        $queryResult = $nbnQueryService->getSiteListForDataset($siteName, $currentPage);
 
         Cache::put($cacheKey, $queryResult);
 
         return $queryResult;
     }
 
-    public function getSpeciesListForSite(string $siteName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage=1): QueryResult
+    public function getSpeciesListForSite(string $siteName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage = 1): QueryResult
     {
-        $cacheKey='getSpeciesListForSite:' . $siteName . '-' . $speciesNameType . '-' . $speciesGroup . '-' . $axiophyteFilter . '-' . $currentPage;
-        if (env('CACHING')&&Cache::has($cacheKey))
+        $cacheKey = 'getSpeciesListForSite:'.$siteName.'-'.$speciesNameType.'-'.$speciesGroup.'-'.$axiophyteFilter.'-'.$currentPage;
+        if (env('CACHING') && Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
+        }
 
         $nbnQueryService = new NbnQueryService();
-        $queryResult=$nbnQueryService->getSpeciesListForSite($siteName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
+        $queryResult = $nbnQueryService->getSpeciesListForSite($siteName, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
 
         Cache::put($cacheKey, $queryResult);
 
@@ -89,40 +94,43 @@ class CachedNbnQueryService implements QueryService
 
     public function getSingleSpeciesRecordsForSite(string $siteName, string $speciesName, int $currentPage): QueryResult
     {
-        $cacheKey='getSingleSpeciesRecordsForSite:' . $siteName . '-' . $speciesName . '-' . $currentPage;
-        if (env('CACHING')&&Cache::has($cacheKey))
+        $cacheKey = 'getSingleSpeciesRecordsForSite:'.$siteName.'-'.$speciesName.'-'.$currentPage;
+        if (env('CACHING') && Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
+        }
 
         $nbnQueryService = new NbnQueryService();
-        $queryResult=$nbnQueryService->getSingleSpeciesRecordsForSite($siteName, $speciesName, $currentPage);
+        $queryResult = $nbnQueryService->getSingleSpeciesRecordsForSite($siteName, $speciesName, $currentPage);
 
         Cache::put($cacheKey, $queryResult);
 
         return $queryResult;
     }
 
-    public function getSpeciesListForSquare(string $gridSquare, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage=1): QueryResult
+    public function getSpeciesListForSquare(string $gridSquare, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage = 1): QueryResult
     {
-        $cacheKey='getSpeciesListForSquare:' . $gridSquare . '-' . $speciesNameType . '-' . $speciesGroup . '-' . $axiophyteFilter . '-' . $currentPage;
-        if (env('CACHING')&&Cache::has($cacheKey))
+        $cacheKey = 'getSpeciesListForSquare:'.$gridSquare.'-'.$speciesNameType.'-'.$speciesGroup.'-'.$axiophyteFilter.'-'.$currentPage;
+        if (env('CACHING') && Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
+        }
 
         $nbnQueryService = new NbnQueryService();
-        $queryResult=$nbnQueryService->getSpeciesListForSquare($gridSquare, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
+        $queryResult = $nbnQueryService->getSpeciesListForSquare($gridSquare, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
 
         Cache::put($cacheKey, $queryResult);
 
         return $queryResult;
     }
 
-    public function getSingleSpeciesRecordsForSquare(string $gridSquare, string $speciesName, int $currentPage=1): QueryResult
+    public function getSingleSpeciesRecordsForSquare(string $gridSquare, string $speciesName, int $currentPage = 1): QueryResult
     {
-        $cacheKey='getSingleSpeciesRecordsForSquare:' . $gridSquare . '-' . $speciesName . '-' . $currentPage;
-        if (env('CACHING')&&Cache::has($cacheKey))
+        $cacheKey = 'getSingleSpeciesRecordsForSquare:'.$gridSquare.'-'.$speciesName.'-'.$currentPage;
+        if (env('CACHING') && Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
+        }
 
         $nbnQueryService = new NbnQueryService();
-        $queryResult=$nbnQueryService->getSingleSpeciesRecordsForSquare($gridSquare, $speciesName, $currentPage);
+        $queryResult = $nbnQueryService->getSingleSpeciesRecordsForSquare($gridSquare, $speciesName, $currentPage);
 
         Cache::put($cacheKey, $queryResult);
 
@@ -131,12 +139,13 @@ class CachedNbnQueryService implements QueryService
 
     public function getSpeciesNameAutocomplete(string $speciesName): AutocompleteResult
     {
-        $cacheKey='getSpeciesNameAutocomplete:' . $speciesName;
-        if (env('CACHING')&&Cache::has($cacheKey))
+        $cacheKey = 'getSpeciesNameAutocomplete:'.$speciesName;
+        if (env('CACHING') && Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
+        }
 
         $nbnQueryService = new NbnQueryService();
-        $queryResult=$nbnQueryService->getSpeciesNameAutocomplete($speciesName);
+        $queryResult = $nbnQueryService->getSpeciesNameAutocomplete($speciesName);
 
         Cache::put($cacheKey, $queryResult);
 
@@ -145,12 +154,13 @@ class CachedNbnQueryService implements QueryService
 
     public function getSiteNameAutocomplete(string $siteName): AutocompleteResult
     {
-        $cacheKey='getSiteNameAutocomplete:' . $siteName;
-        if (env('CACHING')&&Cache::has($cacheKey))
+        $cacheKey = 'getSiteNameAutocomplete:'.$siteName;
+        if (env('CACHING') && Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
+        }
 
         $nbnQueryService = new NbnQueryService();
-        $queryResult=$nbnQueryService->getSiteNameAutocomplete($siteName);
+        $queryResult = $nbnQueryService->getSiteNameAutocomplete($siteName);
 
         Cache::put($cacheKey, $queryResult);
 
