@@ -5,7 +5,7 @@ namespace App\Models;
 class QueryResult
 {
     //TODO: specifiy type (can be object or array)
-    public $records;
+    public iterable $records;
     public $sites;
     public ?array $siteLocation;
     public string $downloadLink;

@@ -14,23 +14,13 @@
     </thead>
     <tbody>
         <?php foreach ($results->records as $species) { ?>
-            <?php $speciesArray = explode('|', (string)$species->label); ?>
             <tr>
-            <?php if ($speciesNameType === 'scientific') { ?>
-                <td class="d-none d-md-table-cell"><?= $speciesArray[4] ?></td>
-                <td><a href="{{ '/species/' . $speciesArray[0] . '?page=1' }}">{{ $speciesArray[0] }}</a></td>
+                <td class="d-none d-md-table-cell">{{ $species->family }}</td>
+                <td><a href="{{ '/species/' . $species->scientificName . '?page=1' }}">{{ $species->scientificName }}</a></td>
                 <td class="d-none d-sm-table-cell">
-                    <a href="{{ '/species/' . $speciesArray[0] . '?page=1&speciesNameToDisplay=' . $speciesArray[2] }}">{{ $speciesArray[2] }}</a>
+                    <a href="{{ '/species/' . $species->scientificName . '?page=1&speciesNameToDisplay=' . $species->commonName }}">{{ $species->commonName }}</a>
                 </td>
-            <?php } ?>
-            <?php if ($speciesNameType === 'common') { ?>
-                <td class="d-none d-md-table-cell"><?= $speciesArray[5] ?></td>
-                <td class="d-none d-sm-table-cell"><a href="{{ '/species/' . $speciesArray[1] . '?page=1' }}">{{ $speciesArray[1] }}</a></td>
-                <td>
-                    <a href="{{ urldecode('/species/' . $speciesArray[1] . '?page=1&speciesNameToDisplay=' . $speciesArray[0]) }}">{{ $speciesArray[0] }}</a>
-                </td>
-            <?php } ?>
-                <td><?= $species->count ?></td>
+                <td>{{ $species->recordCount }}</td>
             </tr>
         <?php } ?>
     </tbody>

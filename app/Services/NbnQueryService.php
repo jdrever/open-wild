@@ -7,16 +7,13 @@ use App\Models\AutocompleteResult;
 use App\Models\OccurrenceResult;
 use App\Models\QueryResult;
 use App\Models\Site;
-use Illuminate\Support\Facades\Cache;
+use App\Models\Species;
+
 
 class NbnQueryService implements QueryService
 {
     public function getSpeciesListForDataset(string $speciesName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage = 1): QueryResult
     {
-        $cacheKey = 'getSpeciesListForDataset:'.$speciesName.'-'.$speciesNameType.'-'.$speciesGroup.'-'.$axiophyteFilter.'-'.$currentPage;
-        if (Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
-        }
 
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCES_SEARCH);
 
@@ -28,8 +25,7 @@ class NbnQueryService implements QueryService
         }
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
-
-        Cache::put($cacheKey, $queryResult);
+        $queryResult->records=$this->getSpeciesList($queryResult->records, $speciesNameType);
 
         return $queryResult;
     }
@@ -81,24 +77,7 @@ class NbnQueryService implements QueryService
         return $queryResult;
     }
 
-    /**
-     * Converts NBN record data into array of Site objects
-     *
-     * @param [type] $records
-     * @return iterable Site[]
-     */
-    private function getSiteList($records) : iterable
-    {
-        $sites = [];
-        foreach($records as $record)
-        {
-            $site = new Site();
-            $site->name=$record->label;
-            $site->recordCount=$record->count;
-            $sites[]=$site;
-        }
-        return $sites;
-    }
+
 
     public function getSpeciesListForSite(string $siteName, string $speciesNameType, string $speciesGroup, string $axiophyteFilter, int $currentPage = 1): QueryResult
     {
@@ -115,9 +94,12 @@ class NbnQueryService implements QueryService
         }
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
+        $queryResult->records=$this->getSpeciesList($queryResult->records, $speciesNameType);
 
         return $queryResult;
     }
+
+
 
     public function getSingleSpeciesRecordsForSite(string $siteName, string $speciesName, int $currentPage = 1): QueryResult
     {
@@ -150,6 +132,7 @@ class NbnQueryService implements QueryService
         }
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
+        $queryResult->records=$this->getSpeciesList($queryResult->records, $speciesNameType);
 
         return $queryResult;
     }
@@ -317,6 +300,56 @@ class NbnQueryService implements QueryService
         $queryResult->queryUrl = $queryUrl;
 
         return $queryResult;
+    }
+
+    /**
+     * Converts NBN record data into array of Species objects
+     *
+     * @param [type] $records
+     * @return iterable Species[]
+     */
+    private function getSpeciesList($records, $speciesNameType) : iterable
+    {
+        $speciesList = [];
+        foreach($records as $record)
+        {
+            $species = new Species();
+            $speciesArray = explode('|', (string)$record->label);
+            if ($speciesNameType=='scientific')
+            {
+                $species->family=$speciesArray[4];
+                $species->scientificName=$speciesArray[0];
+                $species->commonName=$speciesArray[2];
+            }
+            if ($speciesNameType=='common')
+            {
+                $species->family=$speciesArray[5];
+                $species->scientificName=$speciesArray[1];
+                $species->commonName=$speciesArray[0];
+            }
+            $species->recordCount=$record->count;
+            $speciesList[]=$species;
+        }
+        return $speciesList;
+    }
+
+    /**
+     * Converts NBN record data into array of Site objects
+     *
+     * @param [type] $records
+     * @return iterable Site[]
+     */
+    private function getSiteList($records) : iterable
+    {
+        $siteList = [];
+        foreach($records as $record)
+        {
+            $site = new Site();
+            $site->name=$record->label;
+            $site->recordCount=$record->count;
+            $siteList[]=$site;
+        }
+        return $siteList;
     }
 
     private function prepareSingleSpeciesRecords($records)

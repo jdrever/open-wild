@@ -16,22 +16,12 @@
 			</tr></thead>
 			<tbody>
 				@foreach ($results->records as $species)
-				<?php $speciesArray = explode('|', (string)$species->label); ?>
 				<tr>
-					@if ($speciesNameType === 'scientific' || $speciesNameType === 'axiophyte')
-						<td class="d-none d-md-table-cell">{{ $speciesArray[4] }}</td>
-						<td><?=$speciesArray[0]?></td>
-						<td class="d-none d-sm-table-cell">{{ $speciesArray[2] }}</td>
-						<td><?=$species->count?></td>
-						<td><a href="/square/{{ $gridSquare }} /species/{{ $speciesArray[0] }}">see records</a></td>
-					@endif
-					@if ($speciesNameType === 'common')
-						<td class="d-none d-md-table-cell">{{ $speciesArray[5] }}</td>
-						<td><?=$speciesArray[1]?></td>
-						<td class="d-none d-sm-table-cell">{{ $speciesArray[3] }}</td>
-						<td><?=$species->count?></td>
-						<td><a href="/square/{{ $gridSquare }}/species/{{ $speciesArray[1] }}">see records</a></td>
-					@endif
+						<td class="d-none d-md-table-cell">{{ $species->family }}</td>
+						<td>{{ $species->scientificName }}</td>
+						<td class="d-none d-sm-table-cell">{{ $species->commonName }}</td>
+						<td><?=$species->recordCount?></td>
+						<td><a href="/site/{{ $siteName }}/species/{{ $species->scientificName }}">see records</a></td>
 				</tr>
 				@endforeach
 			</tbody>
