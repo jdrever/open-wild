@@ -6,6 +6,7 @@ use App\Interfaces\QueryService;
 use App\Models\AutocompleteResult;
 use App\Models\OccurrenceResult;
 use App\Models\QueryResult;
+use App\Models\SingleSpeciesRecord;
 use App\Models\Site;
 use App\Models\Species;
 
@@ -107,6 +108,7 @@ class NbnQueryService implements QueryService
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
         $queryResult->records = $this->prepareSingleSpeciesRecords($queryResult->records);
         $queryResult->sites = $this->prepareSites($queryResult->records);
+        $queryResult->records = $this->getSingleSpeciesRecordList($queryResult->records);
 
         return $queryResult;
     }
@@ -141,6 +143,8 @@ class NbnQueryService implements QueryService
             ->sortBy('year');
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
+        $queryResult->records = $this->getSingleSpeciesRecordList($queryResult->records);
+
         $queryResult->records = $this->prepareSingleSpeciesRecords($queryResult->records);
         $queryResult->sites = $this->prepareSites($queryResult->records);
 
@@ -342,6 +346,28 @@ class NbnQueryService implements QueryService
         }
 
         return $siteList;
+    }
+
+    /**
+     * Converts NBN record data into array of SingleSpeciesRecord objects.
+     *
+     * @param [type] $records
+     * @return iterable Site[]
+     */
+    private function getSingleSpeciesRecordList($records): iterable
+    {
+        $speciesRecordList = [];
+        foreach ($records as $record) {
+            $speciesRecord = new SingleSpeciesRecord();
+            $speciesRecord->recordId = $record->uuid;
+            $speciesRecord->site = $record->locationId;
+            $speciesRecord->square = $record->gridReference;
+            $speciesRecord->collector = $record->collector;
+            $speciesRecord->year = $record->year;
+            $speciesRecordList[] = $speciesRecord;
+        }
+
+        return $speciesRecordList;
     }
 
     private function prepareSingleSpeciesRecords($records)

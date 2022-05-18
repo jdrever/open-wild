@@ -17,11 +17,11 @@
 			<tbody>
 				@foreach ($results->records as $species)
 				<tr>
-						<td class="d-none d-md-table-cell">{{ $species->family }}</td>
-						<td>{{ $species->scientificName }}</td>
-						<td class="d-none d-sm-table-cell">{{ $species->commonName }}</td>
-						<td><?=$species->recordCount?></td>
-						<td><a href="/site/{{ $siteName }}/species/{{ $species->scientificName }}">see records</a></td>
+                    <td class="d-none d-md-table-cell">{{ $species->family }}</td>
+                    <td>{{ $species->scientificName }}</td>
+                    <td class="d-none d-sm-table-cell">{{ $species->commonName }}</td>
+                    <td><?=$species->recordCount?></td>
+                    <td><a href="/square/{{ $gridSquare }}/species/{{ $species->scientificName }}">see records</a></td>
 				</tr>
 				@endforeach
 			</tbody>

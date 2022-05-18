@@ -35,46 +35,45 @@
 
 <div id="tab-content" class="row">
 	<div id="data" class="tab-pane fade show active col-lg">
-		@if (isset($results->records))
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Site</th>
-						<th class="d-none d-sm-table-cell">Square</th>
-						<th class="d-none d-md-table-cell">Collector</th>
-						<th>Year</th>
-						<th>Details</th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach ($results->records as $record)
-						<tr data-uuid="{{ $record->uuid }}">
-							<td>
-								<a href="/site/{{ $record->locationId }}/species/{{ $speciesName }}">
-									<?= $record->locationId ?>
-								</a>
-							</td>
-							<td class="d-none d-sm-table-cell">
-								<a href="/square/{{ $record->gridReference }}/species/{{ $speciesName }}">
-									<?= $record->gridReference ?>
-								</a>
-							</td>
-							<td class="d-none d-md-table-cell">
-								<?= $record->collector ?>
-							</td>
-							<td>
-								<?= $record->year ?>
-							</td>
-							<td>
-								<a href="/record/{{ $record->uuid }}")>
-									more
-								</a>
-							</td>
-						</tr>
-					@endforeach
-				</tbody>
-			</table>
-		<?php endif ?>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Site</th>
+                    <th class="d-none d-sm-table-cell">Square</th>
+                    <th class="d-none d-md-table-cell">Collector</th>
+                    <th>Year</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($results->records as $record)
+                    <tr data-uuid="{{ $record->recordId }}">
+                        <td>
+                            <a href="/site/{{ $record->site }}/species/{{ $speciesName }}">
+                                <?= $record->site ?>
+                            </a>
+                        </td>
+                        <td class="d-none d-sm-table-cell">
+                            <a href="/square/{{ $record->square }}/species/{{ $speciesName }}">
+                                <?= $record->square ?>
+                            </a>
+                        </td>
+                        <td class="d-none d-md-table-cell">
+                            <?= $record->collector ?>
+                        </td>
+                        <td>
+                            <?= $record->year ?>
+                        </td>
+                        <td>
+                            <a href="/record/{{ $record->recordId }}")>
+                                more
+                            </a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
 	</div>
 	<div id="map-container" class="tab-pane fade show col-lg">
 		<div id="map" class=""></div>
