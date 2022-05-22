@@ -1,7 +1,7 @@
 
 <x-layout>
 
-<h2 class="text-start text-md-center">Search for a Species in {{ env('AREA') }}</h2>
+<h2 class="text-start text-md-center">Search for a Species in {{ env('REGION') }}</h2>
 
 <form action="/" action="post">
 @csrf

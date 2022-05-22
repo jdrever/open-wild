@@ -1,4 +1,4 @@
-function initialiseBasicMap(fitToShropshire = true, handleResize = true, mapState =  [52.6354, -2.71975, 9]) {
+function initialiseBasicMap(region, fitToRegion = true, handleResize = true, mapState =  [52.6354, -2.71975, 9]) {
 
 	// Initialise the map
 	// mapState = map center lat, map center lng, map zoom level
@@ -54,14 +54,14 @@ function initialiseBasicMap(fitToShropshire = true, handleResize = true, mapStat
 	// the response resolves, we add the data to the boundary layer and use the
 	// fitBounds() Leaflet method to zoom and position the map around the
 	// boundary data with a touch of padding.
-	const url = "/data/shropshire_simple.json";
+	const url = "/data/"+region+"_simple.json";
 	fetch(url)
 		.then((response) => response.json())
 		.then((geojson) => {
 			boundary.addData(geojson);
 
 			// Fit map to shropshire bounds - true by default
-			if (fitToShropshire) {
+			if (fitToRegion) {
 				map.fitBounds(boundary.getBounds(geojson).pad(0.1));
 			}
 		});

@@ -40,6 +40,7 @@ class SpeciesController extends Controller
         $speciesNameType = $request->input('speciesNameType') ?? $request->cookie('speciesNameType') ?? 'scientific';
         $speciesGroup = $request->input('speciesGroup') ?? $request->cookie('speciesGroup') ?? 'plants';
         $axiophyteFilter = $request->input('axiophyteFilter') ?? $request->cookie('axiophyteFilter') ?? 'false';
+
         if (! $request->has('speciesName')) {
             return view('species-search',
             [
@@ -138,11 +139,14 @@ class SpeciesController extends Controller
         $currentPage = $this->getCurrentPage($request);
         $results = $this->queryService->getSpeciesListForSquare($gridSquare, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
 
+        $region=env('REGION');
+
         $viewName = ($refresh == 'refresh') ? 'data-tables/species-in-square' : 'square-species-list';
 
         return view($viewName,
         [
             'gridSquare' => $gridSquare,
+            'region' => $region,
             'speciesNameType' => $speciesNameType,
             'speciesGroup' => $speciesGroup,
             'axiophyteFilter' => $axiophyteFilter,

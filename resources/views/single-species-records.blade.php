@@ -67,14 +67,14 @@
 </div>
 <script>
 	// Initialise the map
-	const map = initialiseBasicMap();
+	const map = initialiseBasicMap('{{ env('REGION')}}');
 
 	// Make a dot map layer
 	const wmsUrl = "https://records-ws.nbnatlas.org/mapping/wms/reflect?" +
 		"Q=lsid:{{ $results->records[0]->speciesGuid }}" +
 		"&ENV=colourmode:osgrid;color:ffff00;name:circle;size:4;opacity:0.5;" +
 		"gridlabels:true;gridres:singlegrid" +
-		"&fq=data_resource_uid:dr782";
+		"&fq=data_resource_uid:{{ $dataResourceId }}";
 
 	const species = L.tileLayer.wms(wmsUrl, {
 		"layers": "ALA:occurrences",
