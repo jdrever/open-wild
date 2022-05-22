@@ -93,7 +93,7 @@ class RecordsController extends Controller
         $gsSplitPoint = strlen($gridSquare) / 2 + 1;
         $gridSquare = substr($gridSquare, 0, 4).substr($gridSquare, $gsSplitPoint, 2);
 
-        $region=env('REGION');
+        $region = env('REGION');
 
         $currentPage = $this->getCurrentPage($request);
 

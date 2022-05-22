@@ -139,7 +139,7 @@ class SpeciesController extends Controller
         $currentPage = $this->getCurrentPage($request);
         $results = $this->queryService->getSpeciesListForSquare($gridSquare, $speciesNameType, $speciesGroup, $axiophyteFilter, $currentPage);
 
-        $region=env('REGION');
+        $region = env('REGION');
 
         $viewName = ($refresh == 'refresh') ? 'data-tables/species-in-square' : 'square-species-list';
 

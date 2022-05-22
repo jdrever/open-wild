@@ -241,7 +241,7 @@ class NbnQueryService implements QueryService
         $occurrenceResult->commonName = $occurrenceData->processed->classification->vernacularName ?? '';
         $occurrenceResult->phylum = $occurrenceData->processed->classification->phylum ?? '';
 
-        $occurrenceResult->recorders = (isset($occurrenceData->processed->occurrence->recordedBy)&&!empty($occurrenceData->processed->occurrence->recordedBy)) ? $this->prepareRecorders($occurrenceData->processed->occurrence->recordedBy) : "Unknown";
+        $occurrenceResult->recorders = (isset($occurrenceData->processed->occurrence->recordedBy) && ! empty($occurrenceData->processed->occurrence->recordedBy)) ? $this->prepareRecorders($occurrenceData->processed->occurrence->recordedBy) : 'Unknown';
         $occurrenceResult->siteName = $occurrenceData->raw->location->locationID ?? '';
         $occurrenceResult->gridReference = $occurrenceData->raw->location->gridReference ?? 'Unknown grid reference';
         $occurrenceResult->gridReferenceWKT = $occurrenceData->raw->location->gridReferenceWKT;
@@ -361,7 +361,7 @@ class NbnQueryService implements QueryService
         foreach ($records as $record) {
             $speciesRecord = new SingleSpeciesRecord();
             $speciesRecord->recordId = $record->uuid;
-            $speciesRecord->site = (isset($record->locationId)&&!empty($record->locationId)) ? $record->locationId : "Unknown";
+            $speciesRecord->site = (isset($record->locationId) && ! empty($record->locationId)) ? $record->locationId : 'Unknown';
             $speciesRecord->square = $record->gridReference;
             $speciesRecord->collector = $record->collector;
             $speciesRecord->decimalLongitude = $record->decimalLongitude;
