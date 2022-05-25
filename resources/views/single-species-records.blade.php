@@ -17,7 +17,7 @@
 
     @include('partials/data-map-tabs')
 
-
+<div id="data-table">
 <div id="tab-content" class="row">
 	<div id="data" class="tab-pane fade show active col-lg">
         <table class="table">
@@ -141,6 +141,7 @@
 @endif
 
 @include('partials/nbn-query')
+</div>
 <script type="text/javascript" src="/js/update-dataset.js"></script>
 
 
