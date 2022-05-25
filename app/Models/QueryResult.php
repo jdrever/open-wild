@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class QueryResult
+class QueryResult extends BaseResult
 {
     public iterable $records;
     public $sites;
@@ -10,7 +10,4 @@ class QueryResult
     public string $downloadLink;
     public int $numberOfRecords;
     public int $numberOfPages;
-    public string $queryUrl;
-    public bool $status;
-    public ?string $message;
 }

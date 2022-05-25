@@ -110,14 +110,14 @@ class RecordsController extends Controller
 
     public function singleRecord(Request $request, string $occurrenceId)
     {
-        $result = $this->queryService->getSingleOccurenceRecord($occurrenceId);
+        $results = $this->queryService->getSingleOccurenceRecord($occurrenceId);
 
-        $displayName = $request->input('displayName') ?? $result->scientificName;
-        $displayTitle = 'Record detail for '.urldecode($displayName).' recorded by '.$result->recorders.' at '.$result->siteName.' ('.$result->gridReference.'),'.$result->year.'.';
+        $displayName = $request->input('displayName') ?? $results->scientificName;
+        $displayTitle = 'Record detail for '.urldecode($displayName).' recorded by '.$results->recorders.' at '.$results->siteName.' ('.$results->gridReference.'),'.$results->year.'.';
 
         return view('single-record',
         [
-            'result' =>$result,
+            'results' =>$results,
             'displayName' => $displayName,
             'displayTitle' => $displayTitle,
         ]);

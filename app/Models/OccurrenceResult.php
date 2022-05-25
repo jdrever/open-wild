@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class OccurrenceResult
+class OccurrenceResult extends BaseResult
 {
     public string $scientificName;
     public string $commonName;
@@ -14,6 +14,4 @@ class OccurrenceResult
     public string $occurrenceDate;
     public string $occurrenceYear;
     public string $phylum;
-    public string $status;
-    public ?string $message;
 }
