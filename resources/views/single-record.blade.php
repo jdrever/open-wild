@@ -29,13 +29,26 @@
 					</tr>
 				</thead>
 				<tbody>
+                    <tr>
+                        <th scope="col" colspan="2">Overview</th>
+                    </tr>
 					<tr>
-						<td scope=" row">Site Name</td>
+						<td scope="row">Site Name</td>
 						<td scope="row"><a href="/site/<?= $results->siteName ?>/species/<?= $results->scientificName ?>"><?= $results->siteName ?></a></td>
 					</tr>
 					<tr>
 						<td scope="row">Full Grid Reference</a></td>
 						<td scope="row"><a href="/square/<?= $results->gridReference ?>/species/<?= $results->scientificName ?>"><?= $results->gridReference ?></a></td>
+					</tr>
+                    <tr>
+						<td scope="row">Scientific Name</td>
+						<td scope="row"><?= $results->scientificName ?></td>
+					</tr>
+					<tr>
+						<td scope="row">Common Name</td>
+						<td scope="row">
+							<?= $results->commonName ?>
+						</td>
 					</tr>
 					<tr>
 						<td scope="row">Recorders</td>
@@ -45,22 +58,64 @@
 						<td scope="row">Full Date</td>
 						<td scope="row"><?= $results->fullDate ?></td>
 					</tr>
+                    <tr>
+                        <th scope="col" colspan="2">Taxonomy
+                        </th>
+                    </tr>
 					<tr>
-						<td scope="row">Year</td>
-						<td scope="row"><?= $results->year ?></td>
+						<td scope="row">Species</td>
+						<td scope="row"><?= $results->species ?></td>
+					</tr>
+					<tr>
+						<td scope="row">Genus</td>
+						<td scope="row"><?= $results->genus ?></td>
+					</tr>
+					<tr>
+						<td scope="row">Family</td>
+						<td scope="row"><?= $results->family ?></td>
+					</tr>
+					<tr>
+						<td scope="row">Order</td>
+						<td scope="row"><?= $results->order ?></td>
+					</tr>
+					<tr>
+						<td scope="row">Class</td>
+						<td scope="row"><?= $results->class ?></td>
 					</tr>
 					<tr>
 						<td scope="row">Phylum</td>
 						<td scope="row"><?= $results->phylum ?></td>
 					</tr>
 					<tr>
-						<td scope="row">Scientific Name</td>
-						<td scope="row"><?= $results->scientificName ?></td>
+						<td scope="row">Kingdom</td>
+						<td scope="row"><?= $results->kingdom ?></td>
 					</tr>
-					<tr>
-						<td scope="row">Common Name</td>
+                    <tr>
+                        <th scope="col" colspan="2">Observation
+                        </th>
+                    </tr>
+                    <tr>
+						<td scope="row">Basis of Record</td>
 						<td scope="row">
-							<?= $results->commonName ?>
+							<?= $results->basisOfRecord ?>
+						</td>
+					</tr>
+                    <tr>
+						<td scope="row">Verification Status</td>
+						<td scope="row">
+							<?= $results->verificationStatus ?>
+						</td>
+					</tr>
+                    <tr>
+						<td scope="row">Remarks</td>
+						<td scope="row">
+							<?= $results->remarks ?>
+						</td>
+					</tr>
+                    <tr>
+						<td scope="row">License</td>
+						<td scope="row">
+							<?= $results->license ?>
 						</td>
 					</tr>
 				</tbody>

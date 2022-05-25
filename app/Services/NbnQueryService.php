@@ -107,6 +107,7 @@ class NbnQueryService implements QueryService
             ->sortBy('year');
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
+
         $queryResult->records = $this->prepareSingleSpeciesRecords($queryResult->records);
         $queryResult->sites = $this->prepareSites($queryResult->records);
         $queryResult->records = $this->getSingleSpeciesRecordList($queryResult->records);
@@ -242,15 +243,30 @@ class NbnQueryService implements QueryService
         $occurrenceResult->phylum = $occurrenceData->processed->classification->phylum ?? '';
 
         $occurrenceResult->recorders = (isset($occurrenceData->processed->occurrence->recordedBy) && ! empty($occurrenceData->processed->occurrence->recordedBy)) ? $this->prepareRecorders($occurrenceData->processed->occurrence->recordedBy) : 'Unknown';
-        $occurrenceResult->siteName = $occurrenceData->raw->location->locationID ?? '';
+        $occurrenceResult->siteName = $occurrenceData->raw->location->locationID ?? $occurrenceData->raw->location->locality ?? '';
         $occurrenceResult->gridReference = $occurrenceData->raw->location->gridReference ?? 'Unknown grid reference';
         $occurrenceResult->gridReferenceWKT = $occurrenceData->raw->location->gridReferenceWKT;
         $occurrenceResult->fullDate = 'Not available';
         if (isset($occurrenceData->processed->event->eventDate)) {
             $occurrenceResult->fullDate = date_format(date_create($occurrenceData->processed->event->eventDate), 'jS F Y');
         }
+
+        $occurrenceResult->basisOfRecord=$occurrenceData->processed->occurrence->basisOfRecord ?? 'Unknown';
+        $occurrenceResult->license=$occurrenceData->processed->attribution->license ?? 'Unknown';
+
+
         $occurrenceResult->year = $occurrenceData->processed->event->year;
-        $occurrenceData->phylum = $occurrenceData->processed->classification->phylum;
+        $occurrenceResult->verificationStatus = $occurrenceData->processed->identification->identificationVerificationStatus ?? 'Unknown';
+        $occurrenceResult->remarks = $occurrenceData->raw->event->eventRemarks ?? 'None';
+
+        $occurrenceResult->species = $occurrenceData->processed->classification->species ?? 'Unknown';
+        $occurrenceResult->genus = $occurrenceData->processed->classification->genus ?? 'Unknown';
+        $occurrenceResult->family = $occurrenceData->processed->classification->family ?? 'Unknown';
+        $occurrenceResult->order = $occurrenceData->processed->classification->order ?? 'Unknown';
+        $occurrenceResult->class = $occurrenceData->processed->classification->class ?? 'Unknown';
+        $occurrenceResult->phylum = $occurrenceData->processed->classification->phylum ?? 'Unknown';
+        $occurrenceResult->kingdom = $occurrenceData->processed->classification->kingdom ?? 'Unknown';
+
 
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCE_DOWNLOAD);
         $occurrenceResult->downloadLink = $nbnQuery->getSingleRecordDownloadQueryString($occurrenceResult->recordId);
