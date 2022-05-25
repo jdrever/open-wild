@@ -251,9 +251,8 @@ class NbnQueryService implements QueryService
             $occurrenceResult->fullDate = date_format(date_create($occurrenceData->processed->event->eventDate), 'jS F Y');
         }
 
-        $occurrenceResult->basisOfRecord=$occurrenceData->processed->occurrence->basisOfRecord ?? 'Unknown';
-        $occurrenceResult->license=$occurrenceData->processed->attribution->license ?? 'Unknown';
-
+        $occurrenceResult->basisOfRecord = $occurrenceData->processed->occurrence->basisOfRecord ?? 'Unknown';
+        $occurrenceResult->license = $occurrenceData->processed->attribution->license ?? 'Unknown';
 
         $occurrenceResult->year = $occurrenceData->processed->event->year;
         $occurrenceResult->verificationStatus = $occurrenceData->processed->identification->identificationVerificationStatus ?? 'Unknown';
@@ -266,7 +265,6 @@ class NbnQueryService implements QueryService
         $occurrenceResult->class = $occurrenceData->processed->classification->class ?? 'Unknown';
         $occurrenceResult->phylum = $occurrenceData->processed->classification->phylum ?? 'Unknown';
         $occurrenceResult->kingdom = $occurrenceData->processed->classification->kingdom ?? 'Unknown';
-
 
         $nbnQuery = new NbnQueryBuilder(NbnQueryBuilder::OCCURRENCE_DOWNLOAD);
         $occurrenceResult->downloadLink = $nbnQuery->getSingleRecordDownloadQueryString($occurrenceResult->recordId);

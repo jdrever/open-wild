@@ -398,6 +398,7 @@ class NbnQueryBuilder
     public function addLocation(string $location): self
     {
         $this->add('location_id:"'.$this->prepareLocationString($location).'"');
+
         return $this;
     }
 
