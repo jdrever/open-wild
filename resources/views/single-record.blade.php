@@ -117,6 +117,16 @@
 						</td>
 					</tr>
                     <tr>
+                        <th scope="col" colspan="2">Attribution
+                        </th>
+                    </tr>
+                    <tr>
+						<td scope="row">Data Provider</td>
+						<td scope="row">
+							{{ $results->dataProvider }}
+						</td>
+					</tr>
+                    <tr>
 						<td scope="row">License</td>
 						<td scope="row">
 							{{ $results->license }}

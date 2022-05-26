@@ -258,6 +258,7 @@ class NbnQueryService implements QueryService
         $occurrenceResult->year = $occurrenceData->processed->event->year;
         $occurrenceResult->verificationStatus = $occurrenceData->processed->identification->identificationVerificationStatus ?? 'Unknown';
         $occurrenceResult->remarks = $occurrenceData->raw->event->eventRemarks ?? 'None';
+        $occurrenceResult->dataProvider = $occurrenceData->processed->attribution->dataProviderName ?? 'Unknown';
 
         $occurrenceResult->species = $occurrenceData->processed->classification->species ?? 'Unknown';
         $occurrenceResult->genus = $occurrenceData->processed->classification->genus ?? 'Unknown';

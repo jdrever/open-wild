@@ -25,4 +25,5 @@ class OccurrenceResult extends BaseResult
     public string $license;
     public string $verificationStatus;
     public string $remarks;
+    public string $dataProvider;
 }
