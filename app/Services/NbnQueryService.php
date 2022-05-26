@@ -437,9 +437,7 @@ class NbnQueryService implements QueryService
     {
         $nbnApiResponse = new NbnApiResponse();
         try {
-            //setting timeout to five seconds
-            //TODO: make a env variable
-            ini_set('default_socket_timeout', 5);
+            ini_set('default_socket_timeout', config('nbn.timeout'));
             $jsonResults = file_get_contents($queryUrl);
             $jsonResponse = json_decode($jsonResults);
 

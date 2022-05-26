@@ -40,8 +40,6 @@ class SquaresController extends Controller
         $speciesGroup = $request->cookie('speciesGroup') ?? 'plants';
         $axiophyteFilter = $request->cookie('axiophyteFilter') ?? 'false';
 
-        $region = env('REGION');
-
         if (! $request->has('squareName')) {
             $mapState = $request->cookie('mapState') ?? env('DEFAULT_MAP_STATE');
 
@@ -49,7 +47,6 @@ class SquaresController extends Controller
             [
                 'squareName'  => $squareName,
                 'mapState'    => $mapState,
-                'region'     => $region,
                 'speciesNameType' => $speciesNameType,
                 'speciesGroup' => $speciesGroup,
                 'axiophyteFilter' => $axiophyteFilter,

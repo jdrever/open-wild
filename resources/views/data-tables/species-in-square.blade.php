@@ -33,7 +33,7 @@
 </div>
 <script>
 	// Initialise the map
-	const map = initialiseBasicMap('{{ $region }}')
+	const map = initialiseBasicMap('{{ config('core.region') }}')
 
 	// Use d3 and bigr to convert the gridSquare into a path that is rendered
 	// onto the map whenever it is zoomed to highlight the grid square

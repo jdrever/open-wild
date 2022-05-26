@@ -7,7 +7,7 @@
 		</svg>
 	</a>
 	<h2>
-		{{ urldecode($speciesNameToDisplay) }} records in {{ env('AREA') }}
+		{{ urldecode($speciesNameToDisplay) }} records in {{ config('core.region') }}
 	</h2>
 </div>
 
@@ -67,7 +67,7 @@
 </div>
 <script>
 	// Initialise the map
-	const map = initialiseBasicMap('{{ env('REGION')}}');
+	const map = initialiseBasicMap('{{ config('core.region')}}');
 
 	// Make a dot map layer
 	const wmsUrl = "https://records-ws.nbnatlas.org/mapping/wms/reflect?" +

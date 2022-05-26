@@ -59,7 +59,7 @@ class RecordsController extends Controller
             'axiophyteFilter' => $axiophyteFilter,
             'speciesNameSearchedFor' => $speciesNameSearchedFor,
             'speciesNameToDisplay' => $speciesNameToDisplay,
-            'dataResourceId' => env('DATA_RESOURCE_ID'),
+            'dataResourceId' => config('core.dataResourceID'),
             'results' =>$results,
         ]);
     }
@@ -93,8 +93,6 @@ class RecordsController extends Controller
         $gsSplitPoint = strlen($gridSquare) / 2 + 1;
         $gridSquare = substr($gridSquare, 0, 4).substr($gridSquare, $gsSplitPoint, 2);
 
-        $region = env('REGION');
-
         $currentPage = $this->getCurrentPage($request);
 
         $results = $this->queryService->getSingleSpeciesRecordsForSquare($gridSquare, $speciesName, $currentPage);
@@ -103,7 +101,6 @@ class RecordsController extends Controller
         [
             'gridSquare' => $gridSquare,
             'speciesName' => $speciesName,
-            'region' => $region,
             'results' =>$results,
         ]);
     }
