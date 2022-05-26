@@ -112,9 +112,12 @@ class NbnQueryBuilder
     public function __construct(string $searchType = self::OCCURRENCES_SEARCH)
     {
         $this->searchType = $searchType;
-        $this->pageSize = env('RESULTS_PER_PAGE', 10);
-        $this->dataResourceUid = env('DATA_RESOURCE_ID');
-        $this->axiophyteFilter = env('AXIOPHYTE_FILTER');
+        $this->pageSize = config('core.resultsPerPage');
+        $this->dataResourceUid = config('core.dataResourceId');
+        $this->axiophyteFilter = config('core.axiophyteFilter');
+        $this->startingLongitude = config('core.startingLongitude');
+        $this->startingLatitude = config('core.startingLatitude');
+        $this->radius = config('core.radius');
         $this->currentPage = 1;
     }
 
@@ -127,7 +130,9 @@ class NbnQueryBuilder
     private function getQueryString(string $url): string
     {
         $queryString = $url.'?';
-        $queryParameters = array_merge(['data_resource_uid:'.$this->dataResourceUid], $this->extraQueryParameters);
+        $queryParameters = array_merge($this->getCoreParameters(), $this->extraQueryParameters);
+
+        //dd($this->extraQueryParameters);
         $fqAndParameters = implode('%20AND%20', $this->filterQueryParameters);
         $fqNotParameters = '';
         if (count($this->filterNotQueryParameters) > 0) {
@@ -141,6 +146,17 @@ class NbnQueryBuilder
         $queryString .= 'dir='.$this->dir.'&';
 
         return $queryString;
+    }
+
+    private function getCoreParameters() : array
+    {
+        $coreParameters=[];
+        if (isset($this->dataResourceUid))
+            $coreParameters[]='data_resource_uid:'.$this->dataResourceUid;
+        if (isset($this->radius))
+            $coreParameters[]='*:*&lat=' .$this->startingLatitude . '&lon='.$this->startingLongitude.'&radius='.$this->radius;
+        return $coreParameters;
+
     }
 
     /**
