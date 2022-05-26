@@ -8,8 +8,8 @@ return [
     'showSpeciesSearch' => env('SPECIES_SEARCH', false),
     'showSitesSearch' => env('SITES_SEARCH', false),
     'showSquaresSearch' => env('SQUARES_SEARCH', false),
-    'caching' => env('CACHING',false),
+    'caching' => env('CACHING', false),
     'resultsPerPage' => env('RESULTS_PER_PAGE', 10),
-    'axiophyteFilter' => env('AXIOPHYTE_FILTER','species_list_uid:dr1940'),
+    'axiophyteFilter' => env('AXIOPHYTE_FILTER', 'species_list_uid:dr1940'),
 
 ];
