@@ -148,15 +148,17 @@ class NbnQueryBuilder
         return $queryString;
     }
 
-    private function getCoreParameters() : array
+    private function getCoreParameters(): array
     {
-        $coreParameters=[];
-        if (isset($this->dataResourceUid))
-            $coreParameters[]='data_resource_uid:'.$this->dataResourceUid;
-        if (isset($this->radius))
-            $coreParameters[]='*:*&lat=' .$this->startingLatitude . '&lon='.$this->startingLongitude.'&radius='.$this->radius;
-        return $coreParameters;
+        $coreParameters = [];
+        if (isset($this->dataResourceUid)) {
+            $coreParameters[] = 'data_resource_uid:'.$this->dataResourceUid;
+        }
+        if (isset($this->radius)) {
+            $coreParameters[] = '*:*&lat='.$this->startingLatitude.'&lon='.$this->startingLongitude.'&radius='.$this->radius;
+        }
 
+        return $coreParameters;
     }
 
     /**
