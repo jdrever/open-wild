@@ -34,7 +34,11 @@
                     </tr>
 					<tr>
 						<td scope="row">Site Name</td>
-						<td scope="row"><a href="/site/<?= $results->siteName ?>/species/<?= $results->scientificName ?>"><?= $results->siteName ?></a></td>
+						<td scope="row">@isset ($results->SiteName) <a href="/site/{{ $results->siteName }}/species/{{ $results->scientificName }}">{{ $results->siteName }}</a> @endisset</td>
+					</tr>
+                    <tr>
+						<td scope="row">Locality</td>
+						<td scope="row">{{ $results->locality }}</a></td>
 					</tr>
 					<tr>
 						<td scope="row">Full Grid Reference</a></td>

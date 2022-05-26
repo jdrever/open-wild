@@ -243,7 +243,8 @@ class NbnQueryService implements QueryService
         $occurrenceResult->phylum = $occurrenceData->processed->classification->phylum ?? '';
 
         $occurrenceResult->recorders = (isset($occurrenceData->processed->occurrence->recordedBy) && ! empty($occurrenceData->processed->occurrence->recordedBy)) ? $this->prepareRecorders($occurrenceData->processed->occurrence->recordedBy) : 'Unknown';
-        $occurrenceResult->siteName = $occurrenceData->raw->location->locationID ?? $occurrenceData->raw->location->locality ?? '';
+        $occurrenceResult->siteName = $occurrenceData->raw->location->locationID ?? '';
+        $occurrenceResult->locality = $occurrenceData->raw->location->locality ?? '';
         $occurrenceResult->gridReference = $occurrenceData->raw->location->gridReference ?? 'Unknown grid reference';
         $occurrenceResult->gridReferenceWKT = $occurrenceData->raw->location->gridReferenceWKT;
         $occurrenceResult->fullDate = 'Not available';

@@ -9,6 +9,7 @@ class OccurrenceResult extends BaseResult
     public string $recordId;
     public string $recorders;
     public string $siteName;
+    public string $locality;
     public string $gridReference;
     public string $gridReferenceWKT;
     public string $occurrenceDate;
