@@ -382,7 +382,7 @@ class NbnQueryService implements QueryService
             $speciesRecord->decimalLongitude = $record->decimalLongitude;
             $speciesRecord->decimalLatitude = $record->decimalLatitude;
             $speciesRecord->year = $record->year;
-            $speciesRecord->speciesGuid = $record->speciesGuid;
+            $speciesRecord->speciesGuid = $record->speciesGuid ?? '';
             $speciesRecordList[] = $speciesRecord;
         }
 
