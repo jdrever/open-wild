@@ -76,6 +76,8 @@
 		"gridlabels:true;gridres:singlegrid" +
 		"&fq=data_resource_uid:{{ $dataResourceId }}";
 
+    //const wmsUrl = encodeURI('{{ urldecode($results->dotMapLink) }}');
+
 	const species = L.tileLayer.wms(wmsUrl, {
 		"layers": "ALA:occurrences",
 		"uppercase": true,

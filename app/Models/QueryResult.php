@@ -10,4 +10,5 @@ class QueryResult extends BaseResult
     public string $downloadLink;
     public int $numberOfRecords;
     public int $numberOfPages;
+    public ?string $dotMapLink;
 }
