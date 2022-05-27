@@ -399,13 +399,17 @@ class NbnQueryBuilder
      */
     public function addSpeciesGroup(string $speciesGroup): self
     {
+        //TODO: #4 refactor speciesGroup handling to make more generic
         $speciesGroup = ucfirst($speciesGroup);
         if ($speciesGroup === 'Plants') {
             $this->add('species_group:'.'Plants');
             $this->addNot('species_group:'.'Bryophytes');
         } elseif ($speciesGroup === 'Bryophytes') {
             $this->add('species_group:'.'Bryophytes');
-        } else {
+        } elseif ($speciesGroup === 'Worms') {
+            $this->add('species_group:'.'Worms');
+        }
+         else {
             $this->add('species_group:'.'Plants+OR+Bryophytes');
         }
 

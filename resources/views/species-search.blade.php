@@ -14,7 +14,7 @@
             </datalist>
             <button type="submit" data-refresh="true" class="btn btn-primary">List Species</button>
 		</div>
-		<small id="search-help" class="form-text text-start text-md-center d-block">Enter all or part of a species name. Try something like "Hedera".</small>
+		<small id="search-help" class="form-text text-start text-md-center d-block">Enter all or part of a species name. Try something like "{{ config('core.speciesNameExample')}}".</small>
 	</div>
 </div>
 
@@ -33,7 +33,11 @@ function getUpdateUrl(pageNumber)
     let speciesName=document.getElementById("speciesName").value;
     let speciesNameType=document.querySelector('input[name="speciesNameType"]:checked').value;
     let speciesGroup=document.querySelector('input[name="speciesGroup"]:checked').value;
-    let axiophyteFilter=document.getElementById("axiophyteFilter").checked;
+    let axiophyteFilter=false;
+    if (document.getElementById("axiophyteFilter")!==null)
+    {
+        axiophyteFilter=document.getElementById("axiophyteFilter").checked;
+    }
     let updateUrl='/species/'+speciesName+'/type/'+speciesNameType+'/group/'+speciesGroup+'/axiophytes/'+axiophyteFilter+'/refresh?page='+pageNumber;
     return updateUrl;
 }

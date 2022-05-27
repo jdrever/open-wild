@@ -12,6 +12,7 @@
 				common<span class="d-none d-lg-inline"> name only</span>
 			</label>
 		</div>
+        @if (config('core.axiophyteFilter'))
 		<div class="form-check">
 			<input class="form-check-input" type="checkbox" name="axiophyteFilter" id="axiophyteFilter" value="true" data-refresh="true"{{ ($axiophyteFilter=="true")? "checked" : "" }} />
 			<label class="form-check-label" for="axiophyte-name">
@@ -19,7 +20,9 @@
 				<span class="d-none d-lg-inline">axiophytes only</span>
 			</label>
 		</div>
+        @endif
 	</div>
+    @if (config('core.plantsOrBryophytesFilter'))
 	<div class="form-group col-sm-4 col-lg-3">
 		<div class="form-check">
 			<input class="form-check-input" type="radio" name="speciesGroup" id="speciesGroup" value="plants" data-refresh="true" {{ ($speciesGroup=="plants")? "checked" : "" }} />
@@ -40,4 +43,15 @@
 			</label>
 		</div>
 	</div>
+    @endif
+    @if (config('core.wormsFilter'))
+	<div class="form-group col-sm-4 col-lg-3">
+		<div class="form-check">
+			<input class="form-check-input" type="radio" name="speciesGroup" id="speciesGroup" value="worms" checked />
+			<label class="form-check-label" for="worms">
+				only worms
+			</label>
+		</div>
+    </div>
+    @endif
 </div>

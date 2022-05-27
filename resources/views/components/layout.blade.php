@@ -8,7 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta content="Promoting the enjoyment, understanding and conservation of the flora of Shropshire" name="description" />
 	<!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{{ asset('css/' . strtolower(config('core.region')) .'-style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/' . config('core.siteId') .'-style.css') }}">
 	<!-- Custom styles for this template -->
 	<link href="/css/enhancements.css" rel="stylesheet">
 	<!-- A2HS -->
