@@ -77,7 +77,8 @@ class NbnQueryService implements QueryService
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
 
-        $queryResult->records = $this->getSiteList($queryResult->records);
+        if($queryResult->status)
+            $queryResult->records = $this->getSiteList($queryResult->records);
 
         return $queryResult;
     }
@@ -113,10 +114,12 @@ class NbnQueryService implements QueryService
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
 
-        $queryResult->records = $this->prepareSingleSpeciesRecords($queryResult->records);
-        $queryResult->sites = $this->prepareSites($queryResult->records);
-        $queryResult->records = $this->getSingleSpeciesRecordList($queryResult->records);
-
+        if ($queryResult->status)
+        {
+            $queryResult->records = $this->prepareSingleSpeciesRecords($queryResult->records);
+            $queryResult->sites = $this->prepareSites($queryResult->records);
+            $queryResult->records = $this->getSingleSpeciesRecordList($queryResult->records);
+        }
         return $queryResult;
     }
 

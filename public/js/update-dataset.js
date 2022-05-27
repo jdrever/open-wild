@@ -33,7 +33,6 @@ fetch(updateUrl).then(function (response) {
     listenForRefreshClicks();
 }).catch(function (err) {
 	// There was an error
-    alert(err);
 	console.warn('Something went wrong.', err);
 });
 }

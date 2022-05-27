@@ -74,7 +74,7 @@
 		"Q=lsid:{{ $results->records[0]->speciesGuid }}" +
 		"&ENV=colourmode:osgrid;color:ffff00;name:circle;size:4;opacity:0.5;" +
 		"gridlabels:true;gridres:singlegrid" +
-		"&fq=data_resource_uid:{{ $dataResourceId }}";
+		"&fq=data_resource_uid:{{ config('core.dataResourceId') }}";
 
 	const species = L.tileLayer.wms(wmsUrl, {
 		"layers": "ALA:occurrences",

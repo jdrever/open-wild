@@ -33,7 +33,7 @@
 </div>
 <script>
 	// Initialise the map
-	const map = initialiseBasicMap();
+	const map = initialiseBasicMap('{{ config('core.region') }}')
     addMarker();
 
     function addMarker()

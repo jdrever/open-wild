@@ -73,14 +73,16 @@
 		<div id="map" class=""></div>
 	</div>
 </div>
+
+{{ var_dump(reset($results->sites)) }}
 <script>
 	// Initialise the map
-	const map = initialiseBasicMap();
+	const map = initialiseBasicMap('{{ config('core.region') }}')
 
 		// Unless the first occurrence didn't contain a site location, create a
 	// marker for the site's location
-	@if (!empty($siteLocation))
-		const siteMarker = L.marker({{!! json_encode($siteLocation) !!}} ?>, {
+	@if (reset($results->sites))
+		const siteMarker = L.marker({!! json_encode(reset($results->sites)) !!} , {
 			opacity: 0.75
 		});
 		siteMarker.addTo(map)
