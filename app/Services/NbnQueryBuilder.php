@@ -151,11 +151,11 @@ class NbnQueryBuilder
     private function getCoreParameters(): array
     {
         $coreParameters = [];
-        if (isset($this->dataResourceUid)) {
+        if ($this->dataResourceUid) {
             $coreParameters[] = 'data_resource_uid:'.$this->dataResourceUid;
         }
-        if (isset($this->radius)) {
-            $coreParameters[] = 'lat='.$this->startingLatitude.'&lon='.$this->startingLongitude.'&radius='.$this->radius;
+        if ($this->radius) {
+            $coreParameters[] = '*:*&lat='.$this->startingLatitude.'&lon='.$this->startingLongitude.'&radius='.$this->radius;
         }
 
         return $coreParameters;

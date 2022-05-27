@@ -85,10 +85,10 @@
 
     @include('partials/download-link')
 
-    @include('partials/nbn-query')
-
 @else
     @include('partials/no-records')
 @endif
+
+@include('partials/nbn-query')
 
 
