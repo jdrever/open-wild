@@ -51,8 +51,9 @@ class NbnQueryService implements QueryService
         $queryResult->sites = $this->prepareSites($queryResult->records);
         $queryResult->records = $this->getSingleSpeciesRecordList($queryResult->records);
 
-        if (isset($queryResult->records[0]->speciesGuid))
-            $queryResult->dotMapLink=$this->getDotMapResult($nbnQuery,$queryResult->records[0]->speciesGuid);
+        if (isset($queryResult->records[0]->speciesGuid)) {
+            $queryResult->dotMapLink = $this->getDotMapResult($nbnQuery, $queryResult->records[0]->speciesGuid);
+        }
         //dd($queryResult);
 
         return $queryResult;
@@ -209,7 +210,6 @@ class NbnQueryService implements QueryService
     private function getDotMapResult(NbnQueryBuilder $nbnQuery, string $speciesGuid)
     {
         return $nbnQuery->getDotMapQueryString($speciesGuid);
-
     }
 
     private function createQueryResult(NbnAPIResponse $nbnAPIResponse, NbnQueryBuilder $nbnQuery, string $queryUrl, ?int $numberOfRecords = null): QueryResult
