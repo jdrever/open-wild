@@ -74,7 +74,6 @@
 	</div>
 </div>
 
-{{ var_dump(reset($results->sites)) }}
 <script>
 	// Initialise the map
 	const map = initialiseBasicMap('{{ config('core.region') }}')
