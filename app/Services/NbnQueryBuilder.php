@@ -408,8 +408,7 @@ class NbnQueryBuilder
             $this->add('species_group:'.'Bryophytes');
         } elseif ($speciesGroup === 'Worms') {
             $this->add('species_group:'.'Worms');
-        }
-         else {
+        } else {
             $this->add('species_group:'.'Plants+OR+Bryophytes');
         }
 
