@@ -252,22 +252,21 @@ class NbnQueryBuilder
 
     public function getDotMapQueryString($speciesGuid)
     {
-        return $this::BASE_URL.'/mapping/wms/reflect?Q=lsid:'.$speciesGuid . '&ENV=colourmode:osgrid;color:ffff00;name:circle;size:4;opacity:0.5;gridlabels:true;gridres:singlegrid&fq=' . implode('%20AND%20', $this->getCoreFQParameters());
+        return $this::BASE_URL.'/mapping/wms/reflect?Q=lsid:'.$speciesGuid.'&ENV=colourmode:osgrid;color:ffff00;name:circle;size:4;opacity:0.5;gridlabels:true;gridres:singlegrid&fq='.implode('%20AND%20', $this->getCoreFQParameters());
     }
 
-    private function getCoreFQParameters() : array
+    private function getCoreFQParameters(): array
     {
         $coreFQParameters = [];
         if (isset($this->dataResourceUid)) {
             $coreFQParameters[] = 'data_resource_uid:'.$this->dataResourceUid;
         }
         if (isset($this->radius)) {
-            $coreFQParameters[] = 'lat_long:' . $this->startingLatitude .','.$this->startingLongitude;
+            $coreFQParameters[] = 'lat_long:'.$this->startingLatitude.','.$this->startingLongitude;
         }
+
         return $coreFQParameters;
-
     }
-
 
     /**
      * Return the query string for downloading the data.
