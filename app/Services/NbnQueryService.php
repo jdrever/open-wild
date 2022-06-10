@@ -25,8 +25,9 @@ class NbnQueryService implements QueryService
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
 
-        if ($queryResult->status)
+        if ($queryResult->status) {
             $queryResult->records = $this->getSpeciesList($queryResult->records, $speciesNameType);
+        }
 
         return $queryResult;
     }
@@ -141,8 +142,9 @@ class NbnQueryService implements QueryService
         }
 
         $queryResult = $this->getPagedQueryResult($nbnQuery, $currentPage);
-        if ($queryResult->status)
+        if ($queryResult->status) {
             $queryResult->records = $this->getSpeciesList($queryResult->records, $speciesNameType);
+        }
 
         return $queryResult;
     }
