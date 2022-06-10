@@ -47,8 +47,7 @@ $app->singleton(
 |-----------------------------------------------
 */
 
-if(isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])){
-
+if (isset($_SERVER['HTTP_HOST']) && ! empty($_SERVER['HTTP_HOST'])) {
     $domain = $_SERVER['HTTP_HOST'];
 
     if (isset($domain)) {
