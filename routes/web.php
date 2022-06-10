@@ -35,4 +35,6 @@ Route::get('/squares/', [SquaresController::class, 'index']);
 Route::get('/square/{gridSquare}/type/{speciesNameType}/group/{speciesGroup}/axiophytes/{axiophyteFilter}/{refresh?}', [SpeciesController::class, 'listForSquare']);
 Route::get('/square/{gridSquare}/species/{speciesName}', [RecordsController::class, 'singleSpeciesForSquare']);
 
+Route::get('/radius/', [RadiusController::class, 'index']);
+
 Route::view('/about', 'about');
