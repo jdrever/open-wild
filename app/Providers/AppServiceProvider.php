@@ -15,9 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(QueryService::class, function () {
-            return new CachedNbnQueryService();
-        });
+        $this->app->bind(QueryService::class, cachedNbnQueryService::class);
     }
 
     /**
