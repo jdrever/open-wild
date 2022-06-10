@@ -51,7 +51,7 @@ class RadiusController extends Controller
         } else {
             $mapState = $request->query('mapState');
 
-            return redirect('/radius/latitude/'.$latitude.'/longitude/'.$longitude. '?mapState=' + $mapState);
+            return redirect('/radius/latitude/'.$latitude.'/longitude/'.$longitude.'?mapState=' + $mapState);
         }
     }
 
